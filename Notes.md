@@ -929,6 +929,7 @@ using namespace __gnu_pbds;
 - In many problems, a multiset can work as a priority queue. It not only supports finding minimum and maximum elements but also removing a particular element from the multiset. The time complexity of all those operations is O(log n)
 - In many problems, two instances of same data structure are required to simulate the process mentioned in the problem with better complexity. For example, using two instances of multiset/priority queue to maintain lower and upper half of sorted elements, etc.
 - The constraints of the problem provide helpful information. For example, many problems involving Bitmask DP have extremely small constraints to allow programs having exponential time complexity. Problems having very large constraints often involve binary search (O(log n) complexity) or some O(1) computation
+- Summation (i = 1 to n) floor(n/i) = O(nlogn)
 - Quickselect is an algorithm to find k<sup>th</sup> smallest element in an array. It is based on Lomuto Partition technique of Quicksort algorithm
 ```cpp
 void partition(vector<int>& a,int l,int r){
