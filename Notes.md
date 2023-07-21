@@ -188,8 +188,14 @@ int max_energy(int V,int M,vector<int>& v,vector<int>& m,vector<int>& e){
 **6. Combinatorics**
 
 - Pigeonhole Principle
-- Stars and Bars method (To determine number of integer solutions)
+- Stars and Bars method (To determine number of non-negative integer solutions)
+```
+Let the equation be x1 + x2 + ... + xr = n, where each xi >= 0. We need to find number of distinct solutions to the given equation. This problem can be modelled as follows. Suppose n identical stars are kept in a straight line. Now, we need to place (r-1) identical bars to create r partitions. The number of stars to the left of leftmost bar = value of x1. Number of stars to the right of rightmost bar = value of xr. Number of stars between (i-1)th and ith bar (assuming 1-indexing) = value of xi. Thus the given problem now reduces to finding number of ways to arrange n identical stars and (r-1) identical bars, and thus equal to C(n+r-1,n)
+```
 - Counting number of permutations of a particular string
+```
+Suppose our string contains the alphabets x1, x2, ..., xn. Suppose the ith alphabet xi appears ri times in the string. Now, number of distinct permutations of the given string is equal to C(r1+r2+...+rn,r1) * C(r2+r3+...+rn,r2) * ... * C(rn,rn) = (r1+r2+...+rn)!/r1!r2!...rn!
+```
 - Stirling Numbers
 - Burnside's Lemma (Polya's Enumeration Principle)
 - Catalan Numbers
@@ -197,8 +203,6 @@ int max_energy(int V,int M,vector<int>& v,vector<int>& m,vector<int>& e){
 - Binomial Theorem
 - Generating Functions
 - Partitions
-- [Applied Combinatorics](https://github.com/Harsh-Butani/Competitive-Programming/blob/main/Books/Applied%20Combinatorics.pdf)
-- [Introductory Combinatorics](https://github.com/Harsh-Butani/Competitive-Programming/blob/main/Books/Introductory%20Combinatorics.pdf)
 - A nice problem and approach to solve it
 ```
 Problem: Given non-negative integers n and m, find number of non-decreasing sequences of length n such that each element in the sequence lies between 0 and m inclusive
@@ -275,7 +279,6 @@ void solve(){
 - Euler's Totient Function
 - Chinese Remainder Theorem
 - Matrix Exponentiation
-- [Elementary Number Theory with Applications](https://github.com/Harsh-Butani/Competitive-Programming/blob/main/Books/Elementary%20Number%20Theory%20with%20Applications.pdf)
   
 **7.1. Sieve of Eratosthenes and Prime Factorization**
 
