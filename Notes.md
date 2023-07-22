@@ -40,7 +40,7 @@ for(int r=0;r<n;r++){
 }
 ```
 - Used for maintaining good segments
-- Utilizes the fact that if a property holds for shorter segment(longer segment), then it must also hold for longer segment(shorter segment)
+- Utilizes the fact that if a property holds for shorter segment (longer segment), then it must also hold for longer segment (shorter segment)
 - Other problems that can be solved using this approach include Trapping Rainwater, Sliding window maximum/minimum, checking whether there exist two elements with a particular sum, etc
 - [Codeforces EDU - Two Pointers Method](https://codeforces.com/edu/course/2/lesson/9)
 
@@ -86,7 +86,7 @@ for(int i=0;i<n;i++){
 }
 // Sum of array elements from [l1,r1] to [l2,r2] = pre[l2][r2]-(r1?pre[l1][r1-1]:0)-(l1?pre[l1-1][r1]:0)+(l1 && r1?pre[l1-1][r1-1]:0)
 ```
-- Difference Array is used to update a range and retrieve value at a single point. For example consider the queries, (1) Add x to [a,b] (2) Find value at position p. For this, we can create a difference array such that first element of difference array = first element of given array and subsequent elements of difference array = difference between consecutive array elements of original one. To process first type of query, just add x at position a and subtract x from position b+1 in difference array. To process second type of query, we need to add elements of difference array from start till position p. This can be done using a Fenwick Tree/Segment Tree
+- Difference Array is used to update a range and retrieve value at a single point. For example consider the queries, $(1)$ Add $x$ to $[a, b]$ $(2)$ Find value at position $p$. For this, we can create a difference array such that first element of difference array = first element of given array and subsequent elements of difference array = difference between consecutive array elements of original one. To process first type of query, just add $x$ at position $a$ and subtract $x$ from position $b + 1$ in difference array. To process second type of query, we need to add elements of difference array from start till position $p$. This can be done using a Fenwick Tree/Segment Tree
 - [Codeforces EDU - Prefix sums and difference arrays](https://codeforces.com/edu/course/3/lesson/10)
 
 **4. Disjoint Set Union (DSU)**
@@ -135,16 +135,16 @@ void union(int x,int y,vector<int>& p,vector<int>& r){
 - Sometimes, it's better to avoid path compression
 - Sometimes, we need to traverse the queries in reverse order when the operation is of "cut" (reverse of "join")
 - Sometimes, it's better to avoid union by rank.
-- Can be used to solve "Problem with people" types of problems. There are two types of queries: (1) The person at position i goes away and (2) Find the nearest person to the right for position p that did not leave
+- Can be used to solve "Problem with people" types of problems. There are two types of queries: $(1)$ The person at position $i$ goes away and $(2)$ Find the nearest person to the right for position $p$ that did not leave
 - [Codeforces EDU - Disjoint Sets Union](https://codeforces.com/edu/course/2/lesson/7)
 
 **5. Dynamic Programming (DP)**
 
 - In Dynamic Programming, we build the DP array as per the recurrence relation we have
-- DP on trees problems usually require us to consider the tree as a rooted tree and then do DFS while maintaining a DP vector
-- In Digit DP, we have to answer queries such as "The count of numbers that satisfy property X in [a,b]". This can be done by introducing a function f as f(n) = count of numbers <=n that satisfy property X. So answer = f(b) - f(a-1)
+- DP on trees problems usually require us to consider the tree as a rooted tree and then do DFS while maintaining DP vector(s)
+- In Digit DP, we have to answer queries such as "The count of numbers that satisfy property $X$ in $[a, b]$". This can be done by introducing a function $f$ as $f(n) =$ count of numbers $\leq n$ that satisfy property $X$. So answer $= f(b) - f(a - 1)$
 - We can use maps instead of arrays for memoizing when values have a large spread
-- State reduction techniques are often used to cut down on memory used. As an example, consider the multidimensional Knapsack problem, where we have to maximize energy with constraints on volume and mass. The following code reduces the number of states from 3 to 2
+- State reduction techniques are often used to cut down on memory used. As an example, consider the multidimensional Knapsack problem, where we have to maximize energy with constraints on volume and mass. The following code reduces the number of states from $3$ to $2$
 ```cpp
 int max_energy(int V,int M,vector<int>& v,vector<int>& m,vector<int>& e){
     int n=v.size();
@@ -188,14 +188,8 @@ int max_energy(int V,int M,vector<int>& v,vector<int>& m,vector<int>& e){
 **6. Combinatorics**
 
 - Pigeonhole Principle
-- Stars and Bars method (To determine number of non-negative integer solutions)
-```
-Let the equation be x1 + x2 + ... + xr = n, where each xi >= 0. We need to find number of distinct solutions to the given equation. This problem can be modelled as follows. Suppose n identical stars are kept in a straight line. Now, we need to place (r-1) identical bars to create r partitions. The number of stars to the left of leftmost bar = value of x1. Number of stars to the right of rightmost bar = value of xr. Number of stars between (i-1)th and ith bar (assuming 1-indexing) = value of xi. Thus the given problem now reduces to finding number of ways to arrange n identical stars and (r-1) identical bars, and thus equal to C(n+r-1,n)
-```
-- Counting number of permutations of a particular string
-```
-Suppose our string contains the alphabets x1, x2, ..., xn. Suppose the ith alphabet xi appears ri times in the string. Now, number of distinct permutations of the given string is equal to C(r1+r2+...+rn,r1) * C(r2+r3+...+rn,r2) * ... * C(rn,rn) = (r1+r2+...+rn)!/r1!r2!...rn!
-```
+- Stars and Bars method (To determine number of non-negative integer solutions). Let the equation be $\Sigma_{i=1}^{r}x_i = n$, where each $x_i \geq 0$. We need to find number of distinct solutions to the given equation. This problem can be modelled as follows. Suppose $n$ identical stars are kept in a straight line. Now, we need to place $(r - 1)$ identical bars to create $r$ partitions. The number of stars to the left of leftmost bar = value of $x_1$. Number of stars to the right of rightmost bar = value of $x_r$. Number of stars between $(i-1)^{th}$ and $i^{th}$ bar (assuming 1-indexing) = value of $x_i$. Thus the given problem now reduces to finding number of ways to arrange $n$ identical stars and $(r - 1)$ identical bars, and thus equal to $^{n+r-1}C_n$
+- Counting number of permutations of a particular string. Suppose our string contains the alphabets $x_1, x_2, ..., x_n$. Suppose the $i^{th}$ alphabet $x_i$ appears $r_i$ times in the string. Now, number of distinct permutations of the given string is equal to $^{r_1+r_2+...+r_n}C_{r_1} \times ^{r_2+r_3+...+r_n}C_{r_2} \times ... \times ^{r_n}C_{r_n} = \frac{(r_1+r_2+...+r_n)!}{r_1!r_2!...r_n!}$
 - Stirling Numbers
 - Burnside's Lemma (Polya's Enumeration Principle)
 - Catalan Numbers
@@ -203,13 +197,10 @@ Suppose our string contains the alphabets x1, x2, ..., xn. Suppose the ith alpha
 - Binomial Theorem
 - Generating Functions
 - Partitions
-- A nice problem and approach to solve it
-```
-Problem: Given non-negative integers n and m, find number of non-decreasing sequences of length n such that each element in the sequence lies between 0 and m inclusive
-
-Solution: First, we choose k distinct numbers out of (m+1) numbers. Then we need to arrange these k numbers into n boxes, so number of ways of arranging is equal to number of integer solutions of x1 + x2 + ... + xk = n, where each xi >= 1. So required answer = Summation (k=1 to n) C(m+1,k)*C(n-1,k-1) = Summation (k=1 to n) C(m+1,k)*C(n-1,n-k) = Coefficient of x^n in (1+x)^(m+1) * (1+x)^(n-1) = Coefficient of x^n in (1+x)^(m+n) = C(m+n,n)
-```
-- There is a common combinatorial trick for counting: We change the perspective to count. For example, suppose we have to count the number of good objects of type A each object of type B yields. Another way to count this is as follows: We count how many objects of type B yield each of the possible good objects of type A. So basically, the code changes as follows 
+- A nice problem and approach to solve it\
+**Problem**: Given non-negative integers $n$ and $m$, find number of non-decreasing sequences of length $n$ such that each element in the sequence lies between $0$ and $m$ inclusive\
+**Solution**: First, we choose $k$ distinct numbers out of $(m + 1)$ numbers. Then we need to arrange these $k$ numbers into $n$ boxes, so number of ways of arranging is equal to number of integer solutions of $x_1 + x_2 + ... + x_k = n$, where each $x_i \geq 1$. So required answer $= \Sigma_{k=1}^{n}{^{m+1}}C_k \cdot ^{n-1}C_{k-1} = \Sigma_{k=1}^{n}{^{m+1}}C_k \cdot ^{n-1}C_{n-k} =$ Coefficient of $x^n$ in $(1+x)^{m+1} \cdot (1+x)^{n-1} =$ Coefficient of $x^n$ in $(1+x)^{m+n} = ^{m+n}C_n$
+- There is a common combinatorial trick for counting: We change the perspective to count. For example, suppose we have to count the number of good objects of type $A$ each object of type $B$ yields. Another way to count this is as follows: We count how many objects of type $B$ yield each of the possible good objects of type $A$. So basically, the code changes as follows 
 ```cpp
 /* Older version */
 int count = 0
@@ -221,7 +212,7 @@ int count = 0
 for every good type A object:
     count += number of type B objects that yield it
 ```
-- Computing <sup>n</sup>C<sub>r</sub> modulo MOD
+- Computing $^nC_r$ modulo $MOD$
 ```cpp
 vector<vector<ll>>C(N+1,vector<ll>(N+1,0));
 for(int i=1;i<=N;i++){
@@ -238,7 +229,7 @@ for(int i=1;i<=N;i++){
 // Another way is to calculate the factorials values and then use the formula for nCr
 C[n][r]=((factorial[n]*inverse_factorial[r])%MOD*inverse_factorial[n-r])%MOD;
 ```
-- Below code finds count of numbers <= m which are divisible by atleast one of the numbers in 'factors' by using the inclusion-exclusion principle
+- Below code finds count of numbers $\leq m$ which are divisible by atleast one of the numbers in $factors$ by using the inclusion-exclusion principle
 ```cpp
 void pie(int idx,vector<int>& factors,int n,int m,int product,int c,int& cnt){
     if(product>m){
@@ -270,7 +261,7 @@ void solve(){
     cout<<cnt;
 }
 ```
-- Matrix exponentiation can be used to calculate nth term of a linear recurrence in O(log n * (size of matrix)<sup>3</sup>) time
+- Matrix exponentiation can be used to calculate $n^{th}$ term of a linear recurrence in $O(m^3log$ $n)$ time where $m$ denotes size of the matrix
 - Many combinatorial problems require DP for solving
 
 **7. Number Theory**
@@ -295,7 +286,7 @@ for(int i=2;i*i<=N;i++){
     }
 }
 ```
-- Now after storing minimum prime divisors of every number till N, we can do prime factorization easily as follows
+- Now after storing minimum prime divisors of every number till $N$, we can do prime factorization easily as follows
 ```cpp
 vector<pair<int,int>>prime_factors
 // Each element of prime_factors is of the form (prime factor, its power)
@@ -308,7 +299,7 @@ while(N>1){
     prime_factors.push_back(make_pair(p,cnt));
 }
 ```
-- Sometimes N is very high so for determining its prime factors, we can find its prime factors till sqrt(N) and correspondingly divide x(=N originally) by its prime factors. At last, if x>1, then that particular value of x is the last prime factor of N. Consider the code below for reference for finding prime factors of a number N where 1<=N<=1e9
+- Sometimes $N$ is very high so for determining its prime factors, we can find its prime factors till $\sqrt{N}$ and correspondingly divide $x$ ($=N$ originally) by its prime factors. At last, if $x>1$, then that particular value of $x$ is the last prime factor of $N$. Consider the code below for reference for finding prime factors of a number $N$ where $1 \leq N \leq 1e9$
 ```cpp
 vector<bool>is_prime(1e5,true);
 vector<int>primes;
@@ -384,7 +375,7 @@ int bin_exp(int x,int n){
     return res;
 }
 ```
-- Above can be modified to make the operation modulo m
+- Above can be modified to make the operation modulo $m$
 
 **7.4. Primality test**
 
@@ -417,12 +408,12 @@ for(int i=1;i*i<=N;i++){
 
 **7.6. Modular inverse**
 
-- Calculating modular inverse when MOD is a prime is straightforward. We can use Fermat's Little Theorem. Suppose we have to find inverse of a modulo MOD where MOD is prime. Then a<sup>-1</sup> = a<sup>MOD-2</sup> % MOD. If MOD is not prime, then we have to use Extended Euclidean Algorithm to find the multiplicative inverse. Note that the inverse of a modulo MOD exists iff gcd(a, MOD) = 1
+- Calculating modular inverse when $MOD$ is a prime is straightforward. We can use Fermat's Little Theorem. Suppose we have to find inverse of $a$ modulo $MOD$ where $MOD$ is prime. Then $a^{-1} = a^{MOD-2}$ $modulo$ $MOD$. If $MOD$ is not prime, then we have to use Extended Euclidean Algorithm to find the multiplicative inverse. Note that the inverse of $a$ modulo $MOD$ exists iff $gcd(a, MOD) = 1$
 
 **7.7. Some general notes and ideas**
 
-- Suppose we are given an array of n integers [a1, a2, ..., an] and a prime number p. Suppose we need to check whether for every x > 0, p divides atleast 2 of [a1+x, a2+x, ..., an+x]. To check this, we reduce our array to [a1%p, a2%p, ..., an%p]. Now, if min(cnt[0], cnt[1], ..., cnt[p-1]) > 1 in our reduced array, then p divides atleast 2 of [a1+x, a2+x, ..., an+x] for all x > 0. Else there exists some x such that p divides atmost 1 of [a1+x, a2+x, ..., an+x]
-- The Harmonic series $\Sigma_{i=1}^{n} \lfloor\frac{1}{i}\rfloor = O(logn)$ is very useful in determining time complexities of many algorithms
+- Suppose we are given an array of $n$ integers $[a_1, a_2, ..., a_n]$ and a prime number $p$. Suppose we need to check whether for every integer $x > 0$, $p$ divides atleast $2$ of $[a_1+x, a_2+x, ..., a_n+x]$. To check this, we reduce our array to $[a_1$ $mod$ $p, a_2$ $mod$ $p, ..., a_n$ $mod$ $p]$. Now, if $min(cnt_0, cnt_1, ..., cnt_{p-1}) > 1$ in our reduced array, then $p$ divides atleast $2$ of $[a_1+x, a_2+x, ..., a_n+x]$ $\forall x > 0$. Else there exists some $x$ such that $p$ divides atmost $1$ of $[a_1+x, a_2+x, ..., a_n+x]$
+- The Harmonic series $\Sigma_{i=1}^{n} \frac{1}{i} = O(log$ $n)$ is very useful in determining time complexities of many algorithms
 - There are $O(\sqrt{n})$ distinct values of $\lfloor\frac{n}{i}\rfloor$ when $i$ varies from $1$ to $n$
 - The maximum value of $j$ such that $\lfloor\frac{n}{i}\rfloor = \lfloor\frac{n}{j}\rfloor =$ $x$ (say) is given by $j = \lfloor\frac{n}{x}\rfloor$ 
 
@@ -462,7 +453,7 @@ while(!q.empty()){
     }
 }
 ```
-- Multi-Source BFS can be used to find distance of nearest node among a set of nodes. Just put all the nodes of the set in the queue instead of just 1 of them
+- Multi-Source BFS can be used to find distance of nearest node among a set of nodes. Just put all the nodes of the set in the queue instead of just $1$ of them
   
 **8.3. Dijkstra's Algorithm**
 
@@ -513,7 +504,7 @@ void dijkstra(int source,vector<int>& distance,vector<int>& parent,vector<vector
     }
 }
 ```
-- Multi-Source Dijkstra can be used to find shortest distance from a set of nodes. Just assign 0 distance to all these source nodes and push them in set/priority queue
+- Multi-Source Dijkstra can be used to find shortest distance from a set of nodes. Just assign $0$ distance to all these source nodes and push them in set/priority queue
 
 **8.4. Kruskal's Algorithm**
 
@@ -544,16 +535,16 @@ int kruskal(vector<vector<int>>& edges){
 **8.7. Topological Sort**
 
 - Can be done by doing DFS and storing the visited vertices (whose DFS tree is generated) in a stack
-- A topological ordering is unique iff for every two adjacent nodes in the ordering, an edge exists between these two nodes in the graph. Another method to check uniqueness is that length of longest path in the graph = Number of vertices - 1
+- A topological ordering is unique iff for every two adjacent nodes in the ordering, an edge exists between these two nodes in the graph. Another method to check uniqueness is that length of longest path in the graph = number of vertices $-$ $1$
 
 **8.8. Some general notes and ideas**
 
-- Usually, graphs are constructed using 2D vectors. But maps can also be used for constructing graphs
+- Usually, graphs are constructed using $2D$ vectors. But maps can also be used for constructing graphs
 - A graph is bipartite iff it contains no odd cycles
-- A graph is a cycle graph iff each vertex has degree 2 and number of connected components is 1
+- A graph is a cycle graph iff each vertex has degree $2$ and number of connected components is $1$
 - Many problems can be solved by modelling the problem into a known graph problem and then apply known algorithms on this graph like BFS, DFS, Dijkstra, etc
-- To calculate farthest node (and its distance) for each node in a tree, we can do the following. Pick an arbitrary vertex (let's say u) and find vertex farthest from u (let's say it is v1). Now from v1, find farthest vertex (let's say v2). Note that v1 and v2 are ends of the diameter of the tree. For each node in the tree, the farthest node is one of the ends of the diameter of the tree (i.e. v1 or v2). Thus we can calculate distances of each node from v1 and v2 and then take maximum among those 2 distances to get distance from farthest node
-- In many problems, the idea is to make a graph and find shortest distance between 2 nodes. But building such a graph can be very time consuming and can cause TLE if we build such a graph. Instead, the idea is to build a bipartite graph and find shortest distance on this graph. For example, consider a graph that contains an edge between two nodes iff they are non-coprime. We can instead build a bipartite graph where the left set contains array elements and right set contains prime numbers. A node u in left part is connected to a node p in right part iff p|u. Then, we can find shortest distance between two nodes u and v in this bipartite graph and divide the answer by 2. Another example is a graph where two nodes are connected iff both the sets share a common element. In this case, build the bipartite graph such that left part consists of set number and right part consists of set elements. A node u in left part is connected to a node e in right part iff e belongs to set u
+- To calculate farthest node (and its distance) for each node in a tree, we can do the following. Pick an arbitrary vertex (let's say $u$) and find vertex farthest from $u$ (let's say it is $v_1$). Now from $v_1$, find farthest vertex (let's say $v_2$). Note that $v_1$ and $v_2$ are ends of the diameter of the tree. For each node in the tree, the farthest node is one of the ends of the diameter of the tree (i.e. $v_1$ or $v_2$). Thus we can calculate distances of each node from $v_1$ and $v_2$ and then take maximum among those $2$ distances to get distance from farthest node
+- In many problems, the idea is to make a graph and find shortest distance between $2$ nodes. But building such a graph can be very time-consuming and can cause TLE if we build such a graph. Instead, the idea is to build a bipartite graph and find shortest distance on this graph. For example, consider a graph that contains an edge between two nodes iff they are non-coprime. We can instead build a bipartite graph where the left set contains array elements and right set contains prime numbers. A node $u$ in left part is connected to a node $p$ in right part iff $p|u$. Then, we can find shortest distance between two nodes $u$ and $v$ in this bipartite graph and divide the answer by $2$. Another example is a graph where two nodes are connected iff both the sets share a common element. In this case, build the bipartite graph such that left part consists of set number and right part consists of set elements. A node $u$ in left part is connected to a node $e$ in right part iff $e \in u$
 - Many problems involve finding shortest distance from a particular node with some minor tweaks, for example reversing the edges of the graph atmost once. In such problems, we have to introduce some dummy nodes and add edges of appropriate weight and then run Dijkstra's Algorithm on it
 
 **9. Bit Manipulation**
@@ -563,7 +554,7 @@ int kruskal(vector<vector<int>>& edges){
 ```cpp
 n&=(n-1);
 ```
-- Following code finds XOR of first n natural numbers
+- Following code finds $XOR$ of first $n$ natural numbers
 ```cpp
 int x(int n){
     if(n%4==1){
@@ -578,10 +569,10 @@ int x(int n){
     return n;
 }
 ```
-- For any two non-negative integers a and b, a + b = (a ^ b) + 2(a & b)
-- The above equation is derived from two equations: For any two non-negative integers a and b,
-    - a + b = (a | b) + (a & b)
-    - a ^ b = (a | b) - (a & b)
+- For any two non-negative integers $a$ and $b$, $a + b = (a \oplus b) + 2(a$ & $b)$
+- The above equation is derived from two equations: For any two non-negative integers $a$ and $b$,
+    - $a + b = (a$ | $b) + (a$ & $b)$
+    - $a \oplus b = (a$ | $b) - (a$ & $b)$
 - Iterating through subsets
 ```cpp
 // Iterating through subsets of {1, 2, 3, ... n}
