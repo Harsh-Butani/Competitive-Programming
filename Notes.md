@@ -268,6 +268,7 @@ void solve(){
 - Some useful identities
     - $^nC_r + ^nC_{r-1} = ^{n+1}C_r$ (Suppose there are $n$ normal objects and $1$ special object. Now, $RHS =$ Number of ways of choosing $r$ objects out of these $n+1$ objects $=$ Number of ways of choosing $r$ objects by excluding the special object $+$ Number of ways of choosing $r$ objects by including the special object = $^nC_r + ^nC_{r-1} = LHS$)
     - $\Sigma_{i=r}^{n}{^{i}}C_r = ^{n+1}C_{r+1}$ $(LHS =$ Coefficient of $x^r$ in $\Sigma_{i=r}^{n}(1+x)^i =$ Coefficient of $x^r$ in $\(1+x)^r\frac{(1+x)^{n-r+1}-1}{(1+x)-1}$ = Coefficient of $x^r$ in $\frac{(1+x)^{n+1}-(1+x)^r}{x}$ = Coefficient of $x^{r+1}$ in $(1+x)^{n+1}-(1+x)^r = ^{n+1}C_{r+1} - 0 = RHS$)
+    - $\Sigma_{k=0}^{r}{^{m}}C_k\cdot^{n}C_{r-k} = ^{m+n}C_r$ $(LHS =$ Coefficient of $x^r$ in $(1+x)^m\cdot(1+x)^n$ = Coefficient of $x^r$ in $(1+x)^{m+n}$ = $^{m+n}C_r = RHS)$
 
 **7. Number Theory**
 
