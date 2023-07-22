@@ -107,7 +107,7 @@ int get(int x,vector<int>& p){
 ```
 - Union function
 ```cpp
-void union(int x,int y,vector<int>& p,vector<int>& r){
+void unite(int x,int y,vector<int>& p,vector<int>& r){
     x=get(x,p);
     y=get(y,p);
     if(x==y){
@@ -190,6 +190,7 @@ int max_energy(int V,int M,vector<int>& v,vector<int>& m,vector<int>& e){
 - Pigeonhole Principle
 - Stars and Bars method (To determine number of non-negative integer solutions). Let the equation be $\Sigma_{i=1}^{r}x_i = n$, where each $x_i \geq 0$. We need to find number of distinct solutions to the given equation. This problem can be modelled as follows. Suppose $n$ identical stars are kept in a straight line. Now, we need to place $(r - 1)$ identical bars to create $r$ partitions. The number of stars to the left of leftmost bar = value of $x_1$. Number of stars to the right of rightmost bar = value of $x_r$. Number of stars between $(i-1)^{th}$ and $i^{th}$ bar (assuming 1-indexing) = value of $x_i$. Thus the given problem now reduces to finding number of ways to arrange $n$ identical stars and $(r - 1)$ identical bars, and thus equal to $^{n+r-1}C_n$
 - Counting number of permutations of a particular string. Suppose our string contains the alphabets $x_1, x_2, ..., x_n$. Suppose the $i^{th}$ alphabet $x_i$ appears $r_i$ times in the string. Now, number of distinct permutations of the given string is equal to $^{r_1+r_2+...+r_n}C_{r_1} \times ^{r_2+r_3+...+r_n}C_{r_2} \times ... \times ^{r_n}C_{r_n} = \frac{(r_1+r_2+...+r_n)!}{r_1!r_2!...r_n!}$
+- Coefficient of $x^r$ in $(1-x)^{-n}$ = $^{n+r-1}C_r$
 - Stirling Numbers
 - Burnside's Lemma (Polya's Enumeration Principle)
 - Catalan Numbers
