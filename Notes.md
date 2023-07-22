@@ -422,6 +422,9 @@ for(int i=1;i*i<=N;i++){
 **7.7. Some general notes and ideas**
 
 - Suppose we are given an array of n integers [a1, a2, ..., an] and a prime number p. Suppose we need to check whether for every x > 0, p divides atleast 2 of [a1+x, a2+x, ..., an+x]. To check this, we reduce our array to [a1%p, a2%p, ..., an%p]. Now, if min(cnt[0], cnt[1], ..., cnt[p-1]) > 1 in our reduced array, then p divides atleast 2 of [a1+x, a2+x, ..., an+x] for all x > 0. Else there exists some x such that p divides atmost 1 of [a1+x, a2+x, ..., an+x]
+- The Harmonic series $\Sigma_{i=1}^{n} \lfloor\frac{1}{i}\rfloor = O(logn)$ is very useful in determining time complexities of many algorithms
+- There are $O(\sqrt{n})$ distinct values of $\lfloor\frac{n}{i}\rfloor$ when $i$ varies from $1$ to $n$
+- The maximum value of $j$ such that $\lfloor\frac{n}{i}\rfloor = \lfloor\frac{n}{j}\rfloor =$ $x$ (say) is given by $j = \lfloor\frac{n}{x}\rfloor$ 
 
 **8. Graph Theory**
 
@@ -929,7 +932,6 @@ using namespace __gnu_pbds;
 - In many problems, a multiset can work as a priority queue. It not only supports finding minimum and maximum elements but also removing a particular element from the multiset. The time complexity of all those operations is O(log n)
 - In many problems, two instances of same data structure are required to simulate the process mentioned in the problem with better complexity. For example, using two instances of multiset/priority queue to maintain lower and upper half of sorted elements, etc.
 - The constraints of the problem provide helpful information. For example, many problems involving Bitmask DP have extremely small constraints to allow programs having exponential time complexity. Problems having very large constraints often involve binary search (O(log n) complexity) or some O(1) computation
-- Summation (i = 1 to n) floor(n/i) = O(nlogn)
 - Quickselect is an algorithm to find k<sup>th</sup> smallest element in an array. It is based on Lomuto Partition technique of Quicksort algorithm
 ```cpp
 void partition(vector<int>& a,int l,int r){
