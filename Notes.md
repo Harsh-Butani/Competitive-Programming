@@ -421,7 +421,13 @@ for(int i=1;i*i<=N;i++){
 - Suppose we are given an array of $n$ integers $[a_1, a_2, ..., a_n]$ and a prime number $p$. Suppose we need to check whether for every integer $x > 0$, $p$ divides atleast $2$ of $[a_1+x, a_2+x, ..., a_n+x]$. To check this, we reduce our array to $[a_1$ $mod$ $p, a_2$ $mod$ $p, ..., a_n$ $mod$ $p]$. Now, if $min(cnt_0, cnt_1, ..., cnt_{p-1}) > 1$ in our reduced array, then $p$ divides atleast $2$ of $[a_1+x, a_2+x, ..., a_n+x]$ $\forall x > 0$. Else there exists some $x$ such that $p$ divides atmost $1$ of $[a_1+x, a_2+x, ..., a_n+x]$
 - The Harmonic series $\Sigma_{i=1}^{n} \frac{1}{i} = O(log$ $n)$ is very useful in determining time complexities of many algorithms
 - There are $O(\sqrt{n})$ distinct values of $\lfloor\frac{n}{i}\rfloor$ when $i$ varies from $1$ to $n$
-- The maximum value of $j$ such that $\lfloor\frac{n}{i}\rfloor = \lfloor\frac{n}{j}\rfloor =$ $x$ (say) is given by $j = \lfloor\frac{n}{x}\rfloor$ 
+- The maximum value of $j$ such that $\lfloor\frac{n}{i}\rfloor = \lfloor\frac{n}{j}\rfloor =$ $x$ (say) is given by $j = \lfloor\frac{n}{x}\rfloor$
+- $gcd(kp, kq) = k \cdot gcd(p, q)$ and $lcm(kp, kq) = k \cdot lcm(p,q)$
+- Suppose prime factorization of a number $N = p_1^{\alpha_1}p_2^{\alpha_2}...p_k^{\alpha_k}$
+    - Number of factors of $N = (1+\alpha_1)(1+\alpha_2)...(1+\alpha_k)$
+    - Sum of factors of $N = (\frac{p_1^{\alpha_1+1}-1}{p_1-1})(\frac{p_2^{\alpha_2+1}-1}{p_2-1})...(\frac{p_k^{\alpha_k+1}-1}{p_k-1})$
+    - Product of factors of $N = \sqrt{N^{\textrm{Number of factors of N}}}$
+    - $\varphi(N) = N(1-\frac{1}{p_1})(1-\frac{1}{p_2})...(1-\frac{1}{p_k})$
 
 **8. Graph Theory**
 
