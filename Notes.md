@@ -262,7 +262,7 @@ void solve(){
     cout<<cnt;
 }
 ```
-- Matrix exponentiation can be used to calculate $n^{th}$ term of a linear recurrence in $O(m^3log$ $n)$ time where $m$ denotes size of the matrix
+- Matrix exponentiation can be used to calculate $n^{th}$ term of a linear recurrence in $O(m^3$ $log$ $n)$ time where $m$ denotes size of the matrix
 - Many combinatorial problems require DP for solving
 
 **7. Number Theory**
@@ -610,12 +610,10 @@ while(i>0){
 **Solution**: Let $X_i$ denote the random variable for number of requests satisfied by server $i$. Then by linearity of expectation, answer is $E(X_1 + X_2 + ... + X_n) = E(X_1) + E(X_2) + ... + E(X_n)$. Now, each $E(X_i) = 1 \times (1-(1-\frac{1}{n})^n) + 0 \times (1-\frac{1}{n})^n = 1-(1-\frac{1}{n})^n$. So required answer $= n(1-(1-\frac{1}{n})^n)$\
 \
 Another similar problem is to find expected number of empty boxes when $n$ balls are randomly placed in $n$ boxes. Here, by linearity of expectation, answer is $n(1-\frac{1}{n})^n$
-- Another problem on expectations
-```
-Problem: A small pond has a single amoeba living inside it. This particular amoeba has a unique ability, where every minute it can either die, stay alive, split into two or split into three, each with an equal probability. The offsprings produced by this amoeba have the same behaviour, and will act independently of other amoebas. What is the likelihood that this amoeba population will eventually die out?
-
-Solution: Let p be the required probability. Then the following equation holds: p = 1/4 + (1/4)p + (1/4)p^2 + (1/4)p^3. Solving this equation, we get p = 1 or p = root(2) - 1. p = 1 cannot be true and hence p = root(2) - 1 is the required answer
-```
+- Another problem on expectations\
+**Problem**: A small pond has a single amoeba living inside it. This particular amoeba has a unique ability, where every minute it can either die, stay alive, split into two or split into three, each with an equal probability. The offsprings produced by this amoeba have the same behaviour, and will act independently of other amoebas. What is the likelihood that this amoeba population will eventually die out?\
+\
+**Solution**: Let $p$ be the required probability. Then the following equation holds: $p = \frac{1}{4} + \frac{1}{4}p + \frac{1}{4}p^2 + \frac{1}{4}p^3$. Solving this equation, we get $p = 1$ or $p = \sqrt{2} - 1$. $p = 1$ cannot be true and hence $p = \sqrt{2} - 1$ is the required answer
 
 **11. Monotonic Stack**
 
@@ -918,11 +916,11 @@ using namespace __gnu_pbds;
 - Median plays an important role in some problems
 - Some problems require us to think in a different way. For example, traversing the array in backward direction, simulating the opposite operation mentioned in the problem, etc
 - Many problems require some careful observation to solve it. For example, observations related to parity, binary/n-ary representation of a number and some invariants/monovariants
-- Many problems use the concept used in Huffman Coding (choosing k maximum / k minimum values and combining them). It is implemented using priority queue
-- In many problems, a multiset can work as a priority queue. It not only supports finding minimum and maximum elements but also removing a particular element from the multiset. The time complexity of all those operations is O(log n)
+- Many problems use the concept used in Huffman Coding (choosing $k$ maximum / $k$ minimum values and combining them). It is implemented using priority queue
+- In many problems, a multiset can work as a priority queue. It not only supports finding minimum and maximum elements but also removing a particular element from the multiset. The time complexity of all those operations is $O(log$ $n)$
 - In many problems, two instances of same data structure are required to simulate the process mentioned in the problem with better complexity. For example, using two instances of multiset/priority queue to maintain lower and upper half of sorted elements, etc.
-- The constraints of the problem provide helpful information. For example, many problems involving Bitmask DP have extremely small constraints to allow programs having exponential time complexity. Problems having very large constraints often involve binary search (O(log n) complexity) or some O(1) computation
-- Quickselect is an algorithm to find k<sup>th</sup> smallest element in an array. It is based on Lomuto Partition technique of Quicksort algorithm
+- The constraints of the problem provide helpful information. For example, many problems involving Bitmask DP have extremely small constraints to allow programs having exponential time complexity. Problems having very large constraints often involve binary search ($O(log$ $n)$ complexity) or some $O(1)$ computation
+- Quickselect is an algorithm to find $k^{th}$ smallest element in an array. It is based on Lomuto Partition technique of Quicksort algorithm
 ```cpp
 void partition(vector<int>& a,int l,int r){
     int i=l;
@@ -949,7 +947,7 @@ int quickselect(vector<int>& a,int l,int r,int k){
     return INT_MAX;
 }
 ```
-- Below code finds number of inversions in an array in O(nlogn) (By variation of merge sort)
+- Below code finds number of inversions in an array in $O(n$ $log$ $n)$ (By variation of merge sort)
 ```cpp
 int num_of_inversions(int start,int end,vector<int>& a){
     if(start>=end){
@@ -986,7 +984,7 @@ int num_of_inversions(int start,int end,vector<int>& a){
     return ans;
 }
 ```
-- Below code finds maximum subarray sum for subarrays whose length lies between l and r
+- Below code finds maximum subarray sum for subarrays whose length lies between $l$ and $r$
 ```cpp
 vector<int>presum(n+1,0);
 int ans=INT_MIN;
@@ -1024,7 +1022,7 @@ int minimum_decreasing_sequences(vector<int>& a){
     return (int)mst.size();
 }
 ```
-- Suppose we have to find maximum number of elements in subarray a[0...i] which have sum <= x for each i from 0 to n-1. This can be accomplished as follows
+- Suppose we have to find maximum number of elements in subarray $a[0...i]$ which have sum $\leq x$ for each $i$ from $0$ to $n - 1$. This can be accomplished as follows
 ```cpp
 vector<int>ans(n);
 priority_queue<int>pq;
@@ -1039,7 +1037,7 @@ for(int i=0;i<n;i++){
     ans[i]=(int)pq.size();
 }
 ```
-- Many problems have solutions based on some pattern/observation. These can be proved by Mathematical Induction. As an example, suppose an array x of n integers is given. You need to find out smallest integer s such that s cannot be written as sum of a subset of integers in x. Check the following approach to find s
+- Many problems have solutions based on some pattern/observation. These can be proved by Mathematical Induction. As an example, suppose an array $x$ of $n$ integers is given. You need to find out smallest integer $s$ such that $s$ cannot be written as sum of a subset of integers in $x$. Check the following approach to find $s$
 ```cpp
 /* Let us assume that we have processed till index i in the sorted array and we can write every integer from 1 to sum[1..i] (sum till index i) as a sum of subset of x[1..i]. Now, if x[i+1] <= sum[1..i]+1, then we can write every number from sum[1..i]+1 to sum[1..i]+x[i+1] by using x[i+1] and writing the remaining sum from subset of x[1..i]. Also, we can write any number from 1 to sum[1..i] by using subset of x[1..i] (By assumption). Thus, we can write all integers from 1 to sum[1..(i+1)] as sum of elements of subset of x[1..(i+1)]. Thus, by induction, all integers from 1 to sum[1..i] can be written as sum of elements of subset of x[1..i], if x[i]<=sum[1..(i-1)]+1. If x[i]>sum[1..(i-1)]+1, then we can never write the number p = sum[1..(i-1)]+1 as sum of elements of subset of x[1..i]. Thus answer would be p */
 int smallest_sum(vector<int>& x,int n){
@@ -1057,7 +1055,7 @@ int smallest_sum(vector<int>& x,int n){
     return sum+1;
 }
 ```
-- Suppose an array of positive integers is given. We need to calculate k<sup>th</sup> largest sum that can be made from these integers where each integer can be chosen any number of times. If multiple sets have same sum, the sum is counted only once. This is done as follows
+- Suppose an array of positive integers is given. We need to calculate $k^{th}$ largest sum that can be made from these integers where each integer can be chosen any number of times. If multiple sets have same sum, the sum is counted only once. This is done as follows
 ```cpp
 set<int>st;
 st.insert(0);
@@ -1071,7 +1069,7 @@ for(int i=0;i<k;i++){
 cout<<*st.begin()<<'\n';
 // If multiple sets having same sum were counted differently, then use multiset instead of set
 ```
-- Checkout the following method to calculate LIS (Longest Increasing Subsequence) in an array in O(nlogn) time
+- Checkout the following method to calculate LIS (Longest Increasing Subsequence) in an array in $O(n$ $log$ $n)$ time
 ```cpp
 vector<int>dp(n);
 for(int i=0;i<n;i++){
