@@ -46,7 +46,7 @@ for(int r=0;r<n;r++){
 
 **3. Prefix sums, Prefix xors, 2D Prefix sums and Difference Arrays**
 
-- For 1D Prefix Sum
+- For $1D$ Prefix Sum
 ```cpp
 pre[0]=a[0];
 for(int i=1;i<n;i++){
@@ -54,7 +54,7 @@ for(int i=1;i<n;i++){
 }
 // Sum of array elements in range [l,r] = pre[r]-(l?pre[l-1]:0)
 ```
-- For 1D Prefix XOR
+- For $1D$ Prefix XOR
 ```cpp
 prex[0]=a[0];
 for(int i=1;i<n;i++){
@@ -62,7 +62,7 @@ for(int i=1;i<n;i++){
 }
 // XOR of array elements in range [l,r] = prex[r]^(l?prex[l-1]:0)
 ```
-- For 2D Prefix Sum
+- For $2D$ Prefix Sum
 ```cpp
 for(int i=0;i<n;i++){
     for(int j=0;j<m;j++){
@@ -199,6 +199,7 @@ int max_energy(int V,int M,vector<int>& v,vector<int>& m,vector<int>& e){
 - Partitions
 - A nice problem and approach to solve it\
 **Problem**: Given non-negative integers $n$ and $m$, find number of non-decreasing sequences of length $n$ such that each element in the sequence lies between $0$ and $m$ inclusive\
+\
 **Solution**: First, we choose $k$ distinct numbers out of $(m + 1)$ numbers. Then we need to arrange these $k$ numbers into $n$ boxes, so number of ways of arranging is equal to number of integer solutions of $x_1 + x_2 + ... + x_k = n$, where each $x_i \geq 1$. So required answer $= \Sigma_{k=1}^{n}{^{m+1}}C_k \cdot ^{n-1}C_{k-1} = \Sigma_{k=1}^{n}{^{m+1}}C_k \cdot ^{n-1}C_{n-k} =$ Coefficient of $x^n$ in $(1+x)^{m+1} \cdot (1+x)^{n-1} =$ Coefficient of $x^n$ in $(1+x)^{m+n} = ^{m+n}C_n$
 - There is a common combinatorial trick for counting: We change the perspective to count. For example, suppose we have to count the number of good objects of type $A$ each object of type $B$ yields. Another way to count this is as follows: We count how many objects of type $B$ yield each of the possible good objects of type $A$. So basically, the code changes as follows 
 ```cpp
@@ -603,14 +604,12 @@ while(i>0){
 
 **10. Probability and Expectation**
 
-- A nice problem and its solution
-```
-Problem: There are n clients and n servers. Each client sends a request to one of the n servers (with equal probability). If a server gets more than 1 requests, it satisfies only 1 request. Find expected number of clients whose requests are satisfied.
-
-Solution: Let Xi denote the random variable for number of requests satisfied by server i. Then by linearity of expectation, answer is E(X1 + X2 + ... + Xn) = E(X1) + E(X2) + ... + E(Xn). Now, each E(Xi) = 1 x (1-(1-1/n)^n) + 0 x (1-1/n)^n = 1-(1-1/n)^n. So required answer is equal to n(1-(1-1/n)^n)
-
-Another similar problem is to find expected number of empty boxes when n balls are randomly placed in n boxes. Here, by linearity of expectation, answer is n(1-1/n)^n
-```
+- A nice problem and its solution\
+**Problem**: There are $n$ clients and $n$ servers. Each client sends a request to one of the $n$ servers (with equal probability). If a server gets more than $1$ request, it satisfies only $1$ request. Find expected number of clients whose requests are satisfied.\
+\
+**Solution**: Let $X_i$ denote the random variable for number of requests satisfied by server $i$. Then by linearity of expectation, answer is $E(X_1 + X_2 + ... + X_n) = E(X_1) + E(X_2) + ... + E(X_n)$. Now, each $E(X_i) = 1 \times (1-(1-\frac{1}{n})^n) + 0 \times (1-\frac{1}{n})^n = 1-(1-\frac{1}{n})^n$. So required answer $= n(1-(1-\frac{1}{n})^n)$\
+\
+Another similar problem is to find expected number of empty boxes when $n$ balls are randomly placed in $n$ boxes. Here, by linearity of expectation, answer is $n(1-\frac{1}{n})^n$
 - Another problem on expectations
 ```
 Problem: A small pond has a single amoeba living inside it. This particular amoeba has a unique ability, where every minute it can either die, stay alive, split into two or split into three, each with an equal probability. The offsprings produced by this amoeba have the same behaviour, and will act independently of other amoebas. What is the likelihood that this amoeba population will eventually die out?
