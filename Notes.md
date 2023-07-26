@@ -142,6 +142,7 @@ void unite(int x,int y,vector<int>& p,vector<int>& r){
 
 - In Dynamic Programming, we build the DP array as per the recurrence relation we have
 - DP on trees problems usually require us to consider the tree as a rooted tree and then do DFS while maintaining DP vector(s)
+- We can also do DP on DAG (Directed Acyclic Graph). We process the nodes in topological order or reverse topological order
 - In Digit DP, we have to answer queries such as "The count of numbers that satisfy property $X$ in $[a, b]$". This can be done by introducing a function $f$ as $f(n) =$ count of numbers $\leq n$ that satisfy property $X$. So answer $= f(b) - f(a - 1)$
 - We can use maps instead of arrays for memoizing when values have a large spread
 - State reduction techniques are often used to cut down on memory used. As an example, consider the multidimensional Knapsack problem, where we have to maximize energy with constraints on volume and mass. The following code reduces the number of states from $3$ to $2$
@@ -612,6 +613,7 @@ while(i>0){
     i=(i-1)&x;
 }
 ```
+- We can find minimum xor of two integers in an array by sorting the array and then finding xor between consecutive elements in the array and taking minimum among all the values obtained. Another method to do the same is by using trie
 
 **10. Probability and Expectation**
 
@@ -703,6 +705,7 @@ bool search(struct node* root,string s){
 ```
 - Code can be modified to insert array elements as well
 - search() can be modified to return number of matching characters
+- Can be used to solve problems related to finding maximum/minimum xor/xnor of two integers in an array
 
 **13. Fenwick Tree (Binary Indexed Tree)**
 
