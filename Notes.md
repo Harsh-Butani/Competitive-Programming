@@ -693,11 +693,12 @@ void compute_lps(string& s,vector<int>& lps){
 ```
 - Suppose we have processed string $s$ (assuming 0-indexing) till index $i-1$\
   $s_0s_1...s_{len-1}...s_{i-len+1}s_{i-len+2}...s_{i-1}$ (Here $len = lps[i-1])$\
-  Here, we have $s_0s_1...s_{len-1} = s_{i-len}s_{i-len+1}...s_{i-1}$ (Let's call it equation $\*$). Now, suppose $s_i \neq s_{len}$\
-  We need to change $len$ to maximum possible $len^{'}$ such that $s_0s_1...s_{len^{'}-1} = s_{i-len^{'}}s_{i-len^{'}+1}...s_{i-1}$. Note that $len^{'} > len$ cannot happen since $lps[i-1] = len$. Thus we need to change (decrease) $len$ to maximum possible $len^{'}$ such that $len^{'} < len$\
-  Note that $s_{i-len^{'}}s_{i-len^{'}+1}...s_{i-1} = s_{len-len^{'}}s_{len-len{'}+1}...s_{len-1}$ (By equation $\*$ and the fact that $len^{'} < len$). Thus, we have\
-  $s_0s_1...s_{len^{'}-1} = s_{len-len^{'}}s_{len-len{'}+1}...s_{len-1}$. Let $x = lps[len-1]$\
-  Thus $s_0s_1...s_{x-1} = s_{len-x}s_{len-x+1}...s_{len-1}$. From previous two equations and the fact that $lps[len-1] = x$, we have $len^{'} \leq x$. Since $len^{'}$ is maximum possible value, therefore $len^{'} = x$. That is why we change $len$ to $lps[len-1] (= x)$
+  Here, we have $s_0s_1...s_{len-1} = s_{i-len}s_{i-len+1}...s_{i-1}$ (Let's call it equation $\oplus$). Now, suppose $s_i \neq s_{len}$\
+  We need to change $len$ to maximum possible $len^{'}$ such that $s_0s_1...s_{len^{'}-1} = s_{i-len^{'}}s_{i-len^{'}+1}...s_{i-1}$ (Call it equation $\odot$). Note that $len^{'} > len$ cannot happen since $lps[i-1] = len$. Thus we need to change (decrease) $len$ to maximum possible $len^{'}$ such that $len^{'} < len$ and satisfies equation $2$\
+  Note that $s_{i-len^{'}}s_{i-len^{'}+1}...s_{i-1} = s_{len-len^{'}}s_{len-len{'}+1}...s_{len-1}$ (By equation $\oplus$ and the fact that $len^{'} < len$). Thus, we have\
+  $s_0s_1...s_{len^{'}-1} = s_{len-len^{'}}s_{len-len{'}+1}...s_{len-1}$ (By equations $\oplus$ and $\odot$)\
+  Above equation tells us that $len^{'}$ is the largest value $< len$ such that $s_0s_1...s_{len^{'}-1} = s_{len-len^{'}}s_{len-len{'}+1}...s_{len-1}$\
+  Note that $len^{'}$ satisfies the definition of $lps[len-1]$. That is why we change $len$ to $lps[len-1]$
 - Now, we can run KMP algorithm to find all indices where string $pat$ appears as a substring in string $txt$
 ```cpp
 vector<int> KMP(string& pat,string& txt){
