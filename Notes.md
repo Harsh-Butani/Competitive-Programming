@@ -692,7 +692,7 @@ void compute_lps(string& s,vector<int>& lps){
 }
 ```
 - Suppose we have processed string $s$ (assuming 0-indexing) till index $i-1$\
-  $s_0s_1...s_{len-1}...s_{i-len+1}s_{i-len+2}...s_{i-1}$ (Here $len = lps[i-1])$\
+  $s_0s_1...s_{len-1}...s_{i-len}s_{i-len+1}...s_{i-1}$ (Here $len = lps[i-1])$\
   Here, we have $s_0s_1...s_{len-1} = s_{i-len}s_{i-len+1}...s_{i-1}$ (Let's call it equation $\oplus$). Now, suppose $s_i \neq s_{len}$\
   We need to change $len$ to maximum possible $len^{'}$ such that $s_0s_1...s_{len^{'}-1} = s_{i-len^{'}}s_{i-len^{'}+1}...s_{i-1}$ (Call it equation $\odot$). Note that $len^{'} > len$ cannot happen since $lps[i-1] = len$. Thus we need to change (decrease) $len$ to maximum possible $len^{'}$ such that $len^{'} < len$ and satisfies equation $2$\
   Note that $s_{i-len^{'}}s_{i-len^{'}+1}...s_{i-1} = s_{len-len^{'}}s_{len-len{'}+1}...s_{len-1}$ (By equation $\oplus$ and the fact that $len^{'} < len$). Thus, we have\
