@@ -662,7 +662,74 @@ for(int i=n-1;i>=0;i--){
 }
 ```
 
-**12. Trie**
+**12. KMP Algorithm**
+
+- First, we construct $lps$ array for the string $s$
+```cpp
+void compute_lps(string& s,vector<int>& lps){
+    int n=s.length();
+    lps.resize(n,0);
+    // lps[i] -> Longest proper prefix of s[0...i] which is also a suffix of s[0...i]. Thus lps[i] <= i
+    int len=0;
+    lps[0]=0; // Obvious
+    int i=1;
+    while(i<n){
+        if(s[i]==s[len]){
+            len++;
+            lps[i]=len; // Obvious
+            i++;
+        }
+        else{
+            if(len){
+                len=lps[len-1]; // Explained below
+            }
+            else{
+                lps[i]=0; // Obvious
+                i++;
+            }
+        }
+    }
+}
+```
+- Suppose we have processed string $s$ (assuming 0-indexing) till index $i-1$\
+  $s_0s_1...s_{len-1}...s_{i-len+1}s_{i-len+2}...s_{i-1}$\
+  Here, we have $s_0s_1...s_{len-1} = s_{i-len}s_{i-len+1}...s_{i-1}$ (Let's call it equation $\*$). Now, suppose $s_i \neq s_{len}$\
+  We need to change $len$ to maximum possible $len^{'}$ such that $s_0s_1...s_{len^{'}-1} = s_{i-len^{'}}s_{i-len^{'}+1}...s_{i-1}$. Note that $len^{'} > len$ cannot happen since $lps[i-1] = len$. Thus we need to change (decrease) $len$ to maximum possible $len^{'}$ such that $len^{'} < len$\
+  Note that $s_{i-len^{'}}s_{i-len^{'}+1}...s_{i-1} = s_{len-len^{'}}s_{len-len{'}+1}...s_{len-1}$ (By equation $\*$ and the fact that $len^{'} < len$). Thus, we have\
+  $s_0s_1...s_{len^{'}-1} = s_{len-len^{'}}s_{len-len{'}+1}...s_{len-1}$. Let $x = lps[len-1]$\
+  Thus $s_0s_1...s_{x-1} = s_{len-x}s_{len-x+1}...s_{len-1}$. From previous two equations and the fact that $lps[len-1] = x$, we have $len^{'} \leq x$. Since $len^{'}$ is maximum possible value, therefore $len^{'} = x$. That is why we change $len$ to $lps[len-1] (= x)$
+- Now, we can run KMP algorithm to find all indices where string $pat$ appears as a substring in string $txt$
+```cpp
+vector<int> KMP(string& pat,string& txt){
+    int m=pat.length();
+    int n=txt.length();
+    vector<int>lps(m);
+    vector<int>ans;
+    compute_lps(pat,lps);
+    while(n-i>=m-j){
+        if(pat[j]==txt[i]){
+            j++;
+            i++;
+        }
+        if(j==m){
+            ans.push_back(i-j);
+            j=lps[j-1];
+        }
+        else if(i<n && pat[j]!=txt[i]){
+            if(j){
+                j=lps[j-1];
+            }
+            else{
+                i++;
+            }
+        }
+    }
+    return ans;
+}
+```
+- $lps$ array can be used to find longest palindromic prefix of a string $s$. Suppose $len(s) = n$. We concatenate $s$ with $rev(s)$. Now, we compute $lps$ array for this new string. The value of $lps[2n-1]$ would be the answer
+
+**13. Trie**
 
 ```cpp
 struct node{
@@ -707,7 +774,7 @@ bool search(struct node* root,string s){
 - search() can be modified to return number of matching characters
 - Can be used to solve problems related to finding maximum/minimum xor/xnor of two integers in an array
 
-**13. Fenwick Tree (Binary Indexed Tree)**
+**14. Fenwick Tree (Binary Indexed Tree)**
 
 ```cpp
 int sum(int k){
@@ -731,7 +798,7 @@ void add(int k,int x){
 }
 ```
 
-**14. Segment Tree**
+**15. Segment Tree**
 
 - Can support all range queries where it is possible to divide a range into two parts, calculate the answer separately for both parts and then efficiently combine the answers. Example of such queries are minimum and maximum, greatest common divisor, and bit operations and, or and xor
 - Consider this template for calculating sums in an array using segment tree
@@ -860,7 +927,7 @@ struct segtree{
 - [Codeforces EDU - Segment Tree, part 2](https://codeforces.com/edu/course/2/lesson/5)
 - [CP-Algorithms - Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html)
 
-**15. Heap**
+**16. Heap**
 
 - Following is implementation for MinHeap. Similarly MaxHeap can be implemented
 ```cpp
@@ -905,7 +972,7 @@ struct minheap{
 };
 ```
 
-**16. ordered_set and ordered_multiset**
+**17. ordered_set and ordered_multiset**
 
 ```cpp
 #include<ext/pb_ds/assoc_container.hpp> // Common file
@@ -924,7 +991,7 @@ using namespace __gnu_pbds;
 */
 ```
 
-**17. General notes, techniques and ideas**
+**18. General notes, techniques and ideas**
 
 - Sorting intervals as per starting/ending time for an efficient algorithm
 - Median plays an important role in some problems
