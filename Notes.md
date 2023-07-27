@@ -728,7 +728,7 @@ vector<int> KMP(string& pat,string& txt){
     return ans;
 }
 ```
-- $lps$ array can be used to find longest palindromic prefix of a string $s$. Suppose $len(s) = n$. We concatenate $s$ with $rev(s)$. Now, we compute $lps$ array for this new string. The value of $lps[2n-1]$ would be the answer
+- $lps$ array can be used to find longest palindromic prefix of a string $s$. Suppose $len(s) = n$. We concatenate $s$ with $rev(s)$. Now, we compute $lps$ array for this new string. The value of $lps[2n-1]$ (assuming 0-indexing) would be the answer
 
 **13. Trie**
 
