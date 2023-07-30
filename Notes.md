@@ -203,7 +203,7 @@ int max_energy(int V,int M,vector<int>& v,vector<int>& m,vector<int>& e){
 **Problem**: Given non-negative integers $n$ and $m$, find number of non-decreasing sequences of length $n$ such that each element in the sequence lies between $0$ and $m$ inclusive\
 \
 **Solution**: First, we choose $k$ distinct numbers out of $(m + 1)$ numbers. Then we need to arrange these $k$ numbers into $n$ boxes, so number of ways of arranging is equal to number of integer solutions of $x_1 + x_2 + ... + x_k = n$, where each $x_i \geq 1$. So required answer $= \Sigma_{k=1}^{n}{^{m+1}}C_k \cdot ^{n-1}C_{k-1} = \Sigma_{k=1}^{n}{^{m+1}}C_k \cdot ^{n-1}C_{n-k} =$ Coefficient of $x^n$ in $(1+x)^{m+1} \cdot (1+x)^{n-1} =$ Coefficient of $x^n$ in $(1+x)^{m+n} = ^{m+n}C_n$
-- There is a common combinatorial trick for counting: We change the perspective to count. For example, suppose we have to count the number of good objects of type $A$ each object of type $B$ yields. Another way to count this is as follows: We count how many objects of type $B$ yield each of the possible good objects of type $A$. So basically, the code changes as follows 
+- There is a common combinatorial trick for counting: We change the perspective to count. For example, suppose we have to count the number of good objects of type $A$ each object of type $B$ yields. Another way to count this is as follows: We count how many objects of type $B$ yield each of the possible good objects of type $A$. So basically, the code changes as follows (Let's call this contribution technique)
 ```cpp
 /* Older version */
 int count = 0
@@ -265,6 +265,7 @@ void solve(){
 }
 ```
 - Matrix exponentiation can be used to calculate $n^{th}$ term of a linear recurrence in $O(m^3$ $log$ $n)$ time where $m$ denotes size of the matrix
+- Many counting problems can be solved by fixing some parameters and iterating on them. Also, many counting problems can be solved by standard techniques such as fixing the $L$ pointer or $2$ pointer method
 - Many combinatorial problems require DP for solving
 - Some useful identities
     - $^nC_r + ^nC_{r-1} = ^{n+1}C_r$ (Suppose there are $n$ normal objects and $1$ special object. Now, $RHS =$ Number of ways of choosing $r$ objects out of these $n+1$ objects $=$ Number of ways of choosing $r$ objects by excluding the special object $+$ Number of ways of choosing $r$ objects by including the special object = $^nC_r + ^nC_{r-1} = LHS$)
@@ -1002,7 +1003,7 @@ using namespace __gnu_pbds;
 - In many problems, a multiset can work as a priority queue. It not only supports finding minimum and maximum elements but also removing a particular element from the multiset. The time complexity of all those operations is $O(log$ $n)$
 - In many problems, two instances of same data structure are required to simulate the process mentioned in the problem with better complexity. For example, using two instances of multiset/priority queue to maintain lower and upper half of sorted elements, etc.
 - The constraints of the problem provide helpful information. For example, many problems involving Bitmask DP have extremely small constraints to allow programs having exponential time complexity. Problems having very large constraints often involve binary search ($O(log$ $n)$ complexity) or some $O(1)$ computation
-- Many counting problems, like counting pairs of elements/counting subarrays satisfying some property can be solved using divide and conquer approach
+- Many counting problems, like counting pairs of elements/counting subarrays satisfying some property can be solved using divide and conquer approach (If common techniques like fixing the $L$ pointer or $2$ pointer method doesn't work)
 - Quickselect is an algorithm to find $k^{th}$ smallest element in an array. It is based on Lomuto Partition technique of Quicksort algorithm
 ```cpp
 void partition(vector<int>& a,int l,int r){
