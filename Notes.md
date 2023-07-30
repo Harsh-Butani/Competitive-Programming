@@ -808,36 +808,36 @@ void add(int k,int x){
 // Note that lx to rx-1 represents current segment and current index in segment tree array is x
 // We are calculating sum from index l to r-1
 struct segtree{
-    ll sz;
-    vector<ll>sums;
+    int sz;
+    vector<int>sums;
     
-    void init(ll n){
+    void init(int n){
         sz=1;
         while(sz<n){
             sz<<=1;
         }
-        sums.assign(2*sz,0LL);
+        sums.assign(2*sz,0);
     }
     
-    void build(vector<ll>& a,ll x,ll lx,ll rx){
+    void build(vector<int>& a,int x,int lx,int rx){
         if(rx==lx+1){
-            if(lx<(ll)a.size()){
+            if(lx<(int)a.size()){
                 sums[x]=a[lx];
             }
             return;
         }
-        ll m=lx+(rx-lx)/2;
+        int m=lx+(rx-lx)/2;
         build(a,2*x+1,lx,m);
         build(a,2*x+2,m,rx);
         sums[x]=sums[2*x+1]+sums[2*x+2];
     }
     
-    void set(ll i,ll v,ll x,ll lx,ll rx){
+    void set(int i,int v,int x,int lx,int rx){
         if(rx==lx+1){
             sums[x]=v;
             return;
         }
-        ll m=lx+(rx-lx)/2;
+        int m=lx+(rx-lx)/2;
         if(i<m){
             set(i,v,2*x+1,lx,m);
         }
@@ -847,16 +847,16 @@ struct segtree{
         sums[x]=sums[2*x+1]+sums[2*x+2];
     }
     
-    ll sum(ll l,ll r,ll x,ll lx,ll rx){
+    int sum(int l,int r,int x,int lx,int rx){
         if(lx>=r || rx<=l){
             return 0;
         }
         if(lx>=l && rx<=r){
             return sums[x];
         }
-        ll m=lx+(rx-lx)/2;
-        ll s1=sum(l,r,2*x+1,lx,m);
-        ll s2=sum(l,r,2*x+2,m,rx);
+        int m=lx+(rx-lx)/2;
+        int s1=sum(l,r,2*x+1,lx,m);
+        int s2=sum(l,r,2*x+2,m,rx);
         return s1+s2;
     }
 };
@@ -868,14 +868,14 @@ struct item{
 };
 
 struct segtree{
-    ll sz;
+    int sz;
     vector<item>values;
     
     item merge(item a,item b){
     	// Merged value of item a and item b
     }
     
-    void init(ll n){
+    void init(int n){
         sz=1;
         while(sz<n){
             sz<<=1;
@@ -883,25 +883,25 @@ struct segtree{
         values.assign(2*sz);
     }
     
-    void build(vector<ll>& a,ll x,ll lx,ll rx){
+    void build(vector<int>& a,int x,int lx,int rx){
         if(rx==lx+1){
-            if(lx<(ll)a.size()){
+            if(lx<(int)a.size()){
                 // values[x]=;
             }
             return;
         }
-        ll m=lx+(rx-lx)/2;
+        int m=lx+(rx-lx)/2;
         build(a,2*x+1,lx,m);
         build(a,2*x+2,m,rx);
         values[x]=merge(values[2*x+1],values[2*x+2]);
     }
     
-    void set(ll i,ll v,ll x,ll lx,ll rx){
+    void set(int i,int v,int x,int lx,int rx){
         if(rx==lx+1){
             // values[x]=v;
             return;
         }
-        ll m=lx+(rx-lx)/2;
+        int m=lx+(rx-lx)/2;
         if(i<m){
             set(i,v,2*x+1,lx,m);
         }
@@ -911,14 +911,14 @@ struct segtree{
         values[x]=merge(values[2*x+1],values[2*x+2]);
     }
     
-    item calc(ll l,ll r,ll x,ll lx,ll rx){
+    item calc(int l,int r,int x,int lx,int rx){
         if(lx>=r || rx<=l){
             return NEUTRAL_VALUE;
         }
         if(lx>=l && rx<=r){
             return values[x];
         }
-        ll m=lx+(rx-lx)/2;
+        int m=lx+(rx-lx)/2;
         item x1=calc(l,r,2*x+1,lx,m);
         item x2=calc(l,r,2*x+2,m,rx);
         return merge(x1,x2);
@@ -934,24 +934,24 @@ struct segtree{
 - Following is implementation for MinHeap. Similarly MaxHeap can be implemented
 ```cpp
 struct minheap{
-    ll sz;
-    vector<ll>heap;
+    int sz;
+    vector<int>heap;
     
-    void build_heap(vector<ll>& a){
-        ll n=a.size();
+    void build_heap(vector<int>& a){
+        int n=a.size();
         sz=n;
         heap.resize(n);
-        for(ll i=0;i<n;i++){
+        for(int i=0;i<n;i++){
             heap[i]=a[i];
         }
-        for(ll i=n/2-1;i>=0;i--){
+        for(int i=n/2-1;i>=0;i--){
             min_heapify(i);
         }
     }
     
-    void min_heapify(ll i){
-        ll l=2*i+1,r=2*i+2;
-        ll smallest=i;
+    void min_heapify(int i){
+        int l=2*i+1,r=2*i+2;
+        int smallest=i;
         if(l<sz && heap[l]<heap[i]){
             smallest=l;
         }
@@ -964,7 +964,7 @@ struct minheap{
         }
     }
     
-    void decrease_key(ll i,ll val){
+    void decrease_key(int i,int val){
         heap[i]=val;
         while(i && heap[(i-1)/2]>heap[i]){
             swap(heap[i],heap[(i-1)/2]);
@@ -1139,7 +1139,7 @@ int smallest_sum(vector<int>& x,int n){
     return sum+1;
 }
 ```
-- Suppose an array of positive integers is given. We need to calculate $k^{th}$ largest sum that can be made from these integers where each integer can be chosen any number of times. If multiple sets have same sum, the sum is counted only once. This is done as follows
+- Suppose an array of positive integers is given. We need to calculate $k^{th}$ smallest sum that can be made from these integers where each integer can be chosen any number of times. If multiple sets have same sum, the sum is counted only once. This is done as follows
 ```cpp
 set<int>st;
 st.insert(0);
