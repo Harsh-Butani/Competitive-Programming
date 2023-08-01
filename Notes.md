@@ -1167,7 +1167,7 @@ for(int i=0;i<n;i++){
 }
 cout<<(int)dp.size()<<'\n';
 ```
-- Consider the problem of finding the longest subarray and number of subarrays such that difference between maximum and minimum elements doesn't exceed $k$. This can be easily solved using two pointer method
+- Consider the problem of finding the longest subarray and number of subarrays such that difference between maximum and minimum elements in the subarray doesn't exceed $k$. This can be easily solved using two pointer method
 ```cpp
 // Assuming array elements in a[0...(n-1)]
 multiset<int>mst;
@@ -1262,5 +1262,84 @@ void solve(){
     } 
     // longest -> Longest subarray with difference between maximum and minimum elements <= k
     // count -> Number of subarrays with difference between maximum and minimum elements <= k
+}
+```
+Another problem illustrating the usefulness of using two stacks: Given an array of $n$ integers $a_i$. A segment on this array $a[l..r]$ is good if $GCD$ of all numbers in this segment is $1$. Find length of shortest such segment or print $-1$ if no good segment exists
+```cpp
+stack<int>f,b,fgcd,bgcd; // f stands for forward stack and b stands for backward stack. These stacks are used to simulate queue
+
+void add(int x){
+    f.push(x);
+    if(!fgcd.empty()){
+        fgcd.push(__gcd(fgcd.top(),x));
+    }
+    else{
+        fgcd.push(x);
+    }
+}
+
+void remove(){
+    if(b.empty()){
+        while(!f.empty()){
+            b.push(f.top());
+            if(bgcd.empty()){
+                bgcd.push(f.top());
+            }
+            else{
+                bgcd.push(__gcd(bgcd.top(),f.top()));
+            }
+            f.pop();
+            fgcd.pop();
+        }
+    }
+    b.pop();
+    bgcd.pop();
+}
+
+void solve(){
+    // Assuming array integers in a[0...(n-1)]
+    int g;
+    for(int i=0;i<n;i++){
+        if(!i){
+            g=a[i];
+        }
+        else{
+            g=__gcd(g,a[i]);
+        }
+    }
+    if(g!=1){
+        cout<<"-1\n";
+        return;
+    }
+    int l=0,ans=n;
+    for(int r=0;r<n;r++){
+        add(a[r]);
+        while(l<=r){
+            int gcd=INT_MAX;
+            if(!fgcd.empty()){
+                gcd=fgcd.top();
+            }
+            if(!bgcd.empty()){
+                if(gcd==INT_MAX){
+                    gcd=bgcd.top();
+                }
+                else{
+                    gcd=__gcd(gcd,bgcd.top());
+                }
+            }
+            if(gcd==1){
+                ans=min(ans,r-l+1);
+            }
+            else{
+                break;
+            }
+            if(l==r){
+                break;
+            }
+            remove();
+            l++;
+        }
+    }
+    cout<<ans<<'\n';
 }
 ```
