@@ -1167,3 +1167,100 @@ for(int i=0;i<n;i++){
 }
 cout<<(int)dp.size()<<'\n';
 ```
+- Consider the problem of finding the longest subarray and number of subarrays such that difference between maximum and minimum elements doesn't exceed $k$. This can be easily solved using two pointer method
+```cpp
+// Assuming array elements in a[0...(n-1)]
+multiset<int>mst;
+int l=0,longest=0,count=0;
+for(int r=0;r<n;r++){
+    mst.insert(a[r]);
+    while(l<r){
+        int mx=*(--mst.end());
+        int mn=*mst.begin();
+        if(mx-mn<=k){
+            break;
+        }
+        mst.erase(mst.find(a[l]));
+        l++;
+    }
+    longest=max(longest,r-l+1);
+    count+=r-l+1;
+}
+// longest -> Longest subarray with difference between maximum and minimum elements <= k
+// count -> Number of subarrays with difference between maximum and minimum elements <= k
+```
+Above solution works in $O(n$ $log$ $n)$ time. We can reduce the time complexity to $O(n)$ by using two stacks as follows
+```cpp
+stack<int>f,b,mxf,mxb,mnf,mnb; // f stands for forward stack and b stands for backward stack. These stacks are used to simulate queue
+
+void add(int x){
+    f.push(x);
+    int mx=x,mn=x;
+    if(!mxf.empty()){
+        mx=max(mx,mxf.top());
+    }
+    if(!mnf.empty()){
+        mn=min(mn,mnf.top());
+    }
+    mxf.push(mx);
+    mnf.push(mn);
+}
+
+void remove(){
+    if(b.empty()){
+        while(!f.empty()){
+            b.push(f.top());
+            if(mxb.empty()){
+                mxb.push(f.top());
+            }
+            else{
+                mxb.push(max(mxb.top(),f.top()));
+            }
+            if(mnb.empty()){
+                mnb.push(f.top());
+            }
+            else{
+                mnb.push(min(mnb.top(),f.top()));
+            }
+            f.pop();
+            mxf.pop();
+            mnf.pop();
+        }
+    }
+    b.pop();
+    mxb.pop();
+    mnb.pop();
+}
+
+void solve(){
+    // Assuming array elements in a[0...(n-1)]
+    int l=0,longest=0,count=0;
+    for(int r=0;r<n;r++){
+        add(a[r]);
+        while(l<r){
+            int mx=INT_MIN,mn=INT_MAX;
+            if(!mxf.empty()){
+                mx=max(mx,mxf.top());
+            }
+            if(!mxb.empty()){
+                mx=max(mx,mxb.top());
+            }
+            if(!mnf.empty()){
+                mn=min(mn,mnf.top());
+            }
+            if(!mnb.empty()){
+                mn=min(mn,mnb.top());
+            }
+            if(mx-mn<=k){
+                break;
+            }
+            remove();
+            l++;
+        }
+        longest=max(longest,r-l+1);
+        count+=r-l+1;
+    } 
+    // longest -> Longest subarray with difference between maximum and minimum elements <= k
+    // count -> Number of subarrays with difference between maximum and minimum elements <= k
+}
+```
