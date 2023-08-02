@@ -1021,6 +1021,7 @@ using namespace __gnu_pbds;
 - In many problems, a multiset can work as a priority queue. It not only supports finding minimum and maximum elements but also removing a particular element from the multiset. The time complexity of all those operations is $O(log$ $n)$
 - In many problems, two instances of same data structure are required to simulate the process mentioned in the problem with better complexity. For example, using two instances of multiset/priority queue to maintain lower and upper half of sorted elements, etc.
 - The constraints of the problem provide helpful information. For example, many problems involving Bitmask DP have extremely small constraints to allow programs having exponential time complexity. Problems having very large constraints often involve binary search ($O(log$ $n)$ complexity) or some $O(1)$ computation
+- Bitsets can be used to reduce running time of many algorithms by a constant factor (equal to word size which is usually $32$ or $64$)
 - Many counting problems, like counting pairs of elements/counting subarrays satisfying some property can be solved using divide and conquer approach (If common techniques like fixing the $L$ pointer or $2$ pointer method doesn't work)
 - Quickselect is an algorithm to find $k^{th}$ smallest element in an array. It is based on Lomuto Partition technique of Quicksort algorithm
 ```cpp
@@ -1282,7 +1283,7 @@ void solve(){
     // count -> Number of subarrays with difference between maximum and minimum elements <= k
 }
 ```
-Another problem illustrating the usefulness of using two stacks: Given an array of $n$ integers $a_i$. A segment on this array $a[l..r]$ is good if $GCD$ of all numbers in this segment is $1$. Find length of shortest such segment or print $-1$ if no good segment exists
+Another problem illustrating the usefulness of using two stacks: Given an array of $n$ integers $a_i$. A segment on this array $a[l...r]$ is good if $GCD$ of all numbers in this segment is $1$. Find length of shortest such segment or print $-1$ if no good segment exists
 ```cpp
 stack<int>f,b,fgcd,bgcd; // f stands for forward stack and b stands for backward stack. These stacks are used to simulate queue
 
@@ -1357,6 +1358,87 @@ void solve(){
             remove();
             l++;
         }
+    }
+    cout<<ans<<'\n';
+}
+```
+Another problem illustrating use of bitsets and the two stacks technique: Given an array of $n$ integers $a_i$. A segment on this array $a[l...r]$ is good if it is possible to choose a certain set of numbers whose sum is equal to $s (1 \leq s \leq 1000)$. Find shortest such segment or print $-1$ if no such segment exists
+```cpp
+stack<int>f,b; // f stands for forward stack and b stands for backward stack. These stacks are used to simulate queue
+stack<bitset<1001>>fb,bb;
+
+void add(int x){
+    f.push(x);
+    if(fb.empty()){
+        bitset<1001>bt;
+        bt[0]=1;
+        bt[x]=1;
+        fb.push(bt);
+    }
+    else{
+        bitset<1001>bt=fb.top();
+        bt=bt|(bt<<x);
+        fb.push(bt);
+    }
+}
+
+void remove(){
+    if(b.empty()){
+        while(!f.empty()){
+            b.push(f.top());
+            if(bb.empty()){
+                bitset<1001>bt;
+                bt[0]=1;
+                bt[f.top()]=1;
+                bb.push(bt);
+            }
+            else{
+                bitset<1001>bt=bb.top();
+                bt=bt|(bt<<f.top());
+                bb.push(bt);
+            }
+            f.pop();
+            fb.pop();
+        }
+    }
+    b.pop();
+    bb.pop();
+}
+
+void solve(){
+    // Assuming array elements in a[0...(n-1)]
+    int ans=INT_MAX,l=0;
+    for(int r=0;r<n;r++){
+        add(a[r]);
+        while(l<=r){
+            bitset<1001>bt1,bt2;
+            if(!fb.empty()){
+                bt1=fb.top();
+            }
+            if(!bb.empty()){
+                bt2=bb.top();
+            }
+            bool f=0;
+            if(bt1[s]==1 || bt2[s]==1){
+                ans=min(ans,r-l+1);
+                f=1;
+            }
+            for(int i=0;i<=s;i++){
+                if(bt1[i]==1 && bt2[s-i]==1){
+                    ans=min(ans,r-l+1);
+                    f=1;
+                    break;
+                }
+            }
+            if(l==r || !f){
+                break;
+            }
+            remove();
+            l++;
+        }
+    }
+    if(ans==INT_MAX){
+        ans=-1;
     }
     cout<<ans<<'\n';
 }
