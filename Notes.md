@@ -888,9 +888,15 @@ struct item{
 struct segtree{
     int sz;
     vector<item>values;
-    
+
+    item NEUTRAL_ELEMENT=;
+
     item merge(item a,item b){
     	// Merged value of item a and item b
+    }
+
+    item single(int v){
+        
     }
     
     void init(int n){
@@ -904,7 +910,7 @@ struct segtree{
     void build(vector<int>& a,int x,int lx,int rx){
         if(rx==lx+1){
             if(lx<(int)a.size()){
-                // values[x]=;
+                values[x]=single(a[lx]);
             }
             return;
         }
@@ -916,7 +922,7 @@ struct segtree{
     
     void set(int i,int v,int x,int lx,int rx){
         if(rx==lx+1){
-            // values[x]=v;
+            values[x]=single(v);
             return;
         }
         int m=lx+(rx-lx)/2;
