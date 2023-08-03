@@ -919,6 +919,10 @@ struct segtree{
         build(a,2*x+2,m,rx);
         values[x]=merge(values[2*x+1],values[2*x+2]);
     }
+
+    void build(vector<int>& a){
+        build(a,0,0,sz);
+    }
     
     void set(int i,int v,int x,int lx,int rx){
         if(rx==lx+1){
@@ -934,6 +938,10 @@ struct segtree{
         }
         values[x]=merge(values[2*x+1],values[2*x+2]);
     }
+
+    void set(int i,int v){
+        set(i,v,0,0,sz);
+    }
     
     item calc(int l,int r,int x,int lx,int rx){
         if(lx>=r || rx<=l){
@@ -946,6 +954,10 @@ struct segtree{
         item x1=calc(l,r,2*x+1,lx,m);
         item x2=calc(l,r,2*x+2,m,rx);
         return merge(x1,x2);
+    }
+
+    item calc(int l,int r){
+        return calc(l,r,0,0,sz);
     }
 };
 ```
