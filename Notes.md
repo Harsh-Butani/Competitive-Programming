@@ -937,7 +937,7 @@ struct segtree{
     
     item calc(int l,int r,int x,int lx,int rx){
         if(lx>=r || rx<=l){
-            return NEUTRAL_VALUE;
+            return NEUTRAL_ELEMENT;
         }
         if(lx>=l && rx<=r){
             return values[x];
