@@ -898,7 +898,7 @@ struct segtree{
         while(sz<n){
             sz<<=1;
         }
-        values.assign(2*sz);
+        values.resize(2*sz);
     }
     
     void build(vector<int>& a,int x,int lx,int rx){
