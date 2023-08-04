@@ -963,9 +963,10 @@ struct segtree{
 ```
 - We can also binary search on the segment tree. For example, suppose in a binary array, we have to calculate the index of $k^{th}$ $1$ where flipping of elements at a particular index is also supported. This can be done by building a segment tree on sum of segments and finding the first index where sum is $\geq k$
 - Can be used to solve problems involving determining count of nested intervals for each interval, determining count of inversions for each element of a permutation, etc
-- We can solve the problem of finding count of elements $\leq x$ (or $\geq x)$ in a subarray $[l...r]$ by using segment tree. We build a segment tree and store the maximum and minimum values for each segment. Now, we traverse the tree recursively. We can stop recursion at two types of nodes:
+- We can solve the problem of finding count of elements $\leq x$ (or $\geq x)$ in a subarray $[l...r]$ by using segment tree. We build a segment tree and store the maximum and minimum values for each segment. Now, we traverse the tree recursively. We can stop recursion at three types of nodes:
     - Nodes for which minimum value is $> x$ (We simply return when this node is encountered)
     - Nodes for which maximum value is $\leq x$ (Here, we return from this node and add the length of the segment represented by this node to the answer)
+    - Nodes which do not intersect with the segment $[l...r]$ (We simply return when this node is encountered)
 - [Codeforces EDU - Segment Tree, part 1](https://codeforces.com/edu/course/2/lesson/4)
 - [Codeforces EDU - Segment Tree, part 2](https://codeforces.com/edu/course/2/lesson/5)
 - [CP-Algorithms - Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html)
