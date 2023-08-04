@@ -962,6 +962,7 @@ struct segtree{
 };
 ```
 - We can also binary search on the segment tree. For example, suppose in a binary array, we have to calculate the index of $k^{th}$ $1$ where flipping of elements at a particular index is also supported. This can be done by building a segment tree on sum of segments and finding the first index where sum is $\geq k$
+- Can be used to solve problems involving determining count of nested intervals for each interval, determining count of inversions for each element of a permutation, etc
 - [Codeforces EDU - Segment Tree, part 1](https://codeforces.com/edu/course/2/lesson/4)
 - [Codeforces EDU - Segment Tree, part 2](https://codeforces.com/edu/course/2/lesson/5)
 - [CP-Algorithms - Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html)
