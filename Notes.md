@@ -891,7 +891,7 @@ struct segtree{
 
     item NEUTRAL_ELEMENT=;
 
-    item merge(item a,item b){
+    item merge(item& a,item& b){
     	// Merged value of item a and item b
     }
 
@@ -961,7 +961,7 @@ struct segtree{
     }
 };
 ```
-- We can also binary search on the segment tree. For example, suppose in a binary array, we have to calculate the index of $k^{th}$ $1$ where flipping of elements at a particular index is also supported. This can be done by building a segment tree on sum of segments and finding the first index where sum is $\geq k$
+- We can also binary search on the segment tree (By not traversing those nodes for which we are certain about some property and traversing only the relevant nodes). For example, suppose in a binary array, we have to calculate the index of $k^{th}$ $1$ where flipping of elements at a particular index is also supported. This can be done by building a segment tree on sum of segments and finding the first index where sum is $\geq k$
 - Can be used to solve problems involving determining count of nested intervals for each interval, determining count of inversions for each element of a permutation, etc
 - We can solve the problem of finding count of elements $\leq x$ (or $\geq x)$ in a subarray $[l...r]$ by using segment tree. We build a segment tree and store the maximum and minimum values for each segment. Now, we traverse the tree recursively. We can stop recursion at three types of nodes:
     - Nodes for which minimum value is $> x$ (We simply return when this node is encountered)
