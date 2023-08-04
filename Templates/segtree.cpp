@@ -21,7 +21,7 @@ struct segtree{
 
     item NEUTRAL_ELEMENT=;
 
-    item merge(item a,item b){
+    item merge(item& a,item& b){
         // Merged value of item a and item b
     }
 
