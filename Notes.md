@@ -448,6 +448,8 @@ for(int i=1;i*i<=N;i++){
     - Sum of factors of $N = (\frac{p_1^{\alpha_1+1}-1}{p_1-1})(\frac{p_2^{\alpha_2+1}-1}{p_2-1})...(\frac{p_k^{\alpha_k+1}-1}{p_k-1})$
     - Product of factors of $N = \sqrt{N^{\textrm{Number of factors of N}}}$
     - $\varphi(N) = N(1-\frac{1}{p_1})(1-\frac{1}{p_2})...(1-\frac{1}{p_k})$
+- Bezout's Identity: Let $a$ and $b$ be integers with $gcd$ $d$. Then there exist integers $x$ and $y$ such that $ax + by = d$. Moreover, the integers of the form $az + bt$ are exactly the multiples of $d$ ($d$ is the smallest positive integer in the set $S = [ ax + by : x,y \in \mathbb{Z} \textrm{ and } ax + by > 0 ]$)
+- Chicken McNugget Theorem: For any two relatively prime positive integers $m$ and $n$, the greatest integer that cannot be written in the form $am + bn$ for non-negative integers $a, b$ is $mn - m - n$
 
 **8. Graph Theory**
 
