@@ -648,6 +648,10 @@ Another similar problem is to find expected number of empty boxes when $n$ balls
 **Problem**: A small pond has a single amoeba living inside it. This particular amoeba has a unique ability, where every minute it can either die, stay alive, split into two or split into three, each with an equal probability. The offsprings produced by this amoeba have the same behaviour, and will act independently of other amoebas. What is the likelihood that this amoeba population will eventually die out?\
 \
 **Solution**: Let $p$ be the required probability. Then the following equation holds: $p = \frac{1}{4} + \frac{1}{4}p + \frac{1}{4}p^2 + \frac{1}{4}p^3$. Solving this equation, we get $p = 1$ or $p = \sqrt{2} - 1$. $p = 1$ cannot be true and hence $p = \sqrt{2} - 1$ is the required answer
+- Another problem on expectations\
+**Problem**: A person rolls a fair $p-faced$ die and records the value he rolls. Afterwards, he continues rolling the die until he obtains a value at least as large as the first roll. Let $N$ be the number of rolls after the first he performs. Find $E[N]$\
+\
+**Solution**: Let the number on the first roll be $x$. Let's calculate expected number of rolls till the experiment ends. Let $y = \frac{x-1}{p}$. Then expected number of rolls $= (1-y)\times1 + y(1-y)\times2 + y^2(1-y)\times3 + ... = \frac{1}{1-y} = \frac{p}{p+1-x}$. Thus, the required answer $= \frac{1}{p}[\Sigma_{x=1}^{p} \frac{p}{p+1-x}] = \Sigma_{i=1}^{p} \frac{1}{i}$
 
 **11. Monotonic Stack**
 
