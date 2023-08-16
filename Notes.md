@@ -887,6 +887,7 @@ struct segtree{
 ```
 - General segment tree template looks something like this
 ```cpp
+// Note that lx to rx-1 represents current segment and current index in segment tree array is x
 struct item{
 
 };
@@ -973,6 +974,136 @@ struct segtree{
     - Nodes for which minimum value is $> x$ (We simply return when this node is encountered)
     - Nodes for which maximum value is $\leq x$ (Here, we return from this node and add the length of the segment represented by this node to the answer)
     - Nodes which do not intersect with the segment $[l...r]$ (We simply return when this node is encountered)
+- **Mass changes for associative and commutative operations**: Suppose we have an array $a$ of $n$ elements and we want to process following operations:
+    - $modify(l, r, v): a_i = a_i \otimes v$ for all $l \leq i < r$ ($\otimes$ is an associative and commutative operation)
+    - $get(i):$ get the value of $a_i$
+The above operations can be performed by building a segment tree where each node stores the operation to perform on the segment represented by that node
+```cpp
+struct segtree{
+    int sz;
+    int NO_OPERATION=INT_MAX;
+    vector<int>operations;
+
+    int operation(int a,int b){
+        if(b==NO_OPERATION){
+            return a;
+        }
+    }
+    
+    void apply_operation(int& a,int b){
+        a=operation(a,b);
+    }
+
+    void init(int n){
+        sz=1; 
+        while(sz<n) sz<<=1; 
+        operations.resize(2*sz);
+    }
+    
+    void modify(int l,int r,int v,int x,int lx,int rx){
+        if(lx>=r || rx<=l) return;
+        if(lx>=l && rx<=r){
+            apply_operation(operations[x],v);
+            return;
+        }
+        int m=lx+(rx-lx)/2;
+        modify(l,r,v,2*x+1,lx,m);
+        modify(l,r,v,2*x+2,m,rx);
+    }
+    
+    void modify(int l,int r,int v){
+        modify(l,r,v,0,0,sz);
+    }
+    
+    int get(int i,int x,int lx,int rx){
+        if(rx==lx+1){
+            return operations[x];
+        }
+        int m=lx+(rx-lx)/2;
+        int res;
+        if(i<m){
+            res=get(i,2*x+1,lx,m);
+        }
+        else{
+            res=get(i,2*x+2,m,rx);
+        }
+        return operation(res,operations[x]);
+    }
+    
+    int get(int i){
+        return get(i,0,0,sz);
+    }
+};
+```
+- **Mass changes for associative and non-commutative operations**: Suppose instead the operation $\otimes$ is non-commutative. Then we need to ensure that the older operation is further down in the segment tree. This can be ensured by lazy propagation
+```cpp
+struct segtree{
+    int sz;
+    int NO_OPERATION=INT_MAX;
+    vector<int>operations;
+
+    int operation(int a,int b){
+        if(b==NO_OPERATION){
+            return a;
+        }
+    }
+    
+    void apply_operation(int& a,int b){
+        a=operation(a,b);
+    }
+
+    void init(int n){
+        sz=1; 
+        while(sz<n) sz<<=1; 
+        operations.resize(2*sz);
+    }
+    
+    void propagate(int x,int lx,int rx){
+        if(rx==lx+1){
+            return;
+        }
+        apply_operation(operations[2*x+1],operations[x]);
+        apply_operation(operations[2*x+2],operations[x]);
+        operations[x]=NO_OPERATION;
+    }
+    
+    void modify(int l,int r,int v,int x,int lx,int rx){
+        propagate(x,lx,rx);
+        if(lx>=r || rx<=l) return;
+        if(lx>=l && rx<=r){
+            apply_operation(operations[x],v);
+            return;
+        }
+        int m=lx+(rx-lx)/2;
+        modify(l,r,v,2*x+1,lx,m);
+        modify(l,r,v,2*x+2,m,rx);
+    }
+    
+    void modify(int l,int r,int v){
+        modify(l,r,v,0,0,sz);
+    }
+    
+    int get(int i,int x,int lx,int rx){
+        propagate(x,lx,rx);
+        if(rx==lx+1){
+            return operations[x];
+        }
+        int m=lx+(rx-lx)/2;
+        int res;
+        if(i<m){
+            res=get(i,2*x+1,lx,m);
+        }
+        else{
+            res=get(i,2*x+2,m,rx);
+        }
+        return res;
+    }
+    
+    int get(int i){
+        return get(i,0,0,sz);
+    }
+};
+```
 - [Codeforces EDU - Segment Tree, part 1](https://codeforces.com/edu/course/2/lesson/4)
 - [Codeforces EDU - Segment Tree, part 2](https://codeforces.com/edu/course/2/lesson/5)
 - [CP-Algorithms - Segment Tree](https://cp-algorithms.com/data_structures/segment_tree.html)
