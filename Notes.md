@@ -686,6 +686,30 @@ for(int i=n-1;i>=0;i--){
     stk2.push(i);
 }
 ```
+- Monotonic stack can be used to find area of largest rectangle in a histogram
+```cpp
+// h[i] -> Height of ith bar
+stack<int>stk;
+int max_area=0;
+for(int i=0;i<n;i++){
+    if(stk.empty() || h[stk.top()]<=h[i]){
+        stk.push(i);
+    }
+    else{
+        int top=stk.top();
+        stk.pop();
+        int area=h[top]*(stk.empty()?i:i-stk.top()-1); // Area of rectangle with h[top] as smallest bar
+        max_area=max(max_area,area);
+    }
+}
+while(!stk.empty()){
+    int top=stk.top();
+    stk.pop();
+    int area=h[top]*(stk.empty()?n:n-stk.top()-1);
+    max_area=max(max_area,area);
+}
+cout<<max_area<<'\n';
+```
 
 **12. KMP Algorithm**
 
@@ -974,9 +998,9 @@ struct segtree{
     - Nodes for which minimum value is $> x$ (We simply return when this node is encountered)
     - Nodes for which maximum value is $\leq x$ (Here, we return from this node and add the length of the segment represented by this node to the answer)
     - Nodes which do not intersect with the segment $[l...r]$ (We simply return when this node is encountered)
-- **Mass changes for associative and commutative operations**: Suppose we have an array $a$ of $n$ elements and we want to process following operations:
-    - $modify(l, r, v): a_i = a_i \otimes v$ for all $l \leq i < r$ ($\otimes$ is an associative and commutative operation)
-    - $get(i):$ get the value of $a_i$
+- **Mass changes for associative and commutative operations**: Suppose we have an array $a$ of $n$ elements and we want to process following operations:\
+&nbsp;&nbsp; $(1)$ $modify(l, r, v): a_i = a_i \otimes v$ for all $l \leq i < r$ ($\otimes$ is an associative and commutative operation)\
+&nbsp;&nbsp; $(2)$ $get(i):$ get the value of $a_i$\
 The above operations can be performed by building a segment tree where each node stores the operation to perform on the segment represented by that node
 ```cpp
 struct segtree{
