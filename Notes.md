@@ -200,6 +200,18 @@ int max_energy(int V,int M,vector<int>& v,vector<int>& m,vector<int>& e){
     return dp2[V][M];
 }
 ```
+- Knapsack DP using a single 1D DP array optimization
+```cpp
+vector<int>dp(W+1,0);
+for(int i=0;i<n;i++){
+    for(int j=W;j>=0;j--){
+        if(w[i]<=j){
+            dp[j]=max(dp[j],v[i]+dp[j-w[i]]);
+        }
+    }
+}
+// dp[x] represents the maximum value if the knapsack can carry a weight of at most x
+```
 - We need not visit all the states of DP
 - Many Expectations problems require DP for solving
 - DP with bitmasking is often used in problems involving recurrence relations on subsets of a set
@@ -1323,6 +1335,23 @@ for(int i=0;i<n;i++){
         pq.pop();
     }
     ans[i]=(int)pq.size();
+}
+```
+- Suppose we have to find maximum sum subsequence of size $\leq m$ in the range $[0,i]$ for each $i$ from $0$ to $n - 1$. This can be done as follows
+```cpp
+vector<int>ans(n);
+priority_queue<int>pq;
+int sum=0;
+for(int i=0;i<n;i++){
+    if(a[i]>0){
+        pq.push(a[i]);
+        sum+=a[i];
+    }
+    if((int)pq.size()>m){
+        sum-=pq.top();
+        pq.pop();
+    }
+    ans[i]=sum;
 }
 ```
 - Many problems have solutions based on some pattern/observation. These can be proved by Mathematical Induction. As an example, suppose an array $x$ of $n$ integers is given. You need to find out smallest integer $s$ such that $s$ cannot be written as sum of a subset of integers in $x$. Check the following approach to find $s$
