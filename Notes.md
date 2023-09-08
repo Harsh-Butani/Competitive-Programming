@@ -225,7 +225,7 @@ for(int i=0;i<n;i++){
 - **Stirling Numbers**
     - **Unsigned Stirling number of the first kind**: Denoted by $S_{1}(n,k)$, it is defined as number of permutations of $n$ elements with $k$ cycles. Suppose we have $(n+1)$ elements and we have to partition it into $k$ cycles. Now, the $(n+1)^{th}$ element can be introduced at any of the $n$ places or it can form a separate cycle. Thus recurrence relation for $S_{1}(n+1,k)$ is $S_{1}(n+1,k) = nS_{1}(n,k) + S_{1}(n,k-1)$ for $k > 0$. The base case would be $S_{1}(0,0) = 1$ and $S_{1}(n,0) = S_{1}(0,n) = 0$ for $n > 0$
     - **Stirling number of the second kind**: Denoted by $S(n,k)$, it counts the number of ways to partition a set of $n$ labeled objects into $k$ non-empty unlabeled subsets. Suppose we have $(n+1)$ labeled objects and we have to partition it into $k$ non-empty subsets. Now, the $(n+1)^{th}$ object can be introduced into one of the $k$ existing subsets or it can form a separate subset. Thus recurrence relation for $S(n+1,k)$ is $S(n+1,k) = kS(n,k) + S(n,k-1)$ for $0 < k < n$. The base case would be $S(n,n) = 1$ for $n \geq 0$ and $S(n,0) = S(0,n) = 0$ for $n > 0$
-- Burnside's Lemma (Polya's Enumeration Principle)
+- **Burnside's Lemma (Polya's Enumeration Principle)**
 - **Catalan Numbers** ($C_{n} = \frac{^{2n}C_{n}}{n+1}$)
 - **Inclusion-Exclusion Principle**: The principle of inclusion-exclusion states that for finie sets $A_{1}, A_{2},...,A_{n}$, one has the identity
   $$\bigg |\bigcup_{i=1}^{n} A_{i}\bigg | = \sum_{i=1}^{n} |A_{i}| - \sum_{1 \leq i < j \leq n} |A_{i} \cap A_{j}| + \sum_{1 \leq i < j < k \leq n} |A_{i} \cap A_{j} \cap A_{k}| - ... + (-1)^{n+1}|A_{1} \cap A_{2} ... \cap A_{n}|$$
@@ -307,10 +307,10 @@ void solve(){
 
 **7. Number Theory**
 
-- Fermat's Little Theorem
-- Euler's Totient Function
-- Chinese Remainder Theorem
-- Matrix Exponentiation
+- **Fermat's Little Theorem**
+- **Euler's Totient Function**
+- **Chinese Remainder Theorem**
+- **Matrix Exponentiation**
   
 **7.1. Sieve of Eratosthenes and Prime Factorization**
 
@@ -591,7 +591,7 @@ int kruskal(vector<vector<int>>& edges){
 - Usually, graphs are constructed using $2D$ vectors. But maps can also be used for constructing graphs
 - A graph is bipartite iff it contains no odd cycles
 - A graph is a cycle graph iff each vertex has degree $2$ and number of connected components is $1$
-- Many problems can be solved by modelling the problem into a known graph problem and then apply known algorithms on this graph like BFS, DFS, Dijkstra, etc
+- Many problems can be solved by modelling the problem into a known graph problem and then apply known algorithms on this graph like BFS, DFS, Dijkstra, Topological Sort, etc
 - To calculate farthest node (and its distance) for each node in a tree, we can do the following. Pick an arbitrary vertex (let's say $u$) and find vertex farthest from $u$ (let's say it is $v_1$). Now from $v_1$, find farthest vertex (let's say $v_2$). Note that $v_1$ and $v_2$ are ends of the diameter of the tree. For each node in the tree, the farthest node is one of the ends of the diameter of the tree (i.e. $v_1$ or $v_2$). Thus we can calculate distances of each node from $v_1$ and $v_2$ and then take maximum among those $2$ distances to get distance from farthest node
 - In many problems, the idea is to make a graph and find shortest distance between $2$ nodes. But building such a graph can be very time-consuming and can cause TLE if we build such a graph. Instead, the idea is to build a bipartite graph and find shortest distance on this graph. For example, consider a graph that contains an edge between two nodes iff they are non-coprime. We can instead build a bipartite graph where the left set contains array elements and right set contains prime numbers. A node $u$ in left part is connected to a node $p$ in right part iff $p|u$. Then, we can find shortest distance between two nodes $u$ and $v$ in this bipartite graph and divide the answer by $2$. Another example is a graph where two nodes are connected iff both the sets share a common element. In this case, build the bipartite graph such that left part consists of set number and right part consists of set elements. A node $u$ in left part is connected to a node $e$ in right part iff $e \in u$
 - Many problems involve finding shortest distance from a particular node with some minor tweaks, for example reversing the edges of the graph atmost once. In such problems, we have to introduce some dummy nodes and add edges of appropriate weight and then run Dijkstra's Algorithm on it
