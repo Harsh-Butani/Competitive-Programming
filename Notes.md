@@ -1222,6 +1222,7 @@ using namespace __gnu_pbds;
 - Some problems require us to think in a different way. For example, traversing the array in backward direction, simulating the opposite operation mentioned in the problem, etc
 - Many problems require some careful observation to solve it. For example, observations related to parity, binary/n-ary representation of a number and some invariants/monovariants
 - Many problems use the concept used in Huffman Coding (choosing $k$ maximum / $k$ minimum values and combining them). It is implemented using priority queue
+- In constructive problems, we often have to prove an upper bound (or a lower bound) on some property and then try to come up with a construction that achieves that bound
 - In many problems, a multiset can work as a priority queue. It not only supports finding minimum and maximum elements but also removing a particular element from the multiset. The time complexity of all those operations is $O(log$ $n)$
 - In many problems, two instances of same data structure are required to simulate the process mentioned in the problem with better complexity. For example, using two instances of multiset/priority queue to maintain lower and upper half of sorted elements, etc.
 - The constraints of the problem provide helpful information. For example, many problems involving Bitmask DP have extremely small constraints to allow programs having exponential time complexity. Problems having very large constraints often involve binary search ($O(log$ $n)$ complexity) or some $O(1)$ computation
