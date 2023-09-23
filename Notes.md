@@ -158,7 +158,30 @@ void unite(int x,int y,vector<int>& p,vector<int>& r){
 
 **5. Dynamic Programming (DP)**
 
-- In Dynamic Programming, we build the DP array as per the recurrence relation we have
+- In Dynamic Programming, we build the DP array as per the recurrence relation we have. As an example, consider the problem in which you are given $q$ queries of type $+ x$ or $- x$. A query of type $+ x$ adds $x$ to the multiset (which is initially empty) and a query of type $- x$ removes a single instance of $x$ from the multiset (It is guaranteed that $x$ exists in the multiset when a query of type $- x$ appears). You are also given an integer $k$. After each query, you need to output the number of ways to obtain $k$ as sum of some numbers in the multiset
+```cpp
+vector<int>dp(k+1,0); // dp[i] -> Number of ways to obtain i as sum of some numbers in the multiset
+dp[0]=1;
+while(q--){
+    char op;
+    cin>>op;
+    int x;
+    cin>>x;
+    if(op=='+'){
+        // We need to update the value of dp[i] as dp[i]+=dp[i-x] where dp[i-x] is its old value (not the updated one)
+        for(int i=k;i>=x;i--){
+            dp[i]+=dp[i-x];
+        }
+    }
+    else{
+        // We need to update the value of dp[i] as dp[i]-=dp[i-x] where dp[i-x] is its new value (the updated one)
+        for(int i=x;i<=k;i++){
+            dp[i]-=dp[i-x];
+        }
+    }
+    cout<<dp[k]<<'\n';
+}
+```
 - DP on trees problems usually require us to consider the tree as a rooted tree and then do DFS while maintaining DP vector(s)
 - We can also do DP on DAG (Directed Acyclic Graph). We process the nodes in topological order or reverse topological order
 - In Digit DP, we have to answer queries such as "The count of numbers that satisfy property $X$ in $[a, b]$". This can be done by introducing a function $f$ as $f(n) =$ count of numbers $\leq n$ that satisfy property $X$. So answer $= f(b) - f(a - 1)$
