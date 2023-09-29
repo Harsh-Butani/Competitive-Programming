@@ -183,7 +183,52 @@ while(q--){
 }
 ```
 - DP on trees problems usually require us to consider the tree as a rooted tree and then do DFS while maintaining DP vector(s)
-- Quite often, we have to calculate answer for the tree considering all the nodes as root of the tree. This can be done by calculating the answer for one particular root and then using those calculated values to calculate answer for new root (the adjacent node to the original root is taken as new root). 
+- Quite often, we have to calculate answer for the tree considering all the nodes as root of the tree. This can be done by calculating the answer for one particular root and then using those calculated values to calculate answer for new root (the adjacent node to the original root is taken as new root). For example, consider this problem: There's a tree with $n$ vertices numbered $1$ to $n$. An integer $a_i$ is written on vertex $i$ for $i = 1,2,...,n$. You have to make all $a_i$ equal by performing some (possibly zero) operations. Suppose, you root the tree at some vertex. In each operation, you select any vertex $v$ and a non negative intger $c$. Then for all vertices $i$ in $v$'s subtree, replace $a_i$ with $a_i \oplus c$. The cost of this operation is $s.c$, where $s$ is number of vertices in the subtree. Let $m_r$ denote minimum possible total cost required to make all $a_i$ equal, if vertex $r$ is chosen as root of the tree. Find $m_1, m_2, ..., m_n$
+```cpp
+// Let's first calculate m1. We do this by making every node's value equal to a[1]. Infact, minimum total cost when calculating mr would be when we make each node's value equal to a[r] (We can prove this requires minimum cost)
+
+void dfs(int u,int p,vector<vector<int>>& g,vector<int>& dp,vector<int>& sz,vector<int>& a){
+    sz[u]=1;
+    for(auto v:g[u]){
+        if(v!=p){
+            dfs(v,u,g,dp,sz,a);
+            sz[u]+=sz[v];
+            dp[u]+=(a[u]^a[v])*sz[v]+dp[v];
+        }
+    }
+}
+
+void dfs2(int u,int p,vector<vector<int>>& g,vector<int>& ans,vector<int>& sz,vector<int>& a){
+    for(auto v:g[u]){
+        if(v!=p){ // Here, we are changing root of the tree from u to v
+            int su=sz[u],sv=sz[v];
+            // Updating sz values as per new root
+            sz[v]=su; // Updating sz[v]
+            sz[u]-=sv; // Updating sz[u]
+            ans[v]=ans[u]+(a[u]*a[v])*(su-2*sv);
+            dfs2(v,u,g,ans,sz,a);
+            // Restoring original sz values (as per old root)
+            sz[u]=su;
+            sz[v]=sv;
+        }
+    }
+}
+
+void solve(){
+    vector<ll>dp(n+1,0),sz(n+1,0);
+    // dp[i] -> Minimum total cost to make all vertices in i's subtree equal to a[i] if the tree is rooted at vertex 1
+    // sz[i] -> Number of nodes in i's subtree
+    dfs(1,0,g,dp,sz,a);
+    vector<int>ans(n+1,0);
+    ans[1]=dp[1];
+    // Now, we have to calculate answer when other nodes are taken as root. We have the following recurrence relation:
+    // Suppose u and v are adjacent nodes and we know ans[u]. Then, ans[v] = ans[u] + (a[u] ^ a[v]) * (sz[u] - 2 * sz[v]). Note that the sz values are according to the rooted tree with u as root
+    dfs2(1,0,g,ans,sz,a);
+    for(int i=1;i<=n;i++){
+        cout<<ans[i]<<" ";
+    }
+}
+```
 - We can also do DP on DAG (Directed Acyclic Graph). We process the nodes in topological order or reverse topological order
 - In Digit DP, we have to answer queries such as "The count of numbers that satisfy property $X$ in $[a, b]$". This can be done by introducing a function $f$ as $f(n) =$ count of numbers $\leq n$ that satisfy property $X$. So answer $= f(b) - f(a - 1)$
 - We can use maps instead of arrays for memoizing when values have a large spread
