@@ -288,30 +288,30 @@ for(int i=0;i<n;i++){
 **6. Combinatorics**
 
 - **Pigeonhole Principle**
-- **Stars and Bars method (To determine number of non-negative integer solutions)**: Let the equation be $\Sigma_{i=1}^{r}x_i = n$, where each $x_i \geq 0$. We need to find number of distinct solutions to the given equation. This problem can be modelled as follows. Suppose $n$ identical stars are kept in a straight line. Now, we need to place $(r - 1)$ identical bars to create $r$ partitions. The number of stars to the left of leftmost bar = value of $x_1$. Number of stars to the right of rightmost bar = value of $x_r$. Number of stars between $(i-1)^{th}$ and $i^{th}$ bar (assuming 1-indexing) = value of $x_i$. Thus the given problem now reduces to finding number of ways to arrange $n$ identical stars and $(r - 1)$ identical bars, and thus equal to $^{n+r-1}C_n$
-- **Counting number of permutations of a particular string**: Suppose our string contains the alphabets $x_1, x_2, ..., x_n$. Suppose the $i^{th}$ alphabet $x_i$ appears $r_i$ times in the string. Now, number of distinct permutations of the given string is equal to $^{r_1+r_2+...+r_n}C_{r_1} \times ^{r_2+r_3+...+r_n}C_{r_2} \times ... \times ^{r_n}C_{r_n} = \frac{(r_1+r_2+...+r_n)!}{r_1!r_2!...r_n!}$
-- **Coefficient of $x^r$ in $(1-x)^{-n} =$** Coefficient of $x^r$ in $((1-x)^{-1})^{n} =$ Coefficient of $x^r$ in $(1+x+x^{2}+...)^{n} =$ Number of integer solutions of $y_{1}+y_{2}+...+y_{n} = r$ where each $y_{i} \geq 0$ is equal to $^{n+r-1}C_r$
+- **Stars and Bars method (To determine number of non-negative integer solutions)**: Let the equation be $\Sigma_{i=1}^{r}x_i = n$, where each $x_i \geq 0$. We need to find number of distinct solutions to the given equation. This problem can be modelled as follows. Suppose $n$ identical stars are kept in a straight line. Now, we need to place $(r - 1)$ identical bars to create $r$ partitions. The number of stars to the left of leftmost bar $=$ value of $x_1$. Number of stars to the right of rightmost bar $=$ value of $x_r$. Number of stars between $(i-1)^{th}$ and $i^{th}$ bar (assuming $1$-indexing) $=$ value of $x_i$. Thus the given problem now reduces to finding number of ways to arrange $n$ identical stars and $(r - 1)$ identical bars, and thus equal to $\binom{n+r-1}{n}$
+- **Counting number of permutations of a particular string**: Suppose our string contains the alphabets $x_1, x_2, ..., x_n$. Suppose the $i^{th}$ alphabet $x_i$ appears $r_i$ times in the string. Now, number of distinct permutations of the given string is equal to $\binom{r_1+r_2+...+r_n}{r_1} \times \binom{r_2+r_3+...+r_n}{r_2} \times ... \times \binom{r_n}{r_n} = \frac{(r_1+r_2+...+r_n)!}{r_1!r_2!...r_n!}$
+- **Coefficient of $x^r$ in $(1-x)^{-n} =$** Coefficient of $x^r$ in $((1-x)^{-1})^{n} =$ Coefficient of $x^r$ in $(1+x+x^{2}+...)^{n} =$ Number of integer solutions of $y_{1}+y_{2}+...+y_{n} = r$ where each $y_{i} \geq 0$ is equal to $\binom{n+r-1}{r}$
 - **Stirling Numbers**
     - **Unsigned Stirling number of the first kind**: Denoted by $S_{1}(n,k)$, it is defined as number of permutations of $n$ elements with $k$ cycles. Suppose we have $(n+1)$ elements and we have to partition it into $k$ cycles. Now, the $(n+1)^{th}$ element can be introduced at any of the $n$ places or it can form a separate cycle. Thus recurrence relation for $S_{1}(n+1,k)$ is $S_{1}(n+1,k) = nS_{1}(n,k) + S_{1}(n,k-1)$ for $k > 0$. The base case would be $S_{1}(0,0) = 1$ and $S_{1}(n,0) = S_{1}(0,n) = 0$ for $n > 0$
     - **Stirling number of the second kind**: Denoted by $S(n,k)$, it counts the number of ways to partition a set of $n$ labeled objects into $k$ non-empty unlabeled subsets. Suppose we have $(n+1)$ labeled objects and we have to partition it into $k$ non-empty subsets. Now, the $(n+1)^{th}$ object can be introduced into one of the $k$ existing subsets or it can form a separate subset. Thus recurrence relation for $S(n+1,k)$ is $S(n+1,k) = kS(n,k) + S(n,k-1)$ for $0 < k < n$. The base case would be $S(n,n) = 1$ for $n \geq 0$ and $S(n,0) = S(0,n) = 0$ for $n > 0$
 - **Burnside's Lemma (Polya's Enumeration Principle)**
-- **Catalan Numbers** ($C_{n} = \frac{^{2n}C_{n}}{n+1}$)
+- **Catalan Numbers** ($C_{n} = \frac{\binom{2n}{n}}{n+1}$)
 - **Inclusion-Exclusion Principle**: The principle of inclusion-exclusion states that for finie sets $A_{1}, A_{2},...,A_{n}$, one has the identity
   $$\bigg |\bigcup_{i=1}^{n} A_{i}\bigg | = \sum_{i=1}^{n} |A_{i}| - \sum_{1 \leq i < j \leq n} |A_{i} \cap A_{j}| + \sum_{1 \leq i < j < k \leq n} |A_{i} \cap A_{j} \cap A_{k}| - ... + (-1)^{n+1}|A_{1} \cap A_{2} ... \cap A_{n}|$$
-- **Binomial Theorem**: It states that $(a+b)^n = \Sigma_{r=0}^{n}{^{n}}C_ra^{n-r}b^{r}$ where $a, b \in \mathbb{R}$ and $n \in \mathbb{N}$
+- **Binomial Theorem**: It states that $(a+b)^n = \Sigma_{r=0}^{n}\binom{n}{r}a^{n-r}b^{r}$ where $a, b \in \mathbb{R}$ and $n \in \mathbb{N}$
 - **Generating Functions**
 - **Partitions**
 - A nice problem and approach to solve it\
 **Problem**: Given non-negative integers $n$ and $m$, find number of non-decreasing sequences of length $n$ such that each element in the sequence lies between $0$ and $m$ inclusive\
 \
-**Solution**: First, we choose $k$ distinct numbers out of $(m + 1)$ numbers. Then we need to arrange these $k$ numbers into $n$ boxes, so number of ways of arranging is equal to number of integer solutions of $x_1 + x_2 + ... + x_k = n$, where each $x_i \geq 1$. So required answer $= \Sigma_{k=1}^{n}{^{m+1}}C_k \cdot ^{n-1}C_{k-1} = \Sigma_{k=1}^{n}{^{m+1}}C_k \cdot ^{n-1}C_{n-k} =$ Coefficient of $x^n$ in $(1+x)^{m+1} \cdot (1+x)^{n-1} =$ Coefficient of $x^n$ in $(1+x)^{m+n} = ^{m+n}C_n$
+**Solution**: First, we choose $k$ distinct numbers out of $(m + 1)$ numbers. Then we need to arrange these $k$ numbers into $n$ boxes, so number of ways of arranging is equal to number of integer solutions of $x_1 + x_2 + ... + x_k = n$, where each $x_i \geq 1$. So required answer $= \Sigma_{k=1}^{n}\binom{m+1}{k}\binom{n-1}{k-1} = \Sigma_{k=1}^{n}\binom{m+1}{k}\binom{n-1}{n-k} =$ Coefficient of $x^n$ in $(1+x)^{m+1} \cdot (1+x)^{n-1} =$ Coefficient of $x^n$ in $(1+x)^{m+n} = \binom{m+n}{n}$
 - Another nice problem\
   **Problem**: Let $n > 0$ be an integer. We are given a balance and $n$ weights of weight $2^{0}, 2^{1}, ..., 2^{n-1}$. We are to place each of the $n$ weights on the balance, one after another, in such a way that the right pan is never heavier than the left pan. At each step, we choose one of the weights that has not yet been placed on the balance and place it on either the left pan or the right pan, until all of the weights have been placed. Determine the number of ways in which this can be done\
 \
-**Solution 1**: Let our answer be $W(n)$. It is evident that $W(1) = 1$. Now, since the weights are powers of $2$, it is easy to see that a heavier weight is heavier than all the lighter weights combined. Thus, we only need to ensure that at any point in time, the maximum weight on the left pan is $>$ the maximum weight on the right pan. Thus, the heaviest weight must be placed on the left pan. Suppose the heaviest weight is placed on the left pan at position $k$. Now, the first $(k-1)$ weights can be chosen in $^{n-1}C_{k-1}$ ways and these weights should be placed in $W(k-1)$ ways. The rest of the $(n-k)$ weights can be placed in $2^{n-k}(n-k)!$ ways. Thus the recurrence relation for $W(n)$ is as follows
-$$W(n) = \Sigma_{k=1}^{n}(^{n-1}C_{k-1}W(k-1)2^{n-k}(n-k)!) = \Sigma_{k=1}^{n}W(k-1)2^{n-k}\frac{(n-1)!}{(k-1)!} = \Sigma_{k=1}^{n-1}W(k-1)2^{n-k}\frac{(n-1)!}{(k-1)!} + W(n-1)$$
+**Solution 1**: Let our answer be $W(n)$. It is evident that $W(1) = 1$. Now, since the weights are powers of $2$, it is easy to see that a heavier weight is heavier than all the lighter weights combined. Thus, we only need to ensure that at any point in time, the maximum weight on the left pan is $>$ the maximum weight on the right pan. Thus, the heaviest weight must be placed on the left pan. Suppose the heaviest weight is placed on the left pan at position $k$. Now, the first $(k-1)$ weights can be chosen in $\binom{n-1}{k-1}$ ways and these weights should be placed in $W(k-1)$ ways. The rest of the $(n-k)$ weights can be placed in $2^{n-k}(n-k)!$ ways. Thus the recurrence relation for $W(n)$ is as follows
+$$W(n) = \sum_{k=1}^{n}\binom{n-1}{k-1}W(k-1)2^{n-k}(n-k)! = \sum_{k=1}^{n}W(k-1)2^{n-k}\frac{(n-1)!}{(k-1)!} = \sum_{k=1}^{n-1}W(k-1)2^{n-k}\frac{(n-1)!}{(k-1)!} + W(n-1)$$
 The above can be simplified as
-$$W(n) = \Sigma_{k=1}^{n-1}W(k-1)2^{n-k}\frac{(n-1)!}{(k-1)!} + W(n-1) = 2(n-1)\Sigma_{k=1}^{n-1}W(k-1)2^{n-k-1}\frac{(n-2)!}{(k-1)!} + W(n-1) = 2(n-1)W(n-1) + W(n-1) = (2n-1)W(n-1)$$
+$$W(n) = \sum_{k=1}^{n-1}W(k-1)2^{n-k}\frac{(n-1)!}{(k-1)!} + W(n-1) = 2(n-1)\sum_{k=1}^{n-1}W(k-1)2^{n-k-1}\frac{(n-2)!}{(k-1)!} + W(n-1) = 2(n-1)W(n-1) + W(n-1) = (2n-1)W(n-1)$$
 Thus, we have $W(n) = (2n-1)W(n-1) = (2n-1)(2n-3)W(n-2) = ... = (2n-1)(2n-3)...(3)W(1) = 1\times3\times5...\times(2n-1)$ as $W(1) = 1$\
 \
 **Solution 2**: Again, let our answer be $W(n)$. We can use recursion on last weight placement. There are $(2n-1)$ choices; namely, you can have any of the $n$ weights to be placed at last and each could be placed in either of the pans, except for the case where the last weight is the heaviest one and it is placed in the right pan. Thus, we get the same recurrence relation as above, that is $W(n) = (2n-1)W(n-1)$ with base case $W(1) = 1$
@@ -327,7 +327,7 @@ int count = 0
 for every good type A object:
     count += number of type B objects that yield it
 ```
-- Computing $^nC_r$ modulo $MOD$
+- Computing $\binom{n}{r}$ modulo $MOD$
 ```cpp
 vector<vector<ll>>C(N+1,vector<ll>(N+1,0));
 for(int i=1;i<=N;i++){
@@ -380,9 +380,9 @@ void solve(){
 - Many counting problems can be solved by fixing some parameters and iterating on them. Also, many counting problems can be solved by standard techniques such as fixing the $L$ pointer or $2$ pointer method
 - Many combinatorial problems require DP for solving
 - Some useful identities
-    - $^nC_r + ^nC_{r-1} = ^{n+1}C_r$ (Suppose there are $n$ normal objects and $1$ special object. Now, $RHS =$ Number of ways of choosing $r$ objects out of these $n+1$ objects $=$ Number of ways of choosing $r$ objects by excluding the special object $+$ Number of ways of choosing $r$ objects by including the special object = $^nC_r + ^nC_{r-1} = LHS$)
-    - $\Sigma_{i=r}^{n}{^{i}}C_r = ^{n+1}C_{r+1}$ $(LHS =$ Coefficient of $x^r$ in $\Sigma_{i=r}^{n}(1+x)^i =$ Coefficient of $x^r$ in $\(1+x)^r\frac{(1+x)^{n-r+1}-1}{(1+x)-1}$ = Coefficient of $x^r$ in $\frac{(1+x)^{n+1}-(1+x)^r}{x}$ = Coefficient of $x^{r+1}$ in $(1+x)^{n+1}-(1+x)^r = ^{n+1}C_{r+1} - 0 = RHS$)
-    - $\Sigma_{k=0}^{r}{^{m}}C_k\cdot^{n}C_{r-k} = ^{m+n}C_r$ $(LHS =$ Coefficient of $x^r$ in $(1+x)^m\cdot(1+x)^n$ = Coefficient of $x^r$ in $(1+x)^{m+n}$ = $^{m+n}C_r = RHS)$
+    - $\binom{n}{r} + \binom{n}{r-1} = \binom{n+1}{r}$ (Suppose there are $n$ normal objects and $1$ special object. Now, $RHS =$ Number of ways of choosing $r$ objects out of these $n+1$ objects $=$ Number of ways of choosing $r$ objects by excluding the special object $+$ Number of ways of choosing $r$ objects by including the special object = $\binom{n}{r} + \binom{n}{r-1} = LHS$)
+    - $\Sigma_{i=r}^{n}\binom{i}{r} = \binom{n+1}{r+1}$ $(LHS =$ Coefficient of $x^r$ in $\Sigma_{i=r}^{n}(1+x)^i =$ Coefficient of $x^r$ in $\(1+x)^r\frac{(1+x)^{n-r+1}-1}{(1+x)-1}$ = Coefficient of $x^r$ in $\frac{(1+x)^{n+1}-(1+x)^r}{x}$ = Coefficient of $x^{r+1}$ in $(1+x)^{n+1}-(1+x)^r = \binom{n+1}{r+1} - 0 = RHS$)
+    - $\Sigma_{k=0}^{r}\binom{m}{k}\binom{n}{r-k} = \binom{m+n}{r}$ $(LHS =$ Coefficient of $x^r$ in $(1+x)^m\cdot(1+x)^n$ = Coefficient of $x^r$ in $(1+x)^{m+n}$ = $\binom{m+n}{r} = RHS)$
 
 **7. Number Theory**
 
@@ -548,6 +548,7 @@ for(int i=1;i*i<=N;i++){
 - Suppose prime factorization of numbers $N_{1}$ and $N_{2}$ is as follows: $N_{1} = p_1^{\alpha_1}p_2^{\alpha_2}...p_k^{\alpha_k}$ and $N_{2} = p_1^{\beta_1}p_2^{\beta_2}...p_k^{\beta_k}$. Then
     - $gcd(N_{1}, N_{2}) =  p_1^{min(\alpha_1,\beta_1)}p_2^{min(\alpha_2,\beta_2)}...p_k^{min(\alpha_k,\beta_k)}$
     - $lcm(N_{1}, N_{2}) =  p_1^{max(\alpha_1,\beta_1)}p_2^{max(\alpha_2,\beta_2)}...p_k^{max(\alpha_k,\beta_k)}$
+- Suppose $p$ is a prime number and $n \in \mathbb{N}$. The highest power of $p$ which divides $n!$ is given by $\Sigma_{i=1}^{\infty}\lfloor\frac{n}{p^i}\rfloor$
 
 **8. Graph Theory**
 
@@ -732,6 +733,15 @@ while(i>0){
     i=(i-1)&x;
 }
 ```
+- Iterating through all masks with their submasks
+```cpp
+for(int m=0;m<(1<<n);m++){
+    for(int s=m;s>0;s=(s-1)&m){
+        // process submask s of mask m
+    }
+}
+```
+- The time complexity of above is $O(3^n)$. The proof is as follows: We will show that the inner loop will execute a total of $O(3^n)$ iterations. If mask $m$ has $k$ enabled bits, then it will have $2^k$ submasks. As we have a total of $\binom{n}{k}$ masks with $k$ enabled bits, therefore total number of submasks (across all masks) would be $\Sigma_{k=0}^{n}\binom{n}{k}2^k = (1+2)^n = 3^n$. Thus the inner loop executes $O(3^n)$ iterations
 - We can find minimum xor of two integers in an array by sorting the array and then finding xor between consecutive elements in the array and taking minimum among all the values obtained (It can be shown that two integers in an array having maximum common prefix bits always occur as adjacent elements in the sorted array). Another method to do the same is by using trie
 
 **10. Probability and Expectation**
@@ -1299,7 +1309,7 @@ using namespace __gnu_pbds;
 - Sorting intervals as per starting/ending time for an efficient algorithm
 - Median plays an important role in some problems
 - Some problems require us to think in a different way. For example, traversing the array in backward direction, simulating the opposite operation mentioned in the problem, etc
-- Many problems require some careful observation to solve it. For example, observations related to parity, binary/n-ary representation of a number and some invariants/monovariants
+- Many problems require some careful observation to solve it. For example, observations related to parity, binary / $n$-ary representation of a number and some invariants/monovariants
 - Many problems use the concept used in Huffman Coding (choosing $k$ maximum / $k$ minimum values and combining them). It is implemented using priority queue
 - In constructive problems, we often have to prove an upper bound (or a lower bound) on some property and then try to come up with a construction that achieves that bound
 - In many problems, a multiset can work as a priority queue. It not only supports finding minimum and maximum elements but also removing a particular element from the multiset. The time complexity of all those operations is $O(log$ $n)$
