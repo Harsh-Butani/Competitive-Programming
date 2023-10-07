@@ -283,7 +283,28 @@ for(int i=0;i<n;i++){
 ```
 - We need not visit all the states of DP
 - Many Expectations problems require DP for solving
-- DP with bitmasking is often used in problems involving recurrence relations on subsets of a set
+- DP with bitmasking is often used in problems involving recurrence relations on subsets of a set. For example, consider this problem where there are $n$ people ($n \leq 10$), each having a collection of caps ($1$ of each type and each type varies between $1$ and $c$). The collection of caps possessed by each person is given. You need to calculate the number of ways these $n$ people can wear caps such that no two people wear same type of cap
+```cpp
+vector<int>cap(c+1);
+// cap[i] -> Mask which have cap i in their possession
+vector<int>dp((1<<n),vector<int>(c+2,0));
+// dp[mask][i] -> Number of ways we can assign caps to mask such that no two caps are of same type and all cap types are >= i
+for(int i=c+1;i>0;i--){
+    for(int mask=0;mask<(1<<n);mask++){
+        if(!mask){
+            dp[mask][i]=1;
+            continue;
+        }
+        dp[mask][i]=dp[mask][i+1];
+        for(int j=0;j<n;j++){
+            if((mask&(1<<j)) && (cap[i]&(1<<j)){
+                dp[mask][i]+=dp[mask^(1<<j)][i+1];
+            }
+        }
+    }
+    cout<<dp[(1<<n)-1][1]<<'\n';
+}
+```
 
 **6. Combinatorics**
 
