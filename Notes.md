@@ -484,7 +484,40 @@ for(int i=1;i<n;i++){
     total-=((z-i)*(y-x));
 }
 cout<<total<<'\n';
-``` 
+```
+- Another problem illustrating the use of the contribution technique: You have an array $[a_{1}, a_{2}, ..., a_{n}] (0 \leq a_{i} \leq 10^{5})$. Initially, all elements are white. You will choose one or more indices and color the elements at the chosen indices black. Then, you will choose all white elements whose indices are multiples of the index of at least one black element and color those elements green. After that, your score is the maximum value of $a_{i}$ among all black and green elements. There are $2^{n} - 1$ ways for you to choose the black indices. Find the sum of scores for all $2^{n} - 1$ possible ways of choosing black indices modulo $MOD$ where $MOD$ is prime
+```cpp
+/*
+For each number i (0 <= i <= 100000), we will calculate number of ways we can color some indices black
+such that score = i (say this value comes out be = x). Then we will add the value of i * x to the answer.
+In fact, we need to consider only those i such that i = mx[j] for some index j (see definition of mx[] below).
+Let's see how we can calculate x. Note that among indices whose mx[] value = i , we need to choose at least
+one such index for coloring. Also we can either choose or not choose those indices whose mx[] value is < i.
+And we shouldn't choose those indices whose mx[] value is > i. Thus, we have x = (2 ^ equal[i] - 1) * (2 ^ less[i])
+(See definition of equal[] and less[] below)
+*/
+// Assuming array elements are stored in a[1], a[2], ..., a[n]
+vector<int>mx(n+1,0),equal(100001,0),less(100001,0);
+// mx[i] -> Maximum value among a[i], a[2*i], a[3*i], ..., a[floor(n/i)*i]
+// equal[i] -> Count of indices j such that mx[j] = i
+// less[i] -> Count of indices j such that mx[j] < i
+int ans=0;
+for(int i=1;i<=n;i++){
+    for(int j=i;j<=n;j+=i){
+        mx[i]=max(mx[i],a[j]);
+    }
+    equal[mx[i]]++;
+}
+for(int i=1;i<=100000;i++){
+    less[i]=less[i-1]+equal[i-1];
+    if(equal[i]){
+        int x=(xp(2,equal[i],MOD)-1+MOD)%MOD;
+        x=(x*xp(2,less[i],MOD))%MOD;
+        ans=(ans+(i*x)%MOD)%MOD;
+    }
+}
+cout<<ans<<'\n';
+```
 - Computing $\binom{n}{r}$ modulo $MOD$
 ```cpp
 vector<vector<ll>>C(N+1,vector<ll>(N+1,0));
