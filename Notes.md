@@ -136,17 +136,21 @@ void unite(int x,int y,vector<int>& p,vector<int>& r){
     }
     if(r[x]>r[y]){
         p[y]=x;
-        // For any associative and commutative function, we can do something like this
-        // sum[x]+=sum[y];
-        // min[x]=min(min[x],min[y]);
-        // max[x]=max(max[x],max[y]);
+        /*
+        For any associative and commutative function, we can do something like this
+        sum[x]+=sum[y];
+        min[x]=min(min[x],min[y]);
+        max[x]=max(max[x],max[y]);
+        */
     }
     else{
         p[x]=y;
-        // For any associative and commutative function, we can do something like this
-        // sum[y]+=sum[x];
-        // min[y]=min(min[x],min[y]);
-        // max[y]=max(max[x],max[y]);
+        /*
+        For any associative and commutative function, we can do something like this
+        sum[y]+=sum[x];
+        min[y]=min(min[x],min[y]);
+        max[y]=max(max[x],max[y]);
+        */
     }
 }
 ```
@@ -282,7 +286,68 @@ for(int i=0;i<n;i++){
 // dp[x] represents the maximum value if the knapsack can carry a weight of at most x
 ```
 - We need not visit all the states of DP
-- Many Expectations problems require DP for solving
+- Many Expectations problems require DP for solving. For example, consider this problem, where two binary strings $a$ and $b$ of length $n$ are given. In one operation, you choose an index $i (1 \leq i \leq n)$ uniformly at random and flip the value of $a_{i}$. Find the expected number of moves to make both string equal for the first time
+```cpp
+/*
+Suppose dp[r] -> Number of expected moves to make both strings equal if r of the total n characters match
+Then we have dp[r] = 1 + (r/n)*dp[r-1] + (1-r/n)*dp[r+1]
+dp[0] = 1 + dp[1]
+dp[n] = 0
+Let's define k[i] = dp[0] - dp[i]
+Then, we have k[0] = dp[0] - dp[0] = 0, k[1] = dp[0] - dp[1] = 1 and k[n] = dp[0] - dp[n] = dp[0] - 0 = dp[0]
+Also, k[r] = dp[0] - dp[r] = k[n] - dp[r] and thus, we have dp[r] = k[n] - k[r]
+Thus from the recurrence relation, we have k[n] - k[r] = 1 + (r/n)*(k[n] - k[r-1]) + (1-r/n)*(k[n] - k[r+1]) = 1 + k[n] - (1-r/n)*k[r+1] - (r/n)*k[r-1]
+From above, we get 1 + k[r] - (1-r/n)*k[r+1] - (r/n)*k[r-1] = 0 and thus k[r+1] = (n/(n-r))*(1 + k[r] - (r/n)*k[r-1]) = (n + n*k[r] - r*k[r-1])/(n-r)
+Thus, our final recurrence relation is k[r+1] = (n + n*k[r] - r*k[r-1])/(n-r) with k[0] = 0 and k[1] = 1
+Let m characters match initially. Then answer = dp[m] = k[n] - k[m]
+*/
+int m=0;
+for(int i=0;i<n;i++){
+    if(a[i]==b[i]){
+        m++;
+    }
+}
+vector<int>k(n+1,0);
+k[1]=1;
+for(int i=1;i<n;i++){
+    k[i+1]=(n+n*k[i]-i*k[i-1])%MOD;
+    k[i+1]=(k[i+1]*xp(n-i,MOD-2,MOD))%MOD;
+}
+int ans=(k[n]-k[m]+MOD)%MOD;
+cout<<ans<<'\n';
+```
+- Another expectation problem: A binary array $a$ of length $n$ is given. You need to sort this array. In one operation, you can choose two random indices $i$ and $j$ such that $i < j$. Indices are chosen equally probable among all pairs of indices $(i, j)$ such that $1 \leq i < j \leq n$. After choosing the indices, you swap $a_{i}$ and $a_{j}$ if $a_{i} > a_{j}$. Find expected number of such operations before the array becomes sorted
+```cpp
+int z=0;
+for(int i=0;i<n;i++){
+    if(!a[i]){
+        z++;
+    }
+}
+vector<int>dp(z+1);
+/*
+dp[i] -> expected number of operations if there are i 0's in first z places
+dp[i] = 1 + p*dp[i+1] + (1-p)*dp[i] where p is the probability of choosing a 1 from first z places and a 0 from last (n-z) places
+From above, we get dp[i] = dp[i+1] + 1/p
+Note that p = (z-i)*(z-i)/C(n,2) as there are (z-i) ways of choosing 1 from first z places and (z-i) ways of choosing 0 from last (n-z) places
+Also note that dp[z] = 0
+Let there be zz 0's among first z places. Then answer = dp[zz]
+*/
+int zz=0;
+for(int i=0;i<z;i++){
+    if(!a[i]){
+        zz++;
+    }
+}
+dp[z]=0;
+for(int i=z-1;i>=zz;i--){
+    int p=(n*(n-1))%MOD;
+    int q=(2*(z-i)*(z-i))%MOD;
+    int r=(p*xp(q,MOD-2,MOD))%MOD;
+    dp[i]=(dp[i+1]+r)%MOD;
+}
+cout<<dp[zz]<<'\n';
+```
 - DP with bitmasking is often used in problems involving recurrence relations on subsets of a set. For example, consider this problem where there are $n$ people ($n \leq 10$), each having a collection of caps ($1$ of each type and each type varies between $1$ and $c$). The collection of caps possessed by each person is given. You need to calculate the number of ways these $n$ people can wear caps such that no two people wear same type of cap
 ```cpp
 vector<int>cap(c+1);
@@ -348,6 +413,78 @@ int count = 0
 for every good type A object:
     count += number of type B objects that yield it
 ```
+- A problem illustrating the use of above technique: You are given an array $a$ consisting of $n$ distinct integers $a_{1}, a_{2}, ..., a_{n}$. Define the beauty of an array $p_{1}, p_{2}, ..., p_{k}$ as the minimum amount of time needed to sort this array using an arbitrary number of range-sort operations. In each range-sort operation, you choose two integers $l$ and $r (1 \leq l < r \leq k)$. Then sort the subarray $p_{l}, p_{l+1}, ..., p_{r}$ in $(r-l)$ seconds. Calculate sum of beauty over all subarrays of $a$
+```cpp
+/*
+Since time to sort a subarray is 1 less than its length, therefore to sort the array in
+minimum time, we need to sort as many non overlapping subarrays as possible so that resulting
+array is sorted. For example to sort [3, 1, 2, 5, 4], we would sort the subarray [3, 1, 2]
+and [5, 4] independently. The resulting array would be sorted. Thus minimum time to sort a
+subarray a[l, r] = (r - l) - count of positions k (l <= k < r) such that maximum element in
+subarray a[l, k] < minimum element in subarray a[k + 1, r]. To find total time across all
+subarrays, we can first sum up the value (r - l) for all subarrays a[l, r]. Now, from this,
+we need to subtract the value as mentioned in previous equation. We can do this by finding
+the number of subarrays which satisfy previous inequality for each position in the array. The
+sum of contributions of each position in the array can be subtracted
+*/
+vector<int>ple(n,-1),nle(n,n),pge(n,-1);
+// ple[i] -> Previous lesser element for index i
+// nle[i] -> Next lesser element for index i
+// pge[i] -> Previous greater element to the left of ple[i] for index i
+stack<int>stk;
+for(int i=0;i<n;i++){
+    while(!stk.empty() && a[stk.top()]>a[i]){
+        nle[stk.top()]=i;
+        stk.pop();
+    }
+    stk.push(i);
+}
+while(!stk.empty()){
+    stk.pop();
+}
+for(int i=n-1;i>=0;i--){
+    while(!stk.empty() && a[stk.top()]>a[i]){
+        ple[stk.top()]=i;
+        stk.pop();
+    }
+    stk.push(i);
+}
+while(!stk.empty()){
+    stk.pop();
+}
+stack<int>stk2;
+for(int i=n-1;i>=0;i--){
+    while(!stk.empty() && a[stk.top()]<a[i]){
+        pge[stk.top()]=i;
+        stk.pop();
+    }
+    while(!stk2.empty() && a[stk2.top()]>a[i]){
+        if(pge[stk2.top()]==-1){
+            stk.push(stk2.top());
+        }
+        stk2.pop();
+    }
+    stk2.push(i);
+}
+int total=0;
+// total = 1*(n-1) + 2*(n-2) + ... + (n-1)*1
+for(int i=1;i<n;i++){
+    total+=(i*(n-i));
+}
+/*
+From total, we will subtract contribution of a[i]. Contribution of a[i] = Number of triplets (l, k, r) such that
+max(a[l]...a[k]) < min(a[k+1]...a[r]) = a[i]. Note that this approach works since all integers in array a are distinct
+*/
+for(int i=1;i<n;i++){
+    // Subtract contribution of a[i]
+    int x=pge[i];
+    int y=ple[i];
+    int z=nle[i];
+    // All subarrays with left end in [x+1, y] and right end in [i, z-1] are part of a[i]'s contribution
+    total-=((z-i)*(y-x));
+}
+cout<<total<<'\n';
+``` 
 - Computing $\binom{n}{r}$ modulo $MOD$
 ```cpp
 vector<vector<ll>>C(N+1,vector<ll>(N+1,0));
@@ -1475,7 +1612,18 @@ for(int i=0;i<n;i++){
 ```
 - Many problems have solutions based on some pattern/observation. These can be proved by Mathematical Induction. As an example, suppose an array $x$ of $n$ integers is given. You need to find out smallest integer $s$ such that $s$ cannot be written as sum of a subset of integers in $x$. Check the following approach to find $s$
 ```cpp
-/* Let us assume that we have processed till index i in the sorted array and we can write every integer from 1 to sum[1..i] (sum till index i) as a sum of subset of x[1..i]. Now, if x[i+1] <= sum[1..i]+1, then we can write every number from sum[1..i]+1 to sum[1..i]+x[i+1] by using x[i+1] and writing the remaining sum from subset of x[1..i]. Also, we can write any number from 1 to sum[1..i] by using subset of x[1..i] (By assumption). Thus, we can write all integers from 1 to sum[1..(i+1)] as sum of elements of subset of x[1..(i+1)]. Thus, by induction, all integers from 1 to sum[1..i] can be written as sum of elements of subset of x[1..i], if x[i]<=sum[1..(i-1)]+1. If x[i]>sum[1..(i-1)]+1, then we can never write the number p = sum[1..(i-1)]+1 as sum of elements of subset of x[1..i]. Thus answer would be p */
+/*
+Let us assume that we have processed till index i in the sorted array and we can write
+every integer from 1 to sum[1..i] (sum till index i) as a sum of subset of x[1..i]. Now,
+if x[i+1] <= sum[1..i]+1, then we can write every number from sum[1..i]+1 to sum[1..i]+x[i+1]
+by using x[i+1] and writing the remaining sum from subset of x[1..i]. Also, we can write
+any number from 1 to sum[1..i] by using subset of x[1..i] (By assumption). Thus, we can
+write all integers from 1 to sum[1..(i+1)] as sum of elements of subset of x[1..(i+1)].
+Thus, by induction, all integers from 1 to sum[1..i] can be written as sum of elements of
+subset of x[1..i], if x[i]<=sum[1..(i-1)]+1. If x[i]>sum[1..(i-1)]+1, then we can never write
+the number p = sum[1..(i-1)]+1 as sum of elements of subset of x[1..i]. Thus answer would
+be p
+*/
 int smallest_sum(vector<int>& x,int n){
     sort(x.begin(),x.end());
     if(x[0]>1){
