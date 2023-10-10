@@ -518,6 +518,44 @@ for(int i=1;i<=100000;i++){
 }
 cout<<ans<<'\n';
 ```
+- Sometimes, to calculate count of objects which satisfy property $X$, we instead calculate count of objects which don't satisfy property $X$ (if it's easier) and then subtract it from total objects. A problem illustrating this and the use of contribution technique: For a sequence $X$, let $f(X) =$ minimum number of elements to be modified to make $X$ a palindrome. Given an array $a$ of length $n (1 \leq a_{i} \leq m)$, calculate sum of $f(X)$ over all subarrays of $a$
+```cpp
+/*
+We shall assume 1-based indexing for array a.
+We will count contribution of each pair (l,r) (l<r). A pair (l,r) contributes 1 for a subarray
+(L,R) if l-L==R-r and a[l]!=a[r]. Let's call a pair (l,r) good if a[l]==a[r]. We need to calculate
+total count of bad pairs across all subarrays. Now, total count of bad pairs across all subarrays
+= total count of pairs (l,r) across all subarrays - total count of good pairs across all subarrays.
+To evaluate second part of RHS, instead of evaluating number of good pairs for each subarray, we will
+instead evaluate how many subarrays each good pair contributes to. We note that a good pair (l,r)
+contributes to min(l,n-r+1) subarrays
+*/
+vector<vector<int>>p(m+1);
+for(int i=1;i<=n;i++){
+    p[a[i]].push_back(i);
+}
+int ans=0;
+// We first calculate total count of pairs across all subarrays
+for(int i=1;i<=n;i++){
+    ans+=(n-i+1)*(i/2); // Contribution of subarray of length i (There are (n-i+1) subarrays of length i and each such subarray has floor(i/2) pairs)
+}
+for(int i=1;i<=m;i++){
+    // We will subtract count of good pairs (x,y) such that a[x] == a[y] == i from ans
+    int l=0,r=(int)p[i].size()-1;
+    // We will use two pointer method to calculate sum of min(p[i][l],n-p[i][r]+1) for all pairs in array p[i]
+    while(l<r){
+        if(p[i][l]<=n-p[i][r]+1){ // Then it is also true for pairs (l,l+1), (l,l+2) ... (l,r-1)
+            ans-=(r-l)*p[i][l];
+            l++;
+        }
+        else{ // Also true for pairs (l+1,r), (l+2,r) .. (r-1,r)
+            ans-=(r-l)*(n-p[i][r]+1);
+            r--;
+        }
+    }
+}
+cout<<ans<<'\n';
+``` 
 - Computing $\binom{n}{r}$ modulo $MOD$
 ```cpp
 vector<vector<ll>>C(N+1,vector<ll>(N+1,0));
