@@ -41,7 +41,7 @@ while(hi-lo>1){
 }
 ```
 - Binary search to search elements in sorted arrays
-- Binary search on answer
+- Binary search on answer (often used in maximizing/minimizing certain quantities)
 - Often used in minimax/maximin problems
 - [Codeforces EDU - Binary Search](https://codeforces.com/edu/course/2/lesson/6)
 
@@ -186,7 +186,47 @@ while(q--){
     cout<<dp[k]<<'\n';
 }
 ```
-- DP on trees problems usually require us to consider the tree as a rooted tree and then do DFS while maintaining DP vector(s)
+- DP on trees problems usually require us to consider the tree as a rooted tree and then do DFS while maintaining DP vector(s). For example, consider this problem: Consider a tree with $n$ vertices rooted at vertex $1$. For some permutation $a$ of $[1...n]$, let $f(a)$ be the number of pairs of vertices $(u,v)$ such that $a_{u} < a_{lca(u,v)} < a_{v}$. Find maximum possible value of $f(a)$ over all permutations of $[1...n]$
+```cpp
+/*
+Note that in order to maximize f(a), we can always assign values to the tree such
+that the values in the subtree of vertex x are either all > a[x] or all < a[x].
+To maximize the value of f(a), we must assign the values such that the sum of
+sizes of subtree(s) with value > a[x] and that of value < a[x] are as close as
+possible 
+*/
+
+void dfs(int u,int p,vector<vector<int>>& g,vector<int>& dp,vector<int>& sz){
+    vector<int>x;
+    sz[u]=1;
+    for(auto v:g[u]){
+        if(v!=p){
+            dfs(v,u,g,dp,sz);
+            dp[u]+=dp[v];
+            sz[u]+=sz[v];
+            x.PB(sz[v]);
+        }
+    }
+    int W=sz[u]/2,n=(int)x.size();
+    vector<int>dp2(W+1,0);
+    for(int i=0;i<n;i++){
+        for(int j=W;j>=0;j--){
+            if(j>=x[i]){
+                dp2[j]=max(dp2[j],x[i]+dp2[j-x[i]]);
+            }
+        }
+    }
+    dp[u]+=dp2[W]*(sz[u]-1-dp2[W]);
+}
+
+void solve(){
+    vector<int>dp(n+1,0),sz(n+1,0);
+    // dp[i] -> Number of pairs (u,v) satisfying the given criteria in i's subtree
+    // sz[i] -> Number of nodes in i's subtree
+    dfs(1,0,g,dp,sz);
+    cout<<dp[1]<<'\n';
+}
+```
 - Quite often, we have to calculate answer for the tree considering all the nodes as root of the tree. This can be done by calculating the answer for one particular root and then using those calculated values to calculate answer for new root (the adjacent node to the original root is taken as new root). For example, consider this problem: There's a tree with $n$ vertices numbered $1$ to $n$. An integer $a_i$ is written on vertex $i$ for $i = 1,2,...,n$. You have to make all $a_i$ equal by performing some (possibly zero) operations. Suppose, you root the tree at some vertex. In each operation, you select any vertex $v$ and a non negative intger $c$. Then for all vertices $i$ in $v$'s subtree, replace $a_i$ with $a_i \oplus c$. The cost of this operation is $s.c$, where $s$ is number of vertices in the subtree. Let $m_r$ denote minimum possible total cost required to make all $a_i$ equal, if vertex $r$ is chosen as root of the tree. Find $m_1, m_2, ..., m_n$
 ```cpp
 // Let's first calculate m1. We do this by making every node's value equal to a[1]. Infact, minimum total cost when calculating mr would be when we make each node's value equal to a[r] (We can prove this requires minimum cost)
@@ -209,7 +249,7 @@ void dfs2(int u,int p,vector<vector<int>>& g,vector<int>& ans,vector<int>& sz,ve
             // Updating sz values as per new root
             sz[v]=su; // Updating sz[v]
             sz[u]-=sv; // Updating sz[u]
-            ans[v]=ans[u]+(a[u]*a[v])*(su-2*sv);
+            ans[v]=ans[u]+(a[u]^a[v])*(su-2*sv);
             dfs2(v,u,g,ans,sz,a);
             // Restoring original sz values (as per old root)
             sz[u]=su;
