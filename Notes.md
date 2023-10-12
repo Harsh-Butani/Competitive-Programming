@@ -1011,6 +1011,79 @@ int kruskal(vector<vector<int>>& edges){
 - Many problems can be solved by modelling the problem into a known graph problem and then apply known algorithms on this graph like BFS, DFS, Dijkstra, Topological Sort, etc
 - To calculate farthest node (and its distance) for each node in a tree, we can do the following. Pick an arbitrary vertex (let's say $u$) and find vertex farthest from $u$ (let's say it is $v_1$). Now from $v_1$, find farthest vertex (let's say $v_2$). Note that $v_1$ and $v_2$ are ends of the diameter of the tree. For each node in the tree, the farthest node is one of the ends of the diameter of the tree (i.e. $v_1$ or $v_2$). Thus we can calculate distances of each node from $v_1$ and $v_2$ and then take maximum among those $2$ distances to get distance from farthest node
 - In many problems, the idea is to make a graph and find shortest distance between $2$ nodes. But building such a graph can be very time-consuming and can cause TLE if we build such a graph. Instead, the idea is to build a bipartite graph and find shortest distance on this graph. For example, consider a graph that contains an edge between two nodes iff they are non-coprime. We can instead build a bipartite graph where the left set contains array elements and right set contains prime numbers. A node $u$ in left part is connected to a node $p$ in right part iff $p|u$. Then, we can find shortest distance between two nodes $u$ and $v$ in this bipartite graph and divide the answer by $2$. Another example is a graph where two nodes are connected iff both the sets share a common element. In this case, build the bipartite graph such that left part consists of set number and right part consists of set elements. A node $u$ in left part is connected to a node $e$ in right part iff $e \in u$
+- A problem using the above mentioned technique: There are $n$ spiders, $i^{th}$ of which has $a_{i}$ legs $(1 \leq a_{i} \leq 100000)$. The $i^{th}$ and $j^{th}$ spiders are friends if $gcd(a_{i}, a_{j}) \neq 1$. Two friend spiders can send messages to each other. Given two spiders $s$ and $t$, determine the most optimal route for spider $s$ to send a message to spider $t$
+```cpp
+/*
+The idea is to make a graph where an edge exists between two spiders i and j iff a[i] and
+a[j] are non-coprime. Now, we just find shortest path from s to t. But this graph would be
+very large. Instead, we construct a bipartite graph where left part consists of n spiders
+and right part consists of prime numbers. A node i in left part is connected to a node p in
+right part iff p | i. Now, we find shortest distance between s and t and divide it by 2
+*/
+vector<int>mind(100001);
+for(int i=0;i<=100000;i++){
+    mind[i]=i;
+}
+for(int i=2;i*i<=100000;i++){
+    if(mind[i]==i){
+        for(int j=i*i;j<=100000;j+=i){
+            mind[j]=min(mind[j],i);
+        }
+    }
+}
+map<int,vector<int>>g;
+for(int i=1;i<=n;i++){
+    int x=a[i];
+    while(x>1){
+        int p=mind[x];
+        g[i].PB(n+p);
+        g[n+p].PB(i);
+        while(!(x%p)){
+            x/=p;
+        }
+    }
+}
+// Now, we can just do a simple BFS from source s till we reach t and store the parents of the visited vertices. Then, we can traverse these vertices to get our optimal route
+map<int,int>parent;
+queue<int>q;
+q.push(s);
+parent[s]=0;
+bool flag=0;
+while(!q.empty()){
+    int u=q.front();
+    q.pop();
+    for(auto v:g[u]){
+        if(parent.find(v)==parent.end()){
+            q.push(v);
+            parent[v]=u;
+            if(v==t){
+                flag=1;
+                break;
+            }
+        }
+    }
+    if(flag){
+        break;
+    }
+}
+if(parent.find(t)==parent.end()){
+    cout<<"No route exists";
+    return;
+}
+stack<int>stk;
+stk.push(t);
+int current=t;
+while(current!=s){
+    current=parent[current];
+    if(current<=n){
+        stk.push(current);
+    }
+}
+while(!stk.empty()){
+    cout<<stk.top()<<" ";
+    stk.pop();
+}
+```
 - Many problems involve finding shortest distance from a particular node with some minor tweaks, for example reversing the edges of the graph atmost once. In such problems, we have to introduce some dummy nodes and add edges of appropriate weight and then run Dijkstra's Algorithm on it
 
 **9. Bit Manipulation**
