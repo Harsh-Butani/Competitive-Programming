@@ -227,6 +227,70 @@ void solve(){
     cout<<dp[1]<<'\n';
 }
 ```
+- Some Tree DP problems involve doing DP over the other part of the current subtree as well. This is usually done by passing another parameter in the $DFS()$ function. For example, consider this problem: You have a tree with $n$ vertices, some of which are marked. Let $f_{i}$ denote the maximum distance from vertex $i$ to one of the marked vertices. Find value of $f_{i}$ for all vertices of the tree
+```cpp
+/*
+Note that if we were to find minimum distance from marked vertices for all the vertices,
+we could have done multisource BFS (and that doesn't require the graph to be a tree).
+But since it is given that the graph is a tree, we can use Tree DP to solve it
+*/
+void dfs(int u,int p,vector<vector<int>>& g,vector<bool>& marked,vector<int>& dp){
+    if(marked[u]){
+        dp[u]=0;
+    }
+    for(auto v:g[u]){
+        if(v==p){
+            continue;
+        }
+        dfs(v,u,g,marked,dp);
+        dp[u]=(dp[v]==-1?dp[u]:max(dp[u],1+dp[v]));
+    }
+}
+
+void dfs2(int u,int p,vector<vector<int>>& g,vector<bool>& marked,vector<int>& dp,int m){
+    dp[u]=(m==-1?dp[u],max(dp[u],1+m));
+    int mx=-1,mxx=-1,first=-1,second=-1;
+    for(auto v:g[u]){
+        if(v==p){
+            continue;
+        }
+        if(dp[v]>mx){
+            second=first;
+            mxx=mx;
+            first=v;
+            mx=dp[v];
+        }
+        else if(dp[v]>mxx){
+            second=v;
+            mxx=dp[v];
+        }
+    }
+    for(auto v:g[u]){
+        if(v==p){
+            continue;
+        }
+        int x=-1,take=(v==first?mxx:mx);
+        x=(take==-1?-1:1+take);
+        x=(marked[u]?max(0,x):x);
+        x=(m==-1?x:max(1+m,x));
+        dfs2(v,u,g,marked,dp,x);
+    }
+}
+
+void solve(){
+    // marked[i] -> True if ith vertex is marked. Else false
+    vector<int>dp(n+1,-1);
+    // dp[i] -> Stores maximum distance of marked vertices from vertex i finally (-1 if no marked vertices are present in the tree). It does so in 2 stages
+    dfs(1,0,g,marked,dp);
+    // After doing dfs(), dp[i] stores maximum distance of marked vertices from node i in i's subtree (-1 if no marked vertices are present in i's subtree)
+    dfs2(1,0,g,marked,dp,-1);
+    // After performing dfs2(), dp[i] stores the required answers (i.e. maximum distance of marked vertices from node i/-1 if no marked vertices present in the tree)
+    // Here, the last parameter (passed as -1 initially) is the contribution from the parent of passed node
+    for(int i=1;i<=n;i++){
+        cout<<dp[i]<<" ";
+    }
+}
+```
 - Quite often, we have to calculate answer for the tree considering all the nodes as root of the tree. This can be done by calculating the answer for one particular root and then using those calculated values to calculate answer for new root (the adjacent node to the original root is taken as new root). For example, consider this problem: There's a tree with $n$ vertices numbered $1$ to $n$. An integer $a_i$ is written on vertex $i$ for $i = 1,2,...,n$. You have to make all $a_i$ equal by performing some (possibly zero) operations. Suppose, you root the tree at some vertex. In each operation, you select any vertex $v$ and a non negative intger $c$. Then for all vertices $i$ in $v$'s subtree, replace $a_i$ with $a_i \oplus c$. The cost of this operation is $s.c$, where $s$ is number of vertices in the subtree. Let $m_r$ denote minimum possible total cost required to make all $a_i$ equal, if vertex $r$ is chosen as root of the tree. Find $m_1, m_2, ..., m_n$
 ```cpp
 // Let's first calculate m1. We do this by making every node's value equal to a[1]. Infact, minimum total cost when calculating mr would be when we make each node's value equal to a[r] (We can prove this requires minimum cost)
