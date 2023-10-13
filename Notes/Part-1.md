@@ -981,8 +981,8 @@ while(!q.empty()){
     for(auto v:graph[u]){
         if(visited.find(v)==visited.end()){
             q.push(v);
+            visited.insert(v);
             distance[v]=distance[u]+1;
-            visited[v]=1;
             if(v==n+m){
                 cout<<distance[v]/2<<'\n';
                 return;
