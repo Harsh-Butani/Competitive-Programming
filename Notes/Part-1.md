@@ -582,7 +582,7 @@ int count = 0
 for every good type A object:
     count += number of type B objects that yield it
 ```
-- A problem illustrating the use of above technique: You are given an array $a$ consisting of $n$ distinct integers $a_{1}, a_{2}, ..., a_{n}$. Define the beauty of an array $p_{1}, p_{2}, ..., p_{k}$ as the minimum amount of time needed to sort this array using an arbitrary number of range-sort operations. In each range-sort operation, you choose two integers $l$ and $r (1 \leq l < r \leq k)$. Then sort the subarray $p_{l}, p_{l+1}, ..., p_{r}$ in $(r-l)$ seconds. Calculate sum of beauty over all subarrays of $a$
+- A problem illustrating the use of above technique: You are given an array $a$ consisting of $n$ distinct integers $a_{1}, a_{2}, ..., a_{n}$. Define the beauty of an array $p_{1}, p_{2}, ..., p_{k}$ as the minimum amount of time needed to sort this array using an arbitrary number of range-sort operations. In each range-sort operation, you choose two integers $l$ and $r$ $(1 \leq l < r \leq k)$. Then sort the subarray $p_{l}, p_{l+1}, ..., p_{r}$ in $(r-l)$ seconds. Calculate sum of beauty over all subarrays of $a$
 ```cpp
 /*
 Since time to sort a subarray is 1 less than its length, therefore to sort the array in
@@ -654,7 +654,7 @@ for(int i=1;i<n;i++){
 }
 cout<<total<<'\n';
 ```
-- Sometimes, to calculate count of objects which satisfy property $X$, we instead calculate count of objects which don't satisfy property $X$ (if it's easier) and then subtract it from total objects. A problem illustrating this and the use of contribution technique: For a sequence $X$, let $f(X) =$ minimum number of elements to be modified to make $X$ a palindrome. Given an array $a$ of length $n (1 \leq a_{i} \leq m)$, calculate sum of $f(X)$ over all subarrays of $a$
+- Sometimes, to calculate count of objects which satisfy property $X$, we instead calculate count of objects which don't satisfy property $X$ (if it's easier) and then subtract it from total objects. A problem illustrating this and the use of contribution technique: For a sequence $X$, let $f(X) =$ minimum number of elements to be modified to make $X$ a palindrome. Given an array $a$ of length $n$ $(1 \leq a_{i} \leq m)$, calculate sum of $f(X)$ over all subarrays of $a$
 ```cpp
 /*
 We shall assume 1-based indexing for array a.
