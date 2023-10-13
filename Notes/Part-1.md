@@ -82,7 +82,7 @@ for(int r=0;r<n;r++){
 // longest -> Longest subarray with difference between maximum and minimum elements <= k
 // count -> Number of subarrays with difference between maximum and minimum elements <= k
 ```
-Above solution works in $O(n$ $log$ $n)$ time. We can reduce the time complexity to $O(n)$ by using two stacks as follows
+- Above solution works in $O(n$ $log$ $n)$ time. We can reduce the time complexity to $O(n)$ by using two stacks as follows
 ```cpp
 stack<int>f,b,mxf,mxb,mnf,mnb; // f stands for forward stack and b stands for backward stack. These stacks are used to simulate queue
 
@@ -155,166 +155,6 @@ void solve(){
     } 
     // longest -> Longest subarray with difference between maximum and minimum elements <= k
     // count -> Number of subarrays with difference between maximum and minimum elements <= k
-}
-```
-Another problem illustrating the usefulness of using two stacks: Given an array of $n$ integers $a_i$. A segment on this array $a[l...r]$ is good if $GCD$ of all numbers in this segment is $1$. Find length of shortest such segment or print $-1$ if no good segment exists
-```cpp
-stack<int>f,b,fgcd,bgcd; // f stands for forward stack and b stands for backward stack. These stacks are used to simulate queue
-
-void add(int x){
-    f.push(x);
-    if(!fgcd.empty()){
-        fgcd.push(__gcd(fgcd.top(),x));
-    }
-    else{
-        fgcd.push(x);
-    }
-}
-
-void remove(){
-    if(b.empty()){
-        while(!f.empty()){
-            b.push(f.top());
-            if(bgcd.empty()){
-                bgcd.push(f.top());
-            }
-            else{
-                bgcd.push(__gcd(bgcd.top(),f.top()));
-            }
-            f.pop();
-            fgcd.pop();
-        }
-    }
-    b.pop();
-    bgcd.pop();
-}
-
-void solve(){
-    // Assuming array integers in a[0...(n-1)]
-    int g;
-    for(int i=0;i<n;i++){
-        if(!i){
-            g=a[i];
-        }
-        else{
-            g=__gcd(g,a[i]);
-        }
-    }
-    if(g!=1){
-        cout<<"-1\n";
-        return;
-    }
-    int l=0,ans=n;
-    for(int r=0;r<n;r++){
-        add(a[r]);
-        while(l<=r){
-            int gcd=INT_MAX;
-            if(!fgcd.empty()){
-                gcd=fgcd.top();
-            }
-            if(!bgcd.empty()){
-                if(gcd==INT_MAX){
-                    gcd=bgcd.top();
-                }
-                else{
-                    gcd=__gcd(gcd,bgcd.top());
-                }
-            }
-            if(gcd==1){
-                ans=min(ans,r-l+1);
-            }
-            else{
-                break;
-            }
-            if(l==r){
-                break;
-            }
-            remove();
-            l++;
-        }
-    }
-    cout<<ans<<'\n';
-}
-```
-Another problem illustrating use of bitsets and the two stacks technique: Given an array of $n$ integers $a_i$. A segment on this array $a[l...r]$ is good if it is possible to choose a certain set of numbers whose sum is equal to $s (1 \leq s \leq 1000)$. Find shortest such segment or print $-1$ if no such segment exists
-```cpp
-stack<int>f,b; // f stands for forward stack and b stands for backward stack. These stacks are used to simulate queue
-stack<bitset<1001>>fb,bb;
-
-void add(int x){
-    f.push(x);
-    if(fb.empty()){
-        bitset<1001>bt;
-        bt[0]=1;
-        bt[x]=1;
-        fb.push(bt);
-    }
-    else{
-        bitset<1001>bt=fb.top();
-        bt=bt|(bt<<x);
-        fb.push(bt);
-    }
-}
-
-void remove(){
-    if(b.empty()){
-        while(!f.empty()){
-            b.push(f.top());
-            if(bb.empty()){
-                bitset<1001>bt;
-                bt[0]=1;
-                bt[f.top()]=1;
-                bb.push(bt);
-            }
-            else{
-                bitset<1001>bt=bb.top();
-                bt=bt|(bt<<f.top());
-                bb.push(bt);
-            }
-            f.pop();
-            fb.pop();
-        }
-    }
-    b.pop();
-    bb.pop();
-}
-
-void solve(){
-    // Assuming array elements in a[0...(n-1)]
-    int ans=INT_MAX,l=0;
-    for(int r=0;r<n;r++){
-        add(a[r]);
-        while(l<=r){
-            bitset<1001>bt1,bt2;
-            if(!fb.empty()){
-                bt1=fb.top();
-            }
-            if(!bb.empty()){
-                bt2=bb.top();
-            }
-            bool f=0;
-            if(bt1[s]==1 || bt2[s]==1){
-                ans=min(ans,r-l+1);
-                f=1;
-            }
-            for(int i=0;i<=s;i++){
-                if(bt1[i]==1 && bt2[s-i]==1){
-                    ans=min(ans,r-l+1);
-                    f=1;
-                    break;
-                }
-            }
-            if(l==r || !f){
-                break;
-            }
-            remove();
-            l++;
-        }
-    }
-    if(ans==INT_MAX){
-        ans=-1;
-    }
-    cout<<ans<<'\n';
 }
 ```
 - [Codeforces EDU - Two Pointers Method](https://codeforces.com/edu/course/2/lesson/9)
@@ -677,38 +517,6 @@ for(int i=1;i<n;i++){
 int ans=(k[n]-k[m]+MOD)%MOD;
 cout<<ans<<'\n';
 ```
-- Another expectation problem: A binary array $a$ of length $n$ is given. You need to sort this array. In one operation, you can choose two random indices $i$ and $j$ such that $i < j$. Indices are chosen equally probable among all pairs of indices $(i, j)$ such that $1 \leq i < j \leq n$. After choosing the indices, you swap $a_{i}$ and $a_{j}$ if $a_{i} > a_{j}$. Find expected number of such operations before the array becomes sorted
-```cpp
-int z=0;
-for(int i=0;i<n;i++){
-    if(!a[i]){
-        z++;
-    }
-}
-vector<int>dp(z+1);
-/*
-dp[i] -> expected number of operations if there are i 0's in first z places
-dp[i] = 1 + p*dp[i+1] + (1-p)*dp[i] where p is the probability of choosing a 1 from first z places and a 0 from last (n-z) places
-From above, we get dp[i] = dp[i+1] + 1/p
-Note that p = (z-i)*(z-i)/C(n,2) as there are (z-i) ways of choosing 1 from first z places and (z-i) ways of choosing 0 from last (n-z) places
-Also note that dp[z] = 0
-Let there be zz 0's among first z places. Then answer = dp[zz]
-*/
-int zz=0;
-for(int i=0;i<z;i++){
-    if(!a[i]){
-        zz++;
-    }
-}
-dp[z]=0;
-for(int i=z-1;i>=zz;i--){
-    int p=(n*(n-1))%MOD;
-    int q=(2*(z-i)*(z-i))%MOD;
-    int r=(p*xp(q,MOD-2,MOD))%MOD;
-    dp[i]=(dp[i+1]+r)%MOD;
-}
-cout<<dp[zz]<<'\n';
-```
 - DP with bitmasking is often used in problems involving recurrence relations on subsets of a set. For example, consider this problem where there are $n$ people ($n \leq 10$), each having a collection of caps ($1$ of each type and each type varies between $1$ and $c$). The collection of caps possessed by each person is given. You need to calculate the number of ways these $n$ people can wear caps such that no two people wear same type of cap
 ```cpp
 vector<int>cap(c+1);
@@ -845,39 +653,6 @@ for(int i=1;i<n;i++){
     total-=((z-i)*(y-x));
 }
 cout<<total<<'\n';
-```
-- Another problem illustrating the use of the contribution technique: You have an array $[a_{1}, a_{2}, ..., a_{n}] (0 \leq a_{i} \leq 10^{5})$. Initially, all elements are white. You will choose one or more indices and color the elements at the chosen indices black. Then, you will choose all white elements whose indices are multiples of the index of at least one black element and color those elements green. After that, your score is the maximum value of $a_{i}$ among all black and green elements. There are $2^{n} - 1$ ways for you to choose the black indices. Find the sum of scores for all $2^{n} - 1$ possible ways of choosing black indices modulo $MOD$ where $MOD$ is prime
-```cpp
-/*
-For each number i (0 <= i <= 100000), we will calculate number of ways we can color some indices black
-such that score = i (say this value comes out be = x). Then we will add the value of i * x to the answer.
-In fact, we need to consider only those i such that i = mx[j] for some index j (see definition of mx[] below).
-Let's see how we can calculate x. Note that among indices whose mx[] value = i , we need to choose at least
-one such index for coloring. Also we can either choose or not choose those indices whose mx[] value is < i.
-And we shouldn't choose those indices whose mx[] value is > i. Thus, we have x = (2 ^ equal[i] - 1) * (2 ^ less[i])
-(See definition of equal[] and less[] below)
-*/
-// Assuming array elements are stored in a[1], a[2], ..., a[n]
-vector<int>mx(n+1,0),equal(100001,0),less(100001,0);
-// mx[i] -> Maximum value among a[i], a[2*i], a[3*i], ..., a[floor(n/i)*i]
-// equal[i] -> Count of indices j such that mx[j] = i
-// less[i] -> Count of indices j such that mx[j] < i
-int ans=0;
-for(int i=1;i<=n;i++){
-    for(int j=i;j<=n;j+=i){
-        mx[i]=max(mx[i],a[j]);
-    }
-    equal[mx[i]]++;
-}
-for(int i=1;i<=100000;i++){
-    less[i]=less[i-1]+equal[i-1];
-    if(equal[i]){
-        int x=(xp(2,equal[i],MOD)-1+MOD)%MOD;
-        x=(x*xp(2,less[i],MOD))%MOD;
-        ans=(ans+(i*x)%MOD)%MOD;
-    }
-}
-cout<<ans<<'\n';
 ```
 - Sometimes, to calculate count of objects which satisfy property $X$, we instead calculate count of objects which don't satisfy property $X$ (if it's easier) and then subtract it from total objects. A problem illustrating this and the use of contribution technique: For a sequence $X$, let $f(X) =$ minimum number of elements to be modified to make $X$ a palindrome. Given an array $a$ of length $n (1 \leq a_{i} \leq m)$, calculate sum of $f(X)$ over all subarrays of $a$
 ```cpp
