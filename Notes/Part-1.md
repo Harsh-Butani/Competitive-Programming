@@ -914,3 +914,245 @@ for(int i=1;i*i<=N;i++){
     - $gcd(N_{1}, N_{2}) =  p_1^{min(\alpha_1,\beta_1)}p_2^{min(\alpha_2,\beta_2)}...p_k^{min(\alpha_k,\beta_k)}$
     - $lcm(N_{1}, N_{2}) =  p_1^{max(\alpha_1,\beta_1)}p_2^{max(\alpha_2,\beta_2)}...p_k^{max(\alpha_k,\beta_k)}$
 - Suppose $p$ is a prime number and $n \in \mathbb{N}$. The highest power of $p$ which divides $n!$ is given by $\Sigma_{i=1}^{\infty}\lfloor\frac{n}{p^i}\rfloor$
+
+**8. Graph Theory**
+
+**8.1. Depth First Search (DFS)**
+
+```cpp
+void dfs(int u,vector<vector<int>>& graph,vector<int>& color){
+    color[u]=1;
+    for(auto v:graph[u]){
+        if(!color[v]){
+            dfs(v,graph,color);
+        }
+    }
+    color[u]=2;
+}
+```
+- Often used while doing DP on Trees
+- DFS Tree can be used to solve many problems
+
+**8.2. Breadth First Search (BFS)**
+
+```cpp
+queue<int>q;
+vector<bool>visited(n,false);
+q.push(0);
+visited[0]=true;
+while(!q.empty()){
+    int u=q.front();
+    q.pop();
+    for(auto v:graph[u]){
+        if(!visited[v]){
+            q.push(v);
+            visited[v]=true;
+        }
+    }
+}
+```
+- Multi-Source BFS can be used to find distance of nearest node among a set of nodes. Just put all the nodes of the set in the queue instead of just $1$ of them. Consider this problem which involves use of multisource BFS as well as the bipartite graph technique (described below): On a blackboard, there are $n$ sets $S_{1}, S_{2}, ..., S_{n}$ consisting of integers between $1$ and $m$ inclusive. At a time, you can choose two sets $X$ and $Y$ such that $X \cap Y \neq \phi$, then erase these two sets and write $X \cup Y$ on the blackboard. Determine if you can obtain a set containing both $1$ and $m$. If it's possible, find minimum number of operations required to obtain it
+```cpp
+/*
+We build a bipartite graph in which left part contains the set numbers and the right part
+contains elements. A node i in left part is connected to a node j in right part iff set i
+contains element j. Now, we just need to find minimum distance of element m (in right part)
+from all the sets in left part which contain the element 1 and divide this distance by 2.
+We can do this by multi source BFS
+*/
+map<int,vector<int>>graph;
+for(int i=1;i<=n;i++){
+    for(int j=0;j<(int)s[i].size();j++){
+        g[i].PB(n+S[i][j]);
+        g[n+S[i][j]].PB(i);
+    }
+}
+map<int,int>distance;
+queue<int>q;
+set<int>visited;
+for(auto x:graph[n+1]){
+    q.push(x);
+    visited.insert(x);
+    distance[x]=0;
+}
+while(!q.empty()){
+    int u=q.front();
+    q.pop();
+    for(auto v:graph[u]){
+        if(visited.find(v)==visited.end()){
+            q.push(v);
+            distance[v]=distance[u]+1;
+            visited[v]=1;
+            if(v==n+m){
+                cout<<distance[v]/2<<'\n';
+                return;
+            }
+        }
+    }
+}
+cout<<"Not Possible\n";
+```
+  
+**8.3. Dijkstra's Algorithm**
+
+```cpp
+// Implementation using set
+void dijkstra(int source,vector<int>& distance,vector<int>& parent,vector<vector<pair<int,int>>>& graph,int nodes){
+    distance.assign(nodes,1e18);
+    parent.assign(nodes,-1);
+    distance[source]=0;
+    set<pair<int,int>>st;
+    st.insert({0,source});
+    while(!st.empty()){
+        int v=st.begin()->second;
+        st.erase(st.begin());
+        for(auto x:graph[v]){
+            if(distance[v]+x.second<distance[x.first]){
+                st.erase({distance[x.first],x.first});
+                distance[x.first]=distance[v]+x.second;
+                parent[x.first]=v;
+                st.insert({distance[x.first],x.first});
+            }
+        }
+    }
+}
+```
+```cpp
+// Implementation using priority queue
+void dijkstra(int source,vector<int>& distance,vector<int>& parent,vector<vector<pair<int,int>>>& graph,int nodes){
+    distance.assign(nodes,1e18);
+    parent.assign(nodes,-1);
+    distance[source]=0;
+    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+    pq.push({0,source});
+    while(!pq.empty()){
+        int v=pq.top().second();
+        int d_v=pq.top().first;
+        pq.pop();
+        if(d_v!=distance[v]){
+            continue;
+        }
+        for(auto x:graph[v]){
+            if(distance[v]+x.second<distance[x.first]){
+                distance[x.first]=distance[v]+x.second;
+                parent[x.first]=v;
+                pq.push({distance[x.first],x.first});
+            }
+        }
+    }
+}
+```
+- Multi-Source Dijkstra can be used to find shortest distance from a set of nodes. Just assign $0$ distance to all these source nodes and push them in set/priority queue
+
+**8.4. Kruskal's Algorithm**
+
+```cpp
+// edges[i][0] -> weight of ith edge
+// edges[i][1] -> 1st node of ith edges
+// edges[i][2] -> 2nd node of ith edge
+// get() and unite() are standard DSU functions
+int kruskal(vector<vector<int>>& edges){
+    sort(edges.begin(),edges.end());
+    int weight=0;
+    for(int i=0;i<n;i++){
+        int u=get(edges[i][1],p);
+        int v=get(edges[i][2],p);
+        if(u!=v){
+            unite(u,v,p,r);
+            weight+=edges[i][0];
+        }
+    }
+    return weight;
+}
+```
+
+**8.5. Bellman Ford Algorithm**
+
+**8.6. Floyd Warshall Algorithm**
+
+**8.7. Topological Sort**
+
+- Can be done by doing DFS and storing the visited vertices (whose DFS tree is generated) in a stack
+- A topological ordering is unique iff for every two adjacent nodes in the ordering, an edge exists between these two nodes in the graph. Another method to check uniqueness is that length of longest path in the graph = number of vertices $-$ $1$
+
+**8.8. Some general notes and ideas**
+
+- Usually, graphs are constructed using $2D$ vectors. But maps can also be used for constructing graphs
+- A graph is bipartite iff it contains no odd cycles
+- A graph is a cycle graph iff each vertex has degree $2$ and number of connected components is $1$
+- Many problems can be solved by modelling the problem into a known graph problem and then apply known algorithms on this graph like BFS, DFS, Dijkstra, Topological Sort, etc
+- To calculate farthest node (and its distance) for each node in a tree, we can do the following. Pick an arbitrary vertex (let's say $u$) and find vertex farthest from $u$ (let's say it is $v_1$). Now from $v_1$, find farthest vertex (let's say $v_2$). Note that $v_1$ and $v_2$ are ends of the diameter of the tree. For each node in the tree, the farthest node is one of the ends of the diameter of the tree (i.e. $v_1$ or $v_2$). Thus we can calculate distances of each node from $v_1$ and $v_2$ and then take maximum among those $2$ distances to get distance from farthest node
+- In many problems, the idea is to make a graph and find shortest distance between $2$ nodes. But building such a graph can be very time-consuming and can cause TLE if we build such a graph. Instead, the idea is to build a bipartite graph and find shortest distance on this graph. For example, consider a graph that contains an edge between two nodes iff they are non-coprime. We can instead build a bipartite graph where the left set contains array elements and right set contains prime numbers. A node $u$ in left part is connected to a node $p$ in right part iff $p|u$. Then, we can find shortest distance between two nodes $u$ and $v$ in this bipartite graph and divide the answer by $2$. Another example is a graph where two nodes are connected iff both the sets share a common element. In this case, build the bipartite graph such that left part consists of set number and right part consists of set elements. A node $u$ in left part is connected to a node $e$ in right part iff $e \in u$. A problem which can be solved using this technique: There are $n$ spiders, $i^{th}$ of which has $a_{i}$ legs $(1 \leq a_{i} \leq 100000)$. The $i^{th}$ and $j^{th}$ spiders are friends if $gcd(a_{i}, a_{j}) \neq 1$. Two friend spiders can send messages to each other. Given two spiders $s$ and $t$, determine the most optimal route for spider $s$ to send a message to spider $t$
+```cpp
+/*
+The idea is to make a graph where an edge exists between two spiders i and j iff a[i] and
+a[j] are non-coprime. Now, we just find shortest path from s to t. But this graph would be
+very large. Instead, we construct a bipartite graph where left part consists of n spiders
+and right part consists of prime numbers. A node i in left part is connected to a node p in
+right part iff p | i. Now, we find shortest distance between s and t and divide it by 2
+*/
+vector<int>mind(100001);
+for(int i=0;i<=100000;i++){
+    mind[i]=i;
+}
+for(int i=2;i*i<=100000;i++){
+    if(mind[i]==i){
+        for(int j=i*i;j<=100000;j+=i){
+            mind[j]=min(mind[j],i);
+        }
+    }
+}
+map<int,vector<int>>g;
+for(int i=1;i<=n;i++){
+    int x=a[i];
+    while(x>1){
+        int p=mind[x];
+        g[i].PB(n+p);
+        g[n+p].PB(i);
+        while(!(x%p)){
+            x/=p;
+        }
+    }
+}
+// Now, we can just do a simple BFS from source s till we reach t and store the parents of the visited vertices. Then, we can traverse these vertices to get our optimal route
+map<int,int>parent;
+queue<int>q;
+q.push(s);
+parent[s]=0;
+bool flag=0;
+while(!q.empty()){
+    int u=q.front();
+    q.pop();
+    for(auto v:g[u]){
+        if(parent.find(v)==parent.end()){
+            q.push(v);
+            parent[v]=u;
+            if(v==t){
+                flag=1;
+                break;
+            }
+        }
+    }
+    if(flag){
+        break;
+    }
+}
+if(parent.find(t)==parent.end()){
+    cout<<"No route exists";
+    return;
+}
+stack<int>stk;
+stk.push(t);
+int current=t;
+while(current!=s){
+    current=parent[current];
+    if(current<=n){
+        stk.push(current);
+    }
+}
+while(!stk.empty()){
+    cout<<stk.top()<<" ";
+    stk.pop();
+}
+```
+- Many problems involve finding shortest distance from a particular node with some minor tweaks, for example reversing the edges of the graph atmost once. In such problems, we have to introduce some dummy nodes and add edges of appropriate weight and then run Dijkstra's Algorithm on it
