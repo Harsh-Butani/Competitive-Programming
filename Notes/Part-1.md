@@ -8,23 +8,27 @@
 - [USACO Guide](https://usaco.guide/)
   
 **1. Binary Search**
-- General code looks something like this
-```cpp
-int lo=LOW,hi=HIGH,mid,ans=-1;
-while(lo<=hi){
-    mid=lo+(hi-lo)/2;
-    if(good(mid)){
-        ans=mid;
-        lo=mid+1; // or hi=mid-1;
-    }
-    else{
-        hi=mid-1; // or lo=mid+1;
-    }
-}
-```
-- Another way of implementing binary search: Suppose we are given the following:
+- Suppose we are given the following:
     - $[l,r]$: a range of integers
     - $f$: a function from integers to booleans which satisfies following property: there exists some integer $t$ such that for all $l \leq x < t$, $f(x)$ is true and for all $t \leq x \leq r$, $f(x)$ is false ($f$ is called a predicate)
+- General code looks something like this
+```cpp
+int lo=l,hi=r,mid,ans1=l-1,ans2=r+1;
+while(lo<=hi){
+    mid=lo+(hi-lo)/2;
+    if(f(mid)){
+        ans1=mid;
+        lo=mid+1;
+    }
+    else{
+        ans2=mid;
+        hi=mid-1;
+    }
+}
+return ans2; // first false
+// return ans1 for last true
+```
+- Another way of implementing binary search: 
 ```cpp
 int lo=l-1,hi=r+1,mid;
 // [l,lo] consists of true values, [hi,r] consists of false values, [lo+1,hi-1] is unexplored
@@ -36,9 +40,9 @@ while(hi-lo>1){
     else{
         hi=mid;
     }
-    return hi; // first false
-    // return lo for last true
 }
+return hi; // first false
+// return lo for last true
 ```
 - Binary search to search elements in sorted arrays
 - Binary search on answer (often used in maximizing/minimizing certain quantities)
@@ -487,7 +491,7 @@ for(int i=0;i<n;i++){
 // dp[x] represents the maximum value if the knapsack can carry a weight of at most x
 ```
 - We need not visit all the states of DP
-- Many Expectations problems require DP for solving. For example, consider this problem, where two binary strings $a$ and $b$ of length $n$ are given. In one operation, you choose an index $i (1 \leq i \leq n)$ uniformly at random and flip the value of $a_{i}$. Find the expected number of moves to make both string equal for the first time
+- Many Probability/Expectation problems require DP for solving. For example, consider this problem, where two binary strings $a$ and $b$ of length $n$ are given. In one operation, you choose an index $i (1 \leq i \leq n)$ uniformly at random and flip the value of $a_{i}$. Find the expected number of moves to make both string equal for the first time
 ```cpp
 /*
 Suppose dp[r] -> Number of expected moves to make both strings equal if r of the total n characters match
