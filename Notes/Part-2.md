@@ -1,6 +1,42 @@
 **9. Bit Manipulation**
 
-- Bit manipulation problems often require constructing the answer bit by bit/adding the contribution of each bit to the answer
+- Bit manipulation problems often require constructing the answer bit by bit/adding the contribution of each bit to the answer. Consider this problem where we build the answer by adding the contribution of each bit: You are given an array $a$ of $n$ non-negative integers $(0 \leq a_{i} \leq 10^{9})$. Determine the value of $\Sigma_{l=1}^{n}\Sigma_{r=l}^{n}f(l,r).(r-l+1)$, where $f(l,r) = a_{l} \oplus a_{l+1} \oplus ... \oplus a_{r}$
+```cpp
+/*
+We assume 1-based indexing of array a. Let's convert a to prefix xor array. We shall evaluate
+required answer by adding contribution of each bit. Suppose we are evaluating contribution of
+ith bit. We will add the lengths of all subarrays whose xor's ith bit is set. Then the contribution
+of ith bit = (1<<i) x (Sum of lengths of subarrays whose xor's ith bit is set) 
+*/
+for(int i=1;i<=n;i++){
+    a[i]^=a[i-1];
+}
+int ans=0;
+for(int i=0;i<32;i++){
+    vector<int>sum(n+1,0);
+    int ones=0;
+    for(int j=0;j<=n;j++){
+        if(a[j]&(1<<i)){
+            sum[j]=(j?sum[j-1]+j:0);
+            ones++;
+        }
+        else{
+            sum[j]=(j?sum[j-1]:0);
+        }
+    }
+    int cnt=0,total=0;
+    for(int j=0;j<=n;j++){
+        if(a[j]&(1<<i)){
+            cnt++;
+        }
+        else{
+            total+=(cnt*j-sum[j])+(sum[n]-sum[j]-(ones-cnt)*j);
+        }
+    }
+    ans+=(1<<i)*total;
+}
+cout<<ans<<'\n';
+```
 - To turn off the last bit, do
 ```cpp
 n&=(n-1);
