@@ -586,6 +586,7 @@ for(int i=1;i<n;i++){
 int ans=(k[n]-k[m]+MOD)%MOD;
 cout<<ans<<'\n';
 ```
+- DP is also used extensively for counting (combinatorial) problems
 - DP with bitmasking is often used in problems involving recurrence relations on subsets of a set. For example, consider this problem where there are $n$ people ($n \leq 10$), each having a collection of caps ($1$ of each type and each type varies between $1$ and $c$). The collection of caps possessed by each person is given. You need to calculate the number of ways these $n$ people can wear caps such that no two people wear same type of cap
 ```cpp
 vector<int>cap(c+1);
