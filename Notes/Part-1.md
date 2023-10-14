@@ -45,8 +45,73 @@ return hi; // first false
 // return lo for last true
 ```
 - Binary search to search elements in sorted arrays
-- Binary search on answer (often used in maximizing/minimizing certain quantities)
-- Often used in minimax/maximin problems
+- Binary search on answer (often used in finding maximum/minimum value of certain quantities subject to some constraints). Consider this problem. You have been given a set $S$, initially containing all positive integers in sorted order. Everyday, you will remove $a_{1}^{th}, a_{2}^{th}, ..., a_{n}^{th}$ smallest numbers in $S$ simultaneously $(a_{1} < a_{2} < ... < a_{n})$. Find the smallest element in $S$ after $k$ days
+```cpp
+/*
+We shall assume 1-based indexing of array a. We shall binary search on answer. Let the current
+candidate for the answer be x. We will determine the minimum number of days to remove x from the
+set. We will binary search on minimum x such that minimum number of days to remove it is > k
+*/
+if(a[1]>1){
+    cout<<"1\n";
+    return;
+}
+int lo=1,hi=a[n]+n*k,mid,ans;
+while(lo<=hi){
+    mid=lo+(hi-lo)/2;
+    int pos=mid,days=0;
+    for(int i=n;i>0;i--){
+        if(pos<a[i]){
+            continue;
+        }
+        int d=(pos-a[i])/i+1;
+        pos-=i*d;
+        days+=d;
+    }
+    if(days<=k){
+        lo=mid+1;
+    }
+    else{
+        ans=mid;
+        hi=mid-1;
+    }
+}
+cout<<ans<<'\n';
+```
+- Often used in minimax/maximin problems. For example, consider this problem: You are given an array $a$ containing $n$ positive integers. Divide this array into $k$ partitions $(1 \leq k \leq n)$ such that the minimum sum of elements among all $k$ partitions is maximized. Determine this sum
+```cpp
+/*
+We shall assume 1-based indexing of array a. We will binary search on answer. Let the current
+candidate for answer be x. By keeping x as the minimum sum, we will try to partition the array
+into as many segments as possible. We will binary search on maximum x such that maximum number
+of segments in which we can partition the array by keeping x as minimum sum is >= k
+*/
+int sum=0,mx=0;
+for(int i=1;i<=n;i++){
+    sum+=a[i];
+    mx=max(mx,a[i]);
+}
+int lo=mx,hi=sum,mid,ans;
+while(lo<=hi){
+    mid=lo+(hi-lo)/2;
+    int p=0,s=0;
+    for(int i=1;i<=n;i++){
+        s+=a[i];
+        if(s>=mid){
+            p++;
+            s=0;
+        }
+    }
+    if(p>=k){
+        ans=mid;
+        lo=mid+1;
+    }
+    else{
+        hi=mid-1;
+    }
+}
+cout<<ans<<'\n';
+```
 - [Codeforces EDU - Binary Search](https://codeforces.com/edu/course/2/lesson/6)
 
 **2. Two Pointers Method**
