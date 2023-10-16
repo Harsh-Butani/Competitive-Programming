@@ -556,7 +556,7 @@ for(int i=0;i<n;i++){
 // dp[x] represents the maximum value if the knapsack can carry a weight of at most x
 ```
 - We need not visit all the states of DP
-- Many Probability/Expectation problems require DP for solving. For example, consider this problem, where two binary strings $a$ and $b$ of length $n$ are given. In one operation, you choose an index $i (1 \leq i \leq n)$ uniformly at random and flip the value of $a_{i}$. Find the expected number of moves to make both string equal for the first time
+- Many Probability/Expectation problems require DP for solving. For example, consider this problem, where two binary strings $a$ and $b$ of length $n$ are given. In one operation, you choose an index $i$ $(1 \leq i \leq n)$ uniformly at random and flip the value of $a_{i}$. Find the expected number of moves to make both string equal for the first time
 ```cpp
 /*
 Suppose dp[r] -> Number of expected moves to make both strings equal if r of the total n characters match
@@ -586,7 +586,54 @@ for(int i=1;i<n;i++){
 int ans=(k[n]-k[m]+MOD)%MOD;
 cout<<ans<<'\n';
 ```
-- DP is also used extensively for counting (combinatorial) problems
+- DP is also used extensively for counting (combinatorial) problems. Consider this problem: There is a row of $n$ tiles and an integer $k$ $(1 \leq k \leq n \leq 5000)$. The tiles are indexed from left to right and the $i^{th}$ tile has color $c_{i}$ $(1 \leq c_{i} \leq n)$. You have to choose some tiles, forming a path $p$. A path $p$ of length $m$ is called nice if the following conditions hold. Calculate number of nice paths of maximum length
+    - $k | m$
+    - $c_{p_{1}} = c_{p_{2}} = ... = c_{p_{k}}$
+    - $c_{p_{k+1}} = c_{p_{k+2}} = ... = c_{p_{2k}}$
+    - ...
+    - $c_{p_{m-k+1}} = c_{p_{m-k+2}} = ... = c_{p_{m}}$
+```cpp
+// Assuming 1-based indexing of array c
+vector<int>dp1(n+1,0),dp2(n+1,0);
+vector<vector<int>>color(n+1,vector<int>(n+1,0));
+// dp1[i] -> Length of longest path ending at index i satisfying the given constraints (If path length is l, then dp1[i] stores the value l/k)
+// dp2[i] -> Number of paths of maximum length (dp1[i]) ending at index i
+// color[i][j] -> Count of elements of color i till index j
+// Note that we have used C[i][j] to represent the number of ways of choosing j elements from a pool of i elements
+for(int i=1;i<=n;i++){
+    for(int j=1;j<=n;j++){
+        color[j][i]=color[j][i-1]+(c[i]==j?1:0);
+    }
+}
+int ans=1,mx=0;
+for(int i=1;i<=n;i++){
+    if(color[c[i]][i]>=k){
+        dp1[i]=1;
+        dp2[i]=C[color[c[i]][i]-1][k-1];
+    }
+    for(int j=1;j<i;j++){
+        int cnt=color[c[i]][i]-color[c[i]][j];
+        if(cnt<k){
+            continue;
+        }
+        if(dp1[j] && dp1[i]<1+dp1[j]){
+            dp1[i]=1+dp1[j];
+            dp2[i]=dp2[j]*C[cnt-1][k-1];
+        }
+        else if(dp1[j] && dp1[i]==1+dp1[j]){
+            dp2[i]+=dp2[j]*C[cnt-1][k-1];
+        }
+    }
+    if(dp1[i]>mx){
+        mx=dp1[i];
+        ans=dp2[i];
+    }
+    else if(dp1[i]==mx && mx){
+        ans+=dp2[i];
+    }
+}
+cout<<(mx?ans:1)<<'\n';
+```
 - DP with bitmasking is often used in problems involving recurrence relations on subsets of a set. For example, consider this problem where there are $n$ people ($n \leq 10$), each having a collection of caps ($1$ of each type and each type varies between $1$ and $c$). The collection of caps possessed by each person is given. You need to calculate the number of ways these $n$ people can wear caps such that no two people wear same type of cap
 ```cpp
 vector<int>cap(c+1);
