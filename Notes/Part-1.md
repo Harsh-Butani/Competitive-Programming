@@ -320,7 +320,85 @@ void unite(int x,int y,vector<int>& p,vector<int>& r){
     }
 }
 ```
-- Sometimes, it's better to avoid path compression
+- Sometimes, it's better to avoid path compression. A problem illustrating this: There are $n$ players who fight monsters. When a monster is defeated, all the players of the team who defeated the monster get the same amount of experience points. There are three types of queries:
+    - *join* $X$ $Y$: join two teams to which players $X$ and $Y$ belong to (do nothing if they belong to same team)
+    - *add* $X$ $V$: add $V$ experience points to team to which player $X$ belongs
+    - *get* $X$: output the current experience points of player $X$
+```cpp
+/*
+We shall avoid path compression here. When operation 'add' is encountered, we add points
+to the representative of the team. When 'join' is encountered, we use normal DSU unite()
+and store the difference between the current and its parent node. When 'get' is
+encountered, we retrieve the points of its representative node and then travel down the
+tree to the requested node while adding the difference we had stored
+*/
+
+class DSU{
+public:
+    int n;
+    vector<int>p,r,add,sum;
+    
+    DSU(int _n){
+        n=_n;
+        p.resize(n+1,0);
+        iota(p.begin(),p.end(),0);
+        r.resize(n+1,0);
+        add.resize(n+1,0);
+        sum.resize(n+1,0);
+    }
+    
+    int find(int x){
+        return x==p[x]?x:find(p[x]);
+    }
+    
+    void unite(int u,int v){
+        u=find(u);
+        v=find(v);
+        if(u!=v){
+            if(r[u]==r[v]){
+                r[u]++;
+            }
+            if(r[u]>r[v]){
+                p[v]=u;
+                add[v]=sum[v]-sum[u];
+            }
+            else{
+                p[u]=v;
+                add[u]=sum[u]-sum[v];
+            }
+        }
+    }
+};
+
+void solve(){
+    DSU d(n);
+    while(q--){
+        string s;
+        cin>>s;
+        if(s=="join"){
+            int x,y;
+            cin>>x>>y;
+            d.unite(x,y);
+        }
+        else if(s=="add"){
+            int x,v;
+            cin>>x>>v;
+            d.sum[d.find(x)]+=v;
+        }
+        else{
+            int x;
+            cin>>x;
+            int ans=0;
+            while(x!=d.p[x]){
+                ans+=d.add[x];
+                x=d.p[x];
+            }
+            ans+=d.sum[x];
+            cout<<ans<<'\n';
+        }
+    }
+}
+```
 - Sometimes, we need to traverse the queries in reverse order when the operation is of "cut" (reverse of "join")
 - Sometimes, it's better to avoid union by rank.
 - Can be used to solve "Problem with people" types of problems. There are two types of queries: $(1)$ The person at position $i$ goes away and $(2)$ Find the nearest person to the right for position $p$ that did not leave
@@ -662,6 +740,47 @@ for(int i=c+1;i>0;i--){
 - **Pigeonhole Principle**
 - **Stars and Bars method (To determine number of non-negative integer solutions)**: Let the equation be $\Sigma_{i=1}^{r}x_i = n$, where each $x_i \geq 0$. We need to find number of distinct solutions to the given equation. This problem can be modelled as follows. Suppose $n$ identical stars are kept in a straight line. Now, we need to place $(r - 1)$ identical bars to create $r$ partitions. The number of stars to the left of leftmost bar $=$ value of $x_1$. Number of stars to the right of rightmost bar $=$ value of $x_r$. Number of stars between $(i-1)^{th}$ and $i^{th}$ bar (assuming $1$-indexing) $=$ value of $x_i$. Thus the given problem now reduces to finding number of ways to arrange $n$ identical stars and $(r - 1)$ identical bars, and thus equal to $\binom{n+r-1}{n}$
 - **Counting number of permutations of a particular string**: Suppose our string contains the alphabets $x_1, x_2, ..., x_n$. Suppose the $i^{th}$ alphabet $x_i$ appears $r_i$ times in the string. Now, number of distinct permutations of the given string is equal to $\binom{r_1+r_2+...+r_n}{r_1} \times \binom{r_2+r_3+...+r_n}{r_2} \times ... \times \binom{r_n}{r_n} = \frac{(r_1+r_2+...+r_n)!}{r_1!r_2!...r_n!}$
+- Suppose there are $r_{1}$ objects of type $1$, $r_{2}$ objects of type $2$, $...$, $r_{k}$ objects of type $k$. Suppose objects of type $i$ can be arranged among themselves in $\alpha_{i}$ ways and two objects of different types can be arranged in any order. The total number of ways to arrange these $r_{1} + r_{2} + ... + r_{k}$ objects $=$ $\frac{(r_{1} + r_{2} + ... + r_{k})!}{r_{1}!r_{2}!...r_{k}!}\alpha_{1}\alpha_{2}...\alpha_{k}$. Consider this problem illustrating the use of this technique: There are $n$ people, numbered $1$ to $n$. You are given a graph where an edge between node $u$ and node $v$ means that $u$ and $v$ are friends. Also, the friendship is transitive, that is, if $u$ and $v$ are friends and $v$ and $w$ are friends, then $u$ and $w$ are also friends. You are also given an array $a$ of length $n$ consisting of positive integers. Calculate the number of ways to arrange these $n$ people such that if $u$ and $v$ are friends, then $u$ comes before $v$ iff $a_{u} \leq a_{v}$
+```cpp
+/*
+Note that the graph can be divided into several connected components, where the nodes in each
+component are friends of each other. Let there be k such components of sizes g1, g2, ... gk.
+Number of ways to arrange these n people = n!/(g1!g2!...gk!) * x(1)x(2)...x(k) where x(i)
+represents the number of ways friends in component i can arrange themselves. It is easy to see
+that x(i) = product of factorial of frequencies of the array values
+*/
+
+void dfs(int u,vector<vector<int>>& graph,vector<bool>& visited,map<int,int>& frequency,vector<int>& a,stack<int>& stk){
+    visited[u]=1;
+    frequency[a[u]]++;
+    for(auto v:g[u]){
+        if(!vis[v]){
+            dfs(v,graph,visited,frequency,a,stk);
+        }
+    }
+    stk.push(u);
+}
+
+void solve(){
+    map<int,int>frequency;
+    int ans=factorial[n];
+    vector<bool>visited(n+1,false);
+    stack<int>stk;
+    for(int i=1;i<=n;i++){
+        if(!vis[i]){
+            dfs(i,graph,visited,frequency,a,stk);
+            int sz=stk.size();
+            ans/=factorial[sz];
+            while(!stk.empty()){
+                ans*=factorial[frequency[a[stk.top()]]];
+                frequency[a[stk.top()]]=0;
+                stk.pop();
+            }
+        }
+    }
+    cout<<ans<<'\n';
+}
+```
 - **Coefficient of $x^r$ in $(1-x)^{-n} =$** Coefficient of $x^r$ in $((1-x)^{-1})^{n} =$ Coefficient of $x^r$ in $(1+x+x^{2}+...)^{n} =$ Number of integer solutions of $y_{1}+y_{2}+...+y_{n} = r$ where each $y_{i} \geq 0$ is equal to $\binom{n+r-1}{r}$
 - **Stirling Numbers**
     - **Unsigned Stirling number of the first kind**: Denoted by $S_{1}(n,k)$, it is defined as number of permutations of $n$ elements with $k$ cycles. Suppose we have $(n+1)$ elements and we have to partition it into $k$ cycles. Now, the $(n+1)^{th}$ element can be introduced at any of the $n$ places or it can form a separate cycle. Thus recurrence relation for $S_{1}(n+1,k)$ is $S_{1}(n+1,k) = nS_{1}(n,k) + S_{1}(n,k-1)$ for $k > 0$. The base case would be $S_{1}(0,0) = 1$ and $S_{1}(n,0) = S_{1}(0,n) = 0$ for $n > 0$
