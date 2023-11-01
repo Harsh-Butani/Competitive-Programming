@@ -271,6 +271,53 @@ for(int i=0;i<n;i++){
 // Sum of array elements from [l1,r1] to [l2,r2] = pre[l2][r2]-(r1?pre[l1][r1-1]:0)-(l1?pre[l1-1][r1]:0)+(l1 && r1?pre[l1-1][r1-1]:0)
 ```
 - Difference Array is used to update a range and retrieve value at a single point. For example consider the queries, $(1)$ Add $x$ to $[a, b]$ $(2)$ Find value at position $p$. For this, we can create a difference array such that first element of difference array = first element of given array and subsequent elements of difference array = difference between consecutive array elements of original one. To process first type of query, just add $x$ at position $a$ and subtract $x$ from position $b + 1$ in difference array. To process second type of query, we need to add elements of difference array from start till position $p$. This can be done using a Fenwick Tree/Segment Tree
+- A problem illustrating the use of difference arrays: We have a directed tree with $n$ vertices. For each $i = 1, 2, ..., n$, count the number of vertices that can possibly appear at $i^{th}$ position of a topological ordering of this tree
+```cpp
+/*
+Suppose node u appears at i-th position in one of the topological orderings. Then,
+node u must have atmost (i-1) ancestors and atmost (n-i) children. Thus count of
+nodes that can appear at position i in the ordering = count of nodes that have
+number of ancestors < i and number of children <= (n-i). Thus a node u which has
+x ancestors and y children can appear at any position in the range [x+1,n-y]
+*/
+
+void dfs(int u,int p,vector<vector<int>>& graph,vector<int>& ancestors,vector<int>& children){
+    for(auto v:graph[u]){
+        if(v==p){ // Though this condition would never occur since graph is directed
+            continue;
+        }
+        ancestors[v]=ancestors[u]+1;
+        dfs(v,u,graph,ancestors,children);
+        children[u]+=1+children[v];
+    }
+}
+
+void solve(){
+    int root=0;
+    for(int i=1;i<=n;i++){
+        if(!indegree[i]){
+            root=i;
+            break;
+        }
+    }
+    vector<int>ancestors(n+1,0),children(n+1,0),ans(n+1,0);
+    dfs(root,0,graph,ancestors,children);
+    for(int u=1;u<=n;u++){
+        int mn=ancestors[u]+1;
+        int mx=n-children[u];
+        if(mn<=mx){
+            ans[mn]++;
+            if(mx<n){
+                ans[mx+1]--;
+            }
+        }
+    }
+    for(int i=1;i<=n;i++){
+        ans[i]+=ans[i-1];
+        cout<<ans[i]<<" ";
+    }
+}
+```
 - [Codeforces EDU - Prefix sums and difference arrays](https://codeforces.com/edu/course/3/lesson/10)
 
 **4. Disjoint Set Union (DSU)**
