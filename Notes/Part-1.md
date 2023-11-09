@@ -844,7 +844,7 @@ void solve(){
 \
 **Solution**: First, we choose $k$ distinct numbers out of $(m + 1)$ numbers. Then we need to arrange these $k$ numbers into $n$ boxes, so number of ways of arranging is equal to number of integer solutions of $x_1 + x_2 + ... + x_k = n$, where each $x_i \geq 1$. So required answer $= \Sigma_{k=1}^{n}\binom{m+1}{k}\binom{n-1}{k-1} = \Sigma_{k=1}^{n}\binom{m+1}{k}\binom{n-1}{n-k} =$ Coefficient of $x^n$ in $(1+x)^{m+1} \cdot (1+x)^{n-1} =$ Coefficient of $x^n$ in $(1+x)^{m+n} = \binom{m+n}{n}$
 - Another nice problem\
-  **Problem**: Let $n > 0$ be an integer. We are given a balance and $n$ weights of weight $2^{0}, 2^{1}, ..., 2^{n-1}$. We are to place each of the $n$ weights on the balance, one after another, in such a way that the right pan is never heavier than the left pan. At each step, we choose one of the weights that has not yet been placed on the balance and place it on either the left pan or the right pan, until all of the weights have been placed. Determine the number of ways in which this can be done\
+**Problem**: Let $n > 0$ be an integer. We are given a balance and $n$ weights of weight $2^{0}, 2^{1}, ..., 2^{n-1}$. We are to place each of the $n$ weights on the balance, one after another, in such a way that the right pan is never heavier than the left pan. At each step, we choose one of the weights that has not yet been placed on the balance and place it on either the left pan or the right pan, until all of the weights have been placed. Determine the number of ways in which this can be done\
 \
 **Solution 1**: Let our answer be $W(n)$. It is evident that $W(1) = 1$. Now, since the weights are powers of $2$, it is easy to see that a heavier weight is heavier than all the lighter weights combined. Thus, we only need to ensure that at any point in time, the maximum weight on the left pan is $>$ the maximum weight on the right pan. Thus, the heaviest weight must be placed on the left pan. Suppose the heaviest weight is placed on the left pan at position $k$. Now, the first $(k-1)$ weights can be chosen in $\binom{n-1}{k-1}$ ways and these weights should be placed in $W(k-1)$ ways. The rest of the $(n-k)$ weights can be placed in $2^{n-k}(n-k)!$ ways. Thus the recurrence relation for $W(n)$ is as follows
 $$W(n) = \sum_{k=1}^{n}\binom{n-1}{k-1}W(k-1)2^{n-k}(n-k)! = \sum_{k=1}^{n}W(k-1)2^{n-k}\frac{(n-1)!}{(k-1)!} = \sum_{k=1}^{n-1}W(k-1)2^{n-k}\frac{(n-1)!}{(k-1)!} + W(n-1)$$
@@ -853,6 +853,31 @@ $$W(n) = \sum_{k=1}^{n-1}W(k-1)2^{n-k}\frac{(n-1)!}{(k-1)!} + W(n-1) = 2(n-1)\su
 Thus, we have $W(n) = (2n-1)W(n-1) = (2n-1)(2n-3)W(n-2) = ... = (2n-1)(2n-3)...(3)W(1) = 1\times3\times5...\times(2n-1)$ as $W(1) = 1$\
 \
 **Solution 2**: Again, let our answer be $W(n)$. We can use recursion on last weight placement. There are $(2n-1)$ choices; namely, you can have any of the $n$ weights to be placed at last and each could be placed in either of the pans, except for the case where the last weight is the heaviest one and it is placed in the right pan. Thus, we get the same recurrence relation as above, that is $W(n) = (2n-1)W(n-1)$ with base case $W(1) = 1$
+- Another nice problem\
+**Problem**: The score of a binary string of length $n$ is defined as the count of blocks formed by consecutive $0$'s and $1$'s. For example the score of $1001110100$ is $6$ as there are $6$ blocks, $1$, $00$, $111$, $0$, $1$ and $00$. Find the total sum of scores of all possible binary strings of length $n$\
+\
+**Solution 1**: Let us find the count of binary strings of length $n$ which have score $k$. Let $x_{i}$ denote the number of characters in the $i^{th}$ block of the string. Thus, number of strings of length $n$ having score $k$ $=$ $2$ $\times$ Number of integer solutions of $x_{1} + x_{2} + ... + x_{k} = n$, where each $x_{i} > 0$. We have multiplied by $2$ because the string can either start with a $0$ or a $1$. Thus, our answer is given by
+$$W(n) = \sum_{k=1}^{n}2k\binom{n-1}{k-1} = \sum_{k=1}^{n}2k\frac{(n-1)!}{(k-1)!(n-k)!} = \sum_{k=1}^{n}\frac{2k^{2}}{n}\frac{n(n-1)!}{k(k-1)!(n-k)!} = \sum_{k=1}^{n}\frac{2k^{2}}{n}\frac{n!}{k!(n-k)!}$$
+which is equivalent to
+$$W(n) = \sum_{k=1}^{n}\frac{2k^{2}}{n}\binom{n}{k} = \frac{2}{n}\sum_{k=1}^{n}k^{2}\binom{n}{k}$$
+To find the closed form of the summation, consider
+$$f(x) = (1+x)^{n} = \sum_{k=0}^{n}\binom{n}{k}x^{k}$$
+Differentiating both sides with respect to $x$, we get
+$$f'(x) = n(1+x)^{n-1} = \sum_{k=1}^{n}k\binom{n}{k}x^{k-1}$$
+Multiplying on both sides by $x$, we get
+$$xf'(x) = nx(1+x)^{n-1} = \sum_{k=1}^{n}k\binom{n}{k}x^{k}$$
+Differentiating both sides again wrt $x$, we get
+$$f'(x) + xf''(x) = n[(1+x)^{n-1} + (n-1)x(1+x)^{n-2}] = \sum_{k=1}^{n}k^{2}\binom{n}{k}x^{k-1}$$
+Plugging $x = 1$, we get
+$$f'(1) + f''(1) = n[2^{n-1} + (n-1)2^{n-2}] = \sum_{k=1}^{n}k^{2}\binom{n}{k}$$
+Thus, we have
+$$\sum_{k=1}^{n}k^{2}\binom{n}{k} = n[2^{n-1} + (n-1)2^{n-2}] = n(n+1)2^{n-2}$$
+Thus, our required answer is given by
+$$W(n) = \frac{2}{n}\sum_{k=1}^{n}k^{2}\binom{n}{k} = \frac{2}{n}n(n+1)2^{n-2} = (n+1)2^{n-1}$$
+\
+**Solution 2**: Let $W(n)$ be the required answer. Consider the action of appending a $0$ or a $1$ to all binary strings of length $(n-1)$. If we append the same digit as the last digit of the $(n-1)$ length string, we get $W(n-1)$ added to the score. If we append the other digit, then the count of blocks increases by $1$ for all $2^{n-1}$ strings and thus it increases our score by $W(n-1) + 2^{n-1}$. Thus, we get the recurrence relation
+$$W(n) = 2W(n-1) + 2^{n-1}, n > 1$$
+Also $W(1) = 2$. Solving the above recurrence gives the same answer $W(n) = (n+1)2^{n-1}$
 - There is a common combinatorial trick for counting: We change the perspective to count. For example, suppose we have to count the number of good objects of type $A$ each object of type $B$ yields. Another way to count this is as follows: We count how many objects of type $B$ yield each of the possible good objects of type $A$. So basically, the code changes as follows (Let's call this contribution technique)
 ```cpp
 /* Older version */
