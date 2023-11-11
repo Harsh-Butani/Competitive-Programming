@@ -785,7 +785,7 @@ for(int i=c+1;i>0;i--){
 **6. Combinatorics**
 
 - **Pigeonhole Principle**
-- **Stars and Bars method (To determine number of non-negative integer solutions)**: Let the equation be $\Sigma_{i=1}^{r}x_i = n$, where each $x_i \geq 0$. We need to find number of distinct solutions to the given equation. This problem can be modelled as follows. Suppose $n$ identical stars are kept in a straight line. Now, we need to place $(r - 1)$ identical bars to create $r$ partitions. The number of stars to the left of leftmost bar $=$ value of $x_1$. Number of stars to the right of rightmost bar $=$ value of $x_r$. Number of stars between $(i-1)^{th}$ and $i^{th}$ bar (assuming $1$-indexing) $=$ value of $x_i$. Thus the given problem now reduces to finding number of ways to arrange $n$ identical stars and $(r - 1)$ identical bars, and thus equal to $\binom{n+r-1}{n}$
+- **Stars and Bars method (To determine number of non-negative integer solutions)**: Let the equation be $\Sigma_{i=1}^{r}x_i = n$, where each $x_i \geq 0$. We need to find number of distinct solutions to the given equation. This problem can be modelled as follows. Suppose $n$ identical stars are kept in a straight line. Now, we need to place $(r - 1)$ identical bars to create $r$ partitions. The number of stars to the left of leftmost bar $=$ value of $x_1$. Number of stars to the right of rightmost bar $=$ value of $x_r$. Number of stars between $(i-1)^{th}$ and $i^{th}$ bar (assuming $1$-indexing) $=$ value of $x_i$. Thus the given problem now reduces to finding number of ways to arrange $n$ identical stars and $(r - 1)$ identical bars, and thus equal to $\binom{n+r-1}{n}$.
 - **Counting number of permutations of a particular string**: Suppose our string contains the alphabets $x_1, x_2, ..., x_n$. Suppose the $i^{th}$ alphabet $x_i$ appears $r_i$ times in the string. Now, number of distinct permutations of the given string is equal to $\binom{r_1+r_2+...+r_n}{r_1} \times \binom{r_2+r_3+...+r_n}{r_2} \times ... \times \binom{r_n}{r_n} = \frac{(r_1+r_2+...+r_n)!}{r_1!r_2!...r_n!}$
 - Suppose there are $r_{1}$ objects of type $1$, $r_{2}$ objects of type $2$, $...$, $r_{k}$ objects of type $k$. Suppose objects of type $i$ can be arranged among themselves in $\alpha_{i}$ ways and two objects of different types can be arranged in any order. The total number of ways to arrange these $r_{1} + r_{2} + ... + r_{k}$ objects $=$ $\frac{(r_{1} + r_{2} + ... + r_{k})!}{r_{1}!r_{2}!...r_{k}!}\alpha_{1}\alpha_{2}...\alpha_{k}$. Consider this problem illustrating the use of this technique: There are $n$ people, numbered $1$ to $n$. You are given a graph where an edge between node $u$ and node $v$ means that $u$ and $v$ are friends. Also, the friendship is transitive, that is, if $u$ and $v$ are friends and $v$ and $w$ are friends, then $u$ and $w$ are also friends. You are also given an array $a$ of length $n$ consisting of positive integers. Calculate the number of ways to arrange these $n$ people such that if $u$ and $v$ are friends, then $u$ comes before $v$ iff $a_{u} \leq a_{v}$
 ```cpp
@@ -843,6 +843,10 @@ void solve(){
 **Problem**: Given non-negative integers $n$ and $m$, find number of non-decreasing sequences of length $n$ such that each element in the sequence lies between $0$ and $m$ inclusive\
 \
 **Solution**: First, we choose $k$ distinct numbers out of $(m + 1)$ numbers. Then we need to arrange these $k$ numbers into $n$ boxes, so number of ways of arranging is equal to number of integer solutions of $x_1 + x_2 + ... + x_k = n$, where each $x_i \geq 1$. So required answer $= \Sigma_{k=1}^{n}\binom{m+1}{k}\binom{n-1}{k-1} = \Sigma_{k=1}^{n}\binom{m+1}{k}\binom{n-1}{n-k} =$ Coefficient of $x^n$ in $(1+x)^{m+1} \cdot (1+x)^{n-1} =$ Coefficient of $x^n$ in $(1+x)^{m+n} = \binom{m+n}{n}$
+- Another nice problem\
+**Problem**: Find number of integer solutions of $x_{1} + x_{2} + ... + x_{k} \leq n$, where each $x_{i} \geq y_{i} \geq 0$ and $y_{1} + y_{2} + ... + y_{k} \leq n$\
+\
+**Solution**: Define $z_{i} = x_{i} - y_{i}$. The given inequality reduces to $z_{1} + z_{2} + ... +z_{k} \leq n - y_{1} - y_{2} ... - y_{k}$, where each $z_{i} \geq 0$. Let's define another dummy variable $z_{k+1}$ to consume the slack in the inequality. Thus, we need to determine the number of integer solutions of $z_{1} + z_{2} + ... + z_{k+1} = n - y_{1} - y_{2} ... - y_{k}$, with each $z_{i} \geq 0$, which is equal to $\binom{n + k - y_{1} - y_{2} ... - y_{k}}{k}$
 - Another nice problem\
 **Problem**: Let $n > 0$ be an integer. We are given a balance and $n$ weights of weight $2^{0}, 2^{1}, ..., 2^{n-1}$. We are to place each of the $n$ weights on the balance, one after another, in such a way that the right pan is never heavier than the left pan. At each step, we choose one of the weights that has not yet been placed on the balance and place it on either the left pan or the right pan, until all of the weights have been placed. Determine the number of ways in which this can be done\
 \
@@ -1152,6 +1156,7 @@ int gcd(int a,int b){
     return gcd(b%a,a);
 }
 ```
+- $LCM(a,b)$ can be determined as $\frac{(a \times b)}{gcd(a,b)}$
 
 **7.3. Binary Exponentiation**
 
@@ -1198,6 +1203,7 @@ for(int i=1;i*i<=N;i++){
     }
 }
 ```
+- From this, it is easy to observe that number of factors of $N$ is bounded above by $2\sqrt{N}$
 
 **7.6. Modular inverse**
 
@@ -1222,6 +1228,7 @@ for(int i=1;i*i<=N;i++){
     - $gcd(N_{1}, N_{2}) =  p_1^{min(\alpha_1,\beta_1)}p_2^{min(\alpha_2,\beta_2)}...p_k^{min(\alpha_k,\beta_k)}$
     - $lcm(N_{1}, N_{2}) =  p_1^{max(\alpha_1,\beta_1)}p_2^{max(\alpha_2,\beta_2)}...p_k^{max(\alpha_k,\beta_k)}$
 - Suppose $p$ is a prime number and $n \in \mathbb{N}$. The highest power of $p$ which divides $n!$ is given by $\Sigma_{i=1}^{\infty}\lfloor\frac{n}{p^i}\rfloor$
+- Let $0 < a_{1} < a_{2} < ... < a_{n}$ be $n$ positive integers. Then the greatest integer $d$ such that the remainder left on dividing $a_{i}$ by $d$ is same for all $n$ integers is given by $d = gcd(a_{2} - a_{1}, a_{3} - a_{2}, ..., a_{n} - a_{n-1})$
 
 **8. Graph Theory**
 
