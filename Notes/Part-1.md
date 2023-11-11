@@ -1208,6 +1208,28 @@ for(int i=1;i*i<=N;i++){
 **7.6. Modular inverse**
 
 - Calculating modular inverse when $MOD$ is a prime is straightforward. We can use Fermat's Little Theorem. Suppose we have to find inverse of $a$ modulo $MOD$ where $MOD$ is prime. Then $a^{-1} = a^{MOD-2}$ $modulo$ $MOD$. If $MOD$ is not prime, then we have to use Extended Euclidean Algorithm to find the multiplicative inverse. Note that the inverse of $a$ modulo $MOD$ exists iff $gcd(a, MOD) = 1$
+- Extended Euclidean Algorithm
+```cpp
+int extended_euclidean(int a,int b,int* x,int* y){
+    int x2=1,y2=0,x1=0,y1=1,r2=a,r1=b;
+    while(r1){
+        int q=r2/r1
+        int r=r2%r1;
+        int nx=x2-q*x1;
+        int ny=y2-q*y1;
+        r2=r1;
+        r1=r;
+        x2=x1;
+        x1=nx;
+        y2=y1;
+        y1=ny;
+    }
+    *x=x2;
+    *y=y2;
+    return r2;
+}
+```
+- To find modular inverse of $a$ when $MOD$ is not prime (but $gcd(a, MOD) = 1)$, we can use Extended Euclidean Algorithm to find $x$ and $y$ such that $ax + MODy = gcd(a, MOD) = 1$. Now, taking remainder with $MOD$ on both sides, we get $(ax)$ $modulo$ $MOD$ = $1$ and thus $x$ is the modular inverse of $a$ $modulo$ $MOD$
 
 **7.7. Some general notes and ideas**
 
