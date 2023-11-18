@@ -60,6 +60,9 @@ int x(int n){
 - The above equation is derived from two equations: For any two non-negative integers $a$ and $b$,
     - $a + b = (a$ | $b) + (a$ & $b)$
     - $a \oplus b = (a$ | $b) - (a$ & $b)$
+- Some useful inequalities
+    - $a$ & $b \leq min(a, b)$
+    - $a$ | $b \geq max(a, b)$
 - Iterating through subsets
 ```cpp
 // Iterating through subsets of {1, 2, 3, ... n}
@@ -283,8 +286,8 @@ bool search(struct node* root,string s){
 }
 ```
 - Code can be modified to insert array elements as well
-- search() can be modified to return number of matching characters
-- Can be used to solve problems related to finding maximum/minimum xor/xnor of two integers in an array
+- $search()$ can be modified to return number of matching characters
+- Can be used to solve problems related to finding $maximum/minimum$ $xor/xnor$ of two integers in an array
 
 **14. Fenwick Tree (Binary Indexed Tree)**
 
@@ -312,8 +315,8 @@ void add(int k,int x){
 
 **15. Segment Tree**
 
-- Can support all range queries where it is possible to divide a range into two parts, calculate the answer separately for both parts and then efficiently combine the answers. Example of such queries are minimum and maximum, greatest common divisor, and bit operations and, or and xor
-- Consider this template for calculating sums in an array using segment tree
+- Can support all range queries where it is possible to divide a range into two parts, calculate the answer separately for both parts and then efficiently combine the answers. Example of such queries are $minimum$ and $maximum$, $greatest$ $common$ $divisor$, and bit operations $and$, $or$ and $xor$
+- Consider this template for calculating $sums$ in an array using segment tree
 ```cpp
 // Note that lx to rx-1 represents current segment and current index in segment tree array is x
 // We are calculating sum from index l to r-1
