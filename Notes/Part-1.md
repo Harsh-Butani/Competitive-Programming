@@ -1156,6 +1156,7 @@ int gcd(int a,int b){
     return gcd(b%a,a);
 }
 ```
+- This algorithm works because if we write $a = bq + r$ such that $0 \leq r < b$, then we have $gcd(a, b) = gcd(b, r)$. Let $gcd(a, b) = g$ and $gcd(b, r) = g'$. Since $gcd(a, b) = g$, therefore $g | (a - bq)$ and hence $g | r$. Note that $g | b$ and $g | r$ and since $gcd(b, r) = g'$, therefore we have $g \leq g'$. Also note that $gcd(b, r) = g'$ implies $g' | (bq + r)$ and hence $g' | a$. Since $g' | a$ and $g' | b$ and $gcd(a, b) = g$, therefore $g' \leq g$. We have $g \leq g'$ and $g' \leq g$ and thus $g = g'$ and hence $gcd(a, b) = gcd(b, r)$
 - $LCM(a,b)$ can be determined as $\frac{(a \times b)}{gcd(a,b)}$
 
 **7.3. Binary Exponentiation**
@@ -1244,14 +1245,19 @@ int extended_euclidean(int a,int b,int* x,int* y){
     - Product of factors of $N = \sqrt{N^{\textrm{Number of factors of N}}}$
     - $\varphi(N) = N(1-\frac{1}{p_1})(1-\frac{1}{p_2})...(1-\frac{1}{p_k})$
 - Bezout's Identity: Let $a$ and $b$ be integers with $gcd$ $d$. Then there exist integers $x$ and $y$ such that $ax + by = d$. Moreover, the integers of the form $az + bt$ are exactly the multiples of $d$ ($d$ is the smallest positive integer in the set $S = [ ax + by : x,y \in \mathbb{Z} \textrm{ and } ax + by > 0 ]$)
+- From above, it is easy to observe that a Linear Diophantine Equation $Ax + By = C$ has a solution iff $gcd(A, B) | C$. Let $gcd(A, B) = g$. Then the solutions to original equation are also the solutions to the equation $\frac{A}{g}x + \frac{B}{g}y = \frac{C}{g}$. Since $gcd(\frac{A}{g}, \frac{B}{g}) = 1$, therefore a solution to the equation $\frac{A}{g}x + \frac{B}{g}y = 1$ can be found using Extended Euclidean Algorithm. Let that solution be $(X, Y)$. Thus one solution of equation $\frac{A}{g}x + \frac{B}{g}y = \frac{C}{g}$ is $(\frac{C}{g}X, \frac{C}{g}Y)$ and this is also a solution to the equation $Ax + By = C$. The general solution would be $(\frac{C}{g}X + k\frac{B}{g}, \frac{C}{g}Y - k\frac{A}{g})$, where $k$ is any integer
 - Chicken McNugget Theorem: For any two relatively prime positive integers $m$ and $n$, the greatest integer that cannot be written in the form $am + bn$ for non-negative integers $a, b$ is $mn - m - n$
 - Suppose $n$ events occur after every $t_{1}, t_{2}, ..., t_{n}$ seconds and suppose, all these events occur together at $t = 0$. These events will occur again after every $lcm(t_{1}, t_{2}, ..., t_{n})$ seconds
 - Suppose prime factorization of numbers $N_{1}$ and $N_{2}$ is as follows: $N_{1} = p_1^{\alpha_1}p_2^{\alpha_2}...p_k^{\alpha_k}$ and $N_{2} = p_1^{\beta_1}p_2^{\beta_2}...p_k^{\beta_k}$. Then
     - $gcd(N_{1}, N_{2}) =  p_1^{min(\alpha_1,\beta_1)}p_2^{min(\alpha_2,\beta_2)}...p_k^{min(\alpha_k,\beta_k)}$
     - $lcm(N_{1}, N_{2}) =  p_1^{max(\alpha_1,\beta_1)}p_2^{max(\alpha_2,\beta_2)}...p_k^{max(\alpha_k,\beta_k)}$
+    - $gcd(N_{1}, N_{2}) \times lcm(N_{1}, N_{2}) = p_1^{\alpha_1 + \beta_1}p_2^{\alpha_2 + \beta_2}...p_k^{\alpha_k + \beta_k} = N_{1}N_{2}$
 - Suppose $p$ is a prime number and $n \in \mathbb{N}$. The highest power of $p$ which divides $n!$ is given by $\Sigma_{i=1}^{\infty}\lfloor\frac{n}{p^i}\rfloor$
 - Let $0 < a_{1} < a_{2} < ... < a_{n}$ be $n$ positive integers. Then the greatest integer $d$ such that the remainder left on dividing $a_{i}$ by $d$ is same for all $n$ integers is given by $d = gcd(a_{2} - a_{1}, a_{3} - a_{2}, ..., a_{n} - a_{n-1})$
+- Euler's Theorem: If $gcd(a, n) = 1$, then $a^{\varphi(n)} = 1$ $(mod$ $n)$. Fermat's little theorem is a special case of this where we have a prime $p$ instead of $n$ and thus $\varphi(p) = p - 1$
 - The sum of all numbers that are $< n$ and coprime to $n$ is given by $\frac{\varphi(n)}{2}n$. This is because if $m (< n)$ is coprime to $n$, then $n - m$ is also coprime to $n$
+- Count of numbers $a$ $(1 \leq a \leq n)$ such that $gcd(a, n) = d$ (where obviously $d | n$ holds) $=$ Count of numbers $a$ $(1 \leq a \leq n)$ such that $gcd(\frac{a}{d}, \frac{n}{d}) = 1$ and is thus $=$ $\varphi(\frac{n}{d})$ (By definition of $\varphi(\frac{n}{d}))$
+- From previous observation, it is easy to see that $\varphi(d)$ (where $d | n$) $=$ Count of elements $a$ $(1 \leq a \leq n)$ such that $gcd(a, n) = \frac{n}{d}$. Thus summing $\varphi(d)$ over all possible divisors of $n$, we should get $n$. Thus, we have $\Sigma_{d | n}\varphi(d) = n$
 
 **8. Graph Theory**
 
