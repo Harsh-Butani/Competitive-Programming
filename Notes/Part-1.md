@@ -1240,10 +1240,10 @@ int extended_euclidean(int a,int b,int* x,int* y){
 - The maximum value of $j$ such that $\lfloor\frac{n}{i}\rfloor = \lfloor\frac{n}{j}\rfloor =$ $x$ (say) is given by $j = \lfloor\frac{n}{x}\rfloor$
 - $gcd(kp, kq) = k \cdot gcd(p, q)$ and $lcm(kp, kq) = k \cdot lcm(p,q)$
 - Suppose prime factorization of a number $N = p_1^{\alpha_1}p_2^{\alpha_2}...p_k^{\alpha_k}$
-    - Number of factors of $N = (1+\alpha_1)(1+\alpha_2)...(1+\alpha_k)$
-    - Sum of factors of $N = (\frac{p_1^{\alpha_1+1}-1}{p_1-1})(\frac{p_2^{\alpha_2+1}-1}{p_2-1})...(\frac{p_k^{\alpha_k+1}-1}{p_k-1})$
-    - Product of factors of $N = \sqrt{N^{\textrm{Number of factors of N}}}$
-    - $\varphi(N) = N(1-\frac{1}{p_1})(1-\frac{1}{p_2})...(1-\frac{1}{p_k})$
+    - Number of factors of $N = \sigma_{0}(N) = (1+\alpha_1)(1+\alpha_2)...(1+\alpha_k)$
+    - Sum of factors of $N = \sigma_{1}(N) = (\frac{p_1^{\alpha_1+1}-1}{p_1-1})(\frac{p_2^{\alpha_2+1}-1}{p_2-1})...(\frac{p_k^{\alpha_k+1}-1}{p_k-1})$
+    - Product of factors of $N = \sqrt{N^{\textrm{Number of factors of N}}} = \sqrt{N^{\sigma_{0}(N)}} = N^{\frac{\sigma_{0}(N)}{2}}$
+    - Euler's totient function $\varphi(N) = N(1-\frac{1}{p_1})(1-\frac{1}{p_2})...(1-\frac{1}{p_k})$
 - Bezout's Identity: Let $a$ and $b$ be integers with $gcd$ $d$. Then there exist integers $x$ and $y$ such that $ax + by = d$. Moreover, the integers of the form $az + bt$ are exactly the multiples of $d$ ($d$ is the smallest positive integer in the set $S = [ ax + by : x,y \in \mathbb{Z} \textrm{ and } ax + by > 0 ]$)
 - From above, it is easy to observe that a Linear Diophantine Equation $Ax + By = C$ has a solution iff $gcd(A, B) | C$. Let $gcd(A, B) = g$. Then the solutions to original equation are also the solutions to the equation $\frac{A}{g}x + \frac{B}{g}y = \frac{C}{g}$. Since $gcd(\frac{A}{g}, \frac{B}{g}) = 1$, therefore a solution to the equation $\frac{A}{g}x + \frac{B}{g}y = 1$ can be found using Extended Euclidean Algorithm. Let that solution be $(X, Y)$. Thus one solution of equation $\frac{A}{g}x + \frac{B}{g}y = \frac{C}{g}$ is $(\frac{C}{g}X, \frac{C}{g}Y)$ and this is also a solution to the equation $Ax + By = C$. The general solution would be $(\frac{C}{g}X + k\frac{B}{g}, \frac{C}{g}Y - k\frac{A}{g})$, where $k$ is any integer
 - Chicken McNugget Theorem: For any two relatively prime positive integers $m$ and $n$, the greatest integer that cannot be written in the form $am + bn$ for non-negative integers $a, b$ is $mn - m - n$
@@ -1258,6 +1258,12 @@ int extended_euclidean(int a,int b,int* x,int* y){
 - The sum of all numbers that are $< n$ and coprime to $n$ is given by $\frac{\varphi(n)}{2}n$. This is because if $m (< n)$ is coprime to $n$, then $n - m$ is also coprime to $n$
 - Count of numbers $a$ $(1 \leq a \leq n)$ such that $gcd(a, n) = d$ (where obviously $d | n$ holds) $=$ Count of numbers $a$ $(1 \leq a \leq n)$ such that $gcd(\frac{a}{d}, \frac{n}{d}) = 1$ and is thus $=$ $\varphi(\frac{n}{d})$ (By definition of $\varphi(\frac{n}{d}))$
 - From previous observation, it is easy to see that $\varphi(d)$ (where $d | n$) $=$ Count of elements $a$ $(1 \leq a \leq n)$ such that $gcd(a, n) = \frac{n}{d}$. Thus summing $\varphi(d)$ over all possible divisors of $n$, we should get $n$. Thus, we have $\Sigma_{d | n}\varphi(d) = n$
+- A function $f(n)$ is called a multiplicative function if
+    - $f(n)$ is defined for all positive integers $n$
+    - $f(1) = 1$
+    - $f(mn) = f(m)f(n)$ whenever $gcd(m, n) = 1$
+- Examples of multiplicative functions include $\varphi(n)$, $\sigma_{0}(n)$ and $\sigma_{1}(n)$
+- Divisor sum theorem of multiplicative functions: Let $f(n)$ be a multiplicative function and let $F(n) = \Sigma_{d | n}f(d)$. Then $F(n)$ is also multiplicative. This can be proved as follows: Let $m, n$ be positive integers such that $gcd(m, n) = 1$. Then $F(mn) = \Sigma_{d | mn}f(d)$. Let $d = rs$ where $r | m$ and $s | n$. Since $gcd(m, n) = 1$, therefore $gcd(r, s) = 1$. So $F(mn) = \Sigma_{d | mn}f(d) = \Sigma_{r | m, s | n}f(rs) = \Sigma_{r | m, s | n}f(r)f(s) = \Sigma_{r | m}f(r)\Sigma_{s | n}f(s) = F(m)F(n)$. Thus we have proved $F(mn) = F(m)F(n)$ whenever $gcd(m, n) = 1$ and hence $F(n)$ is also a multiplicative function
 
 **8. Graph Theory**
 
