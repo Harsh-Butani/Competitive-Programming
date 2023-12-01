@@ -117,6 +117,19 @@ Another similar problem is to find expected number of empty boxes when $n$ balls
 **Problem**: A person rolls a fair $p-faced$ die and records the value he rolls. Afterwards, he continues rolling the die until he obtains a value at least as large as the first roll. Let $N$ be the number of rolls after the first he performs. Find $E[N]$\
 \
 **Solution**: Let the number on the first roll be $x$. Let's calculate expected number of rolls till the experiment ends. Let $y = \frac{x-1}{p}$. Then expected number of rolls $= (1-y)\times1 + y(1-y)\times2 + y^2(1-y)\times3 + ... = \frac{1}{1-y} = \frac{p}{p+1-x}$. Thus, the required answer $= \frac{1}{p}[\Sigma_{x=1}^{p} \frac{p}{p+1-x}] = \Sigma_{i=1}^{p} \frac{1}{i}$
+- Another nice problem\
+**Problem**: An $n-digit$ number is going to be created by a two-step process. First, an integer $k$ is uniformly selected (where $0 \leq k \leq n$). Then, we select one $n-digit$ number uniformly at random from the collection of all $n-digit$ numbers where digit $d_1$ appears exactly $k$ times and digit $d_2$ appears rest of the $(n-k)$ times ($0 \leq d_1, d_2 \leq 9$). Call this selected number $X$. Determine $E[X]$\
+\
+**Solution**: First, the integer $k$ is chosen with a probability of $\frac{1}{n+1}$. Then, the number $X$ is chosen with a probability of $\frac{1}{\frac{n!}{k!(n-k)!}}$ (since there are $\frac{n!}{k!(n-k)!}$ numbers satisfying the given criteria). Thus, by definition of $E[X]$, we have
+$$E[X] = \frac{1}{n+1}\sum_{k=0}^{n}\frac{k!(n-k)!}{n!} \times \textrm{Sum of numbers satisfying the given criteria with parameter }k$$
+Now, the term involving the sum of numbers can be evaluated by adding contribution of each bit (with base $10$ ofcourse)
+$$\textrm{Contribution of }i^{th} bit = 10^{i} \times \big[\frac{d_1.(n-1)!}{(k-1)!(n-k)!} + \frac{d_2.(n-1)!}{k!(n-k-1)!}\big] = 10^{i} \times \big[\frac{(n-1)!}{k!(n-k)!}\big(d_1.k + d_2.(n-k)\big)\big]$$
+Thus, we have
+$$\textrm{Sum of numbers satisfying the given criteria with parameter }k = \sum_{i=0}^{n-1}10^{i} \times \big[\frac{(n-1)!}{k!(n-k)!}\big(d_1.k + d_2.(n-k)\big)\big] = \frac{10^n-1}{9} \times \big[\frac{(n-1)!}{k!(n-k)!}\big(d_1.k + d_2.(n-k)\big)\big]$$
+Thus, we arrive at
+$$E[X] = \frac{1}{n+1}\sum_{k=0}^{n}\frac{k!(n-k)!}{n!} \times \frac{10^n-1}{9} \times \big[\frac{(n-1)!}{k!(n-k)!}\big(d_1.k + d_2.(n-k)\big)\big] = \frac{10^n-1}{9n(n+1)}\sum_{k=0}^{n}(d_2n + (d_1 - d_2)k) = \frac{10^n-1}{9n(n+1)} \times (d_2n(n+1) + (d_1 - d_2)\frac{n(n+1)}{2})$$
+Thus, finally we get our required answer
+$$E[X] = \big(\frac{10^n-1}{9}\big)\big(\frac{d_1 + d_2}{2}\big)$$
 
 **11. Monotonic Stack**
 
