@@ -146,6 +146,46 @@ for(int i=0;i<n;i++){
 }
 ```
 - Can be modified to find next smaller/previous greater/previous smaller element. For finding previous elements, traverse the array in reverse direction. For finding smaller elements, the monotonicity of stack can be reversed
+- A problem illustrating the use of above technique: We are given a permutation of the set $[0, 1, 2, ..., n - 1]$. The cost of the permutation $p$ is defined as $\Sigma_{i=1}^{n}mex([p_{1}, p_{2}, ..., p_{i}])$. Calculate maximum cost among all cyclic shifts of the given permutation
+```cpp
+/*
+Consider a permutation of the form [..., 0, ..., x]. Suppose we have 0 < a1 < a2 < ... < ak < x,
+where ai is the element which is immediately smaller to the left of a(i+1). Index of x is n-1.
+Let index of 0 be b0 and index of ai be bi. Then the cost of this permutation is
+a1(b1-b0) + a2(b2-b1) + ... + ak(bk-b(k-1)) + x((n-1)-bk) + n. Note that elements which are to the
+left of 0 play no role in determining the cost of the permutation. Thus, we can shift the given
+permutation so that 0 appears at index 0. Call this new permutation q. We define dp[i] as the maximum
+cost of the permutation if element qi appears at the end. Then our recurrence relation is
+dp[i] = dp[j] + qi(i - j) where j is the index of the immediately smaller element to the left of qi.
+We have base case as dp[0] = n
+*/
+vector<int>q(n);
+for(int i=0;i<n;i++){
+    if(!p[i]){
+        for(int j=0;j<n;j++){
+            q[j]=p[(i+j)%n];
+        }
+        break;
+    }
+}
+vector<int>dp(n); // dp[i] is as defined above
+vector<int>left(n,-1); // left[i] -> Element which is immediately smaller and to the left of q[i]
+stack<int>stk;
+for(int i=n-1;i>=0;i--){
+    while(!stk.empty() && q[i]<q[stk.top()]){
+        left[stk.top()]=i;
+        stk.pop();
+    }
+    stk.push(i);
+}
+int ans=n;
+dp[0]=n;
+for(int i=1;i<n;i++){
+    dp[i]=dp[left[i]]+q[i]*(i-left[i]);
+    ans=max(ans,dp[i]);
+}
+cout<<ans<<'\n';
+``` 
 - Suppose we have to find previous greater element to the left of previous smaller element for each element of the array. This can be done as follows
 ```cpp
 stack<int>stk,stk2;
