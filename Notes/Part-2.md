@@ -510,6 +510,203 @@ struct segtree{
     }
 };
 ```
+- Consider a problem illustrating the use of simple segment trees to calculate maximum and minimum on a segment: We are given two arrays $a$ and $b$ of length $n$ ($1 \leq a_{i}, b_{i} \leq n$). We can perform following operation any number of times:
+  1. choose $l$ and $r$ such that $1 \leq l \leq r \leq n$
+  2. let $x = max(a_{l}, a_{l+1}, ..., a_{r})$
+  3. for all $l \leq i \leq r$, set $a_{i} = x$\
+Determine if you can make array $a$ equal to array $b$
+```cpp
+/*
+Note that if ai > bi, we immediately output NO. If ai = bi, we proceed further. Else, we
+have ai < bi. Now, we need to find first index j > i such that aj = bi. Also, it must
+hold that max(a(i+1), a(i+2), ..., a(j-1)) <= bi <= min(b(i+1), b(i+2), ..., b(j-1)). If
+we could find no such index j, then we must find last index k < i such that ak = bi and
+max(a(k+1), a(k+2), ..., a(i-1)) <= bi <= min(b(k+1), b(k+2), ..., b(i-1)). If we find no
+such index k, then we output NO
+*/
+
+struct mx_segtree{
+    int sz;
+    vector<int>values;
+
+    int NEUTRAL_ELEMENT=INT_MIN;
+
+    int merge(int& a,int& b){
+        return max(a,b);
+    }
+
+    int single(int v){
+        return v;
+    }
+    
+    void init(int n){
+        sz=1; 
+        while(sz<n) sz<<=1; 
+        values.resize(2*sz);
+    }
+    
+    void build(vector<int>& a,int x,int lx,int rx){
+        if(rx==lx+1){
+            if(lx<(ll)a.size()) values[x]=single(a[lx]); 
+            return;
+        } 
+        int m=lx+(rx-lx)/2; 
+        build(a,2*x+1,lx,m); 
+        build(a,2*x+2,m,rx); 
+        values[x]=merge(values[2*x+1],values[2*x+2]);
+    }
+
+    void build(vector<int>& a){
+        build(a,0,0,sz);
+    }
+    
+    void set(int i,int v,int x,int lx,int rx){
+        if(rx==lx+1){
+            values[x]=single(v); 
+            return;
+        } 
+        int m=lx+(rx-lx)/2; 
+        if(i<m) set(i,v,2*x+1,lx,m); 
+        else set(i,v,2*x+2,m,rx); 
+        values[x]=merge(values[2*x+1],values[2*x+2]);
+    }
+
+    void set(int i,int v){
+        set(i,v,0,0,sz);
+    }
+    
+    int calc(int l,int r,int x,int lx,int rx){
+        if(lx>=r || rx<=l) return NEUTRAL_ELEMENT; 
+        if(lx>=l && rx<=r) return values[x]; 
+        int m=lx+(rx-lx)/2; 
+        int x1=calc(l,r,2*x+1,lx,m); 
+        int x2=calc(l,r,2*x+2,m,rx); 
+        return merge(x1,x2);
+    }
+
+    int calc(int l,int r){
+        return calc(l,r,0,0,sz);
+    }
+};
+
+struct mn_segtree{
+    int sz;
+    vector<int>values;
+
+    int NEUTRAL_ELEMENT=INT_MAX;
+
+    int merge(int& a,int& b){
+        return min(a,b);
+    }
+
+    int single(int v){
+        return v;
+    }
+    
+    void init(int n){
+        sz=1; 
+        while(sz<n) sz<<=1; 
+        values.resize(2*sz);
+    }
+    
+    void build(vector<int>& a,int x,int lx,int rx){
+        if(rx==lx+1){
+            if(lx<(ll)a.size()) values[x]=single(a[lx]); 
+            return;
+        } 
+        int m=lx+(rx-lx)/2; 
+        build(a,2*x+1,lx,m); 
+        build(a,2*x+2,m,rx); 
+        values[x]=merge(values[2*x+1],values[2*x+2]);
+    }
+
+    void build(vector<int>& a){
+        build(a,0,0,sz);
+    }
+    
+    void set(int i,int v,int x,int lx,int rx){
+        if(rx==lx+1){
+            values[x]=single(v); 
+            return;
+        } 
+        int m=lx+(rx-lx)/2; 
+        if(i<m) set(i,v,2*x+1,lx,m); 
+        else set(i,v,2*x+2,m,rx); 
+        values[x]=merge(values[2*x+1],values[2*x+2]);
+    }
+
+    void set(int i,int v){
+        set(i,v,0,0,sz);
+    }
+    
+    int calc(int l,int r,int x,int lx,int rx){
+        if(lx>=r || rx<=l) return NEUTRAL_ELEMENT; 
+        if(lx>=l && rx<=r) return values[x]; 
+        int m=lx+(rx-lx)/2; 
+        int x1=calc(l,r,2*x+1,lx,m); 
+        int x2=calc(l,r,2*x+2,m,rx); 
+        return merge(x1,x2);
+    }
+
+    int calc(int l,int r){
+        return calc(l,r,0,0,sz);
+    }
+};
+
+vector<int>left(n,-1),right(n,n),curr(n+1,-1);
+// left[i] -> Last index k such that ak = bi
+// right[i] -> First index j such that aj = bi
+for(int i=0;i<n;i++){
+    if(curr[b[i]]!=-1){
+        left[i]=curr[b[i]];
+    }
+    curr[a[i]]=i;
+}
+for(int i=0;i<=n;i++){
+    curr[i]=-1;
+}
+for(int i=n-1;i>=0;i--){
+    if(curr[b[i]]!=-1){
+        right[i]=curr[b[i]];
+    }
+    curr[a[i]]=i;
+}
+struct mx_segtree mxtree;
+struct mn_segtree mntree;
+mxtree.init(n);
+mxtree.build(a);
+mntree.init(n);
+mntree.build(b);
+for(int i=0;i<n;i++){
+    if(a[i]==b[i]){
+        continue;
+    }
+    if(a[i]>b[i]){
+        cout<<"NO\n";
+        return;
+    }
+    int j=right[i];
+    if(j!=n){
+        int mx=mxtree.calc(i+1,j);
+        int mn=mntree.calc(i+1,j);
+        if(mx<=b[i] && b[i]<=mn){
+            continue;
+        }
+    }
+    int k=left[i];
+    if(k==-1){
+        cout<<"NO\n";
+        return;
+    }
+    int mx=mxtree.calc(k+1,i);
+    int mn=mntree.calc(k+1,i);
+    if(mx>b[i] || mn<b[i]){
+        cout<<"NO\n";
+        return;
+    }
+}
+cout<<"YES\n";
+```
 - We can also binary search on the segment tree (By not traversing those nodes for which we are certain about some property and traversing only the relevant nodes). For example, suppose in a binary array, we have to calculate the index of $k^{th}$ $1$ where flipping of elements at a particular index is also supported. This can be done by building a segment tree on sum of segments and finding the first index where sum is $\geq k$
 - Can be used to solve problems involving determining count of nested intervals for each interval, determining count of inversions for each element of a permutation, etc
 - We can solve the problem of finding count of elements $\leq x$ (or $\geq x)$ in a subarray $[l...r]$ by using segment tree. We build a segment tree and store the maximum and minimum values for each segment. Now, we traverse the tree recursively. We can stop recursion at three types of nodes:
