@@ -784,7 +784,26 @@ for(int i=c+1;i>0;i--){
 
 **6. Combinatorics**
 
-- **Pigeonhole Principle**
+- **Pigeonhole Principle**: A problem illustrating its use: You are given an array $a$ ($0 \leq a_i \leq 10^9$) of length $n$ ($1 \leq n \leq 2\times10^5$). You need to calculate the value of $\prod_{i \neq j}|a_i - a_j|$ modulo $m$ ($1 \leq m \leq 10^3$)
+```cpp
+/*
+Note that if n > m, then there exist distinct indices i and j such that ai mod m = aj mod m
+by Pigeonhole principle. In this case, the value of |ai - aj| mod m becomes 0 and the product
+also becomes 0. Else, we can bruteforce the value of product since m <= 1000
+*/
+
+if(n>m){
+    cout<<"0\n";
+    return;
+}
+int ans=1;
+for(int i=0;i<n;i++){
+    for(int j=i+1;j<n;j++){
+        ans=(ans*abs(a[i]-a[j]))%m;
+    }
+}
+cout<<ans<<'\n';
+```
 - **Stars and Bars method (To determine number of non-negative integer solutions)**: Let the equation be $\Sigma_{i=1}^{r}x_i = n$, where each $x_i \geq 0$. We need to find number of distinct solutions to the given equation. This problem can be modelled as follows. Suppose $n$ identical stars are kept in a straight line. Now, we need to place $(r - 1)$ identical bars to create $r$ partitions. The number of stars to the left of leftmost bar $=$ value of $x_1$. Number of stars to the right of rightmost bar $=$ value of $x_r$. Number of stars between $(i-1)^{th}$ and $i^{th}$ bar (assuming $1$-indexing) $=$ value of $x_i$. Thus the given problem now reduces to finding number of ways to arrange $n$ identical stars and $(r - 1)$ identical bars, and thus equal to $\binom{n+r-1}{n}$
 - **Counting number of permutations of a particular string**: Suppose our string contains the alphabets $x_1, x_2, ..., x_n$. Suppose the $i^{th}$ alphabet $x_i$ appears $r_i$ times in the string. Now, number of distinct permutations of the given string is equal to $\binom{r_1+r_2+...+r_n}{r_1} \times \binom{r_2+r_3+...+r_n}{r_2} \times ... \times \binom{r_n}{r_n} = \frac{(r_1+r_2+...+r_n)!}{r_1!r_2!...r_n!}$
 - Suppose there are $r_{1}$ objects of type $1$, $r_{2}$ objects of type $2$, $...$, $r_{k}$ objects of type $k$. Suppose objects of type $i$ can be arranged among themselves in $\alpha_{i}$ ways and two objects of different types can be arranged in any order. The total number of ways to arrange these $r_{1} + r_{2} + ... + r_{k}$ objects $=$ $\frac{(r_{1} + r_{2} + ... + r_{k})!}{r_{1}!r_{2}!...r_{k}!}\alpha_{1}\alpha_{2}...\alpha_{k}$. Consider this problem illustrating the use of this technique: There are $n$ people, numbered $1$ to $n$. You are given a graph where an edge between node $u$ and node $v$ means that $u$ and $v$ are friends. Also, the friendship is transitive, that is, if $u$ and $v$ are friends and $v$ and $w$ are friends, then $u$ and $w$ are also friends. You are also given an array $a$ of length $n$ consisting of positive integers. Calculate the number of ways to arrange these $n$ people such that if $u$ and $v$ are friends, then $u$ comes before $v$ iff $a_{u} \leq a_{v}$
