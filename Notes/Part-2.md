@@ -709,6 +709,7 @@ cout<<"YES\n";
 ```
 - We can also binary search on the segment tree (By not traversing those nodes for which we are certain about some property and traversing only the relevant nodes). For example, suppose in a binary array, we have to calculate the index of $k^{th}$ $1$ where flipping of elements at a particular index is also supported. This can be done by building a segment tree on sum of segments and finding the first index where sum is $\geq k$
 - Can be used to solve problems involving determining count of nested intervals for each interval, determining count of inversions for each element of a permutation, etc
+- If the array elements are small enough, segment trees can also be used to determine the count of inversions in the array
 - We can solve the problem of finding count of elements $\leq x$ (or $\geq x)$ in a subarray $[l...r]$ by using segment tree. We build a segment tree and store the maximum and minimum values for each segment. Now, we traverse the tree recursively. We can stop recursion at three types of nodes:
     - Nodes for which minimum value is $> x$ (We simply return when this node is encountered)
     - Nodes for which maximum value is $\leq x$ (Here, we return from this node and add the length of the segment represented by this node to the answer)
@@ -1045,7 +1046,7 @@ for(int i=0;i<n;i++){
 - Suppose we have to find maximum sum subsequence of size $\leq m$ in the range $[0,i]$ for each $i$ from $0$ to $n - 1$. This can be done as follows
 ```cpp
 vector<int>ans(n);
-priority_queue<int>pq;
+priority_queue<int,vector<int>,greater<int>>pq;
 int sum=0;
 for(int i=0;i<n;i++){
     if(a[i]>0){
