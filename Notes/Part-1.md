@@ -901,6 +901,10 @@ $$W(n) = \frac{2}{n}\sum_{k=1}^{n}k^{2}\binom{n}{k} = \frac{2}{n}n(n+1)2^{n-2} =
 **Solution 2**: Let $W(n)$ be the required answer. Consider the action of appending a $0$ or a $1$ to all binary strings of length $(n-1)$. If we append the same digit as the last digit of the $(n-1)$ length string, we get $W(n-1)$ added to the score. If we append the other digit, then the count of blocks increases by $1$ for all $2^{n-1}$ strings and thus it increases our score by $W(n-1) + 2^{n-1}$. Thus, we get the recurrence relation
 $$W(n) = 2W(n-1) + 2^{n-1}, n > 1$$
 Also $W(1) = 2$. Solving the above recurrence gives the same answer $W(n) = (n+1)2^{n-1}$
+- Another problem\
+**Problem**: For an array $b$ of length $m$, define $f(b) = \Sigma_{i=1}^{m-1}(-1)^{i+1}|b_{i} - b_{i+1}|^{7}$. You are given an array $a$ of length $n$. Find sum of $f(s)$ over over all non-empty subsequences $s$ of $a$\
+\
+**Solution**: Let elements $a_i$ and $a_j$ form consecutive elements in a subsequence. Suppose $i > 1$. Now, contribution of this pair to the sum $= |a_i - a_j|^7.2^{n-j}$ if an even number of elements occur in the subsequence before index $i$ else the contrbution is $-|a_i - a_j|^7.2^{n-j}$. So, contribution of this pair $= (\binom{i-1}{0} + \binom{i-1}{2} + ...)|a_i - a_j|^7.2^{n-j} - (\binom{i-1}{1} + \binom{i-1}{3} + ...)|a_i - a_j|^7.2^{n-j} = 0$ as $\binom{k}{0} - \binom{k}{1} + \binom{k}{2} - ... + (-1)^k\binom{k}{k} = (1 - 1)^k = 0$. Thus for all pairs $(i, j)$ such that $i > 1$, the contribution of this pair to the sum is $0$. Hence required answer $= \Sigma_{j=2}^{n}|A_1 - A_j|^7.2^{n-j}$
 - There is a common combinatorial trick for counting: We change the perspective to count. For example, suppose we have to count the number of good objects of type $A$ each object of type $B$ yields. Another way to count this is as follows: We count how many objects of type $B$ yield each of the possible good objects of type $A$. So basically, the code changes as follows (Let's call this contribution technique)
 ```cpp
 /* Older version */
