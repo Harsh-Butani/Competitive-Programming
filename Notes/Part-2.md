@@ -1106,7 +1106,7 @@ cout<<*st.begin()<<'\n';
 ```
 - Checkout the following method to calculate LIS (Longest Increasing Subsequence) in an array in $O(n$ $log$ $n)$ time
 ```cpp
-vector<int>dp(n);
+vector<int>dp;
 for(int i=0;i<n;i++){
     auto it=lower_bound(dp.begin(),dp.end(),a[i]);
     if(it==dp.end()){
