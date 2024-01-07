@@ -613,6 +613,31 @@ void dfs2(int u,int p,vector<vector<int>>& g,vector<int>& ans,vector<int>& sz,ve
     }
 }
 
+/*
+The function dfs2() can also be written in a much simplified way as follows (dp vector also needs to be passed)
+
+void dfs2(int u,int p,vector<vector<int>>& g,vector<int>& dp,vector<int>& ans,vector<int>& sz,vector<int>& a){
+    for(auto v:g[u]){
+        if(v==p){
+            continue;
+        }
+        int old_dpu=dp[u],old_dpv=dp[v],old_szu=sz[u],old_szv=sz[v];
+        dp[u]-=((a[u]^a[v])*sz[v]+dp[v]);
+        sz[v]=sz[u];
+        sz[u]-=old_szv;
+        dp[v]+=(a[u]^a[v])*sz[u]+dp[u];
+        // We have changed dp and sz values as per the new root v
+        ans[v]=dp[v];
+        dfs2(v,u,g,dp,ans,sz,a);
+        // Restoring old dp and sz values as per old root u
+        dp[u]=old_dpu;
+        dp[v]=old_dpv;
+        sz[u]=old_szu;
+        sz[v]=old_szv;
+    }
+}
+*/
+
 void solve(){
     vector<ll>dp(n+1,0),sz(n+1,0);
     // dp[i] -> Minimum total cost to make all vertices in i's subtree equal to a[i] if the tree is rooted at vertex 1
@@ -652,7 +677,7 @@ void dfs2(int u,int p,vector<vector<int>>& g,vector<int>& dp,vector<int>& ans){
         // We have changed all the dp values as if the tree is rooted at vertex v
         ans[v]=dp[v];
         dfs2(v,u,g,dp,ans);
-        // Restoring dp values as per old root
+        // Restoring dp values as per old root u
         dp[u]=old_u;
         dp[v]=old_v;
     }
