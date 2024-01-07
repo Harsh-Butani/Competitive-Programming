@@ -628,6 +628,44 @@ void solve(){
     }
 }
 ```
+- Another interesting rerooting problem: You are given a tree consisting of $n$ vertices. Each vertex $v$ is either colored black ($color_{v} = 0$) or colored white ($color_{v} = 1$). For each vertex $v$, calculate the maximum value of $count_{white} - count_{black}$ for a subtree including vertex $v$
+```cpp
+void dfs(int u,int p,vector<vector<int>>& g,vector<int>& color,vector<int>& dp){
+    dp[u]=2*color[u]-1;
+    for(auto v:g[u]){
+        if(v==p){
+            continue;
+        }
+        dfs(v,u,g,color,dp);
+        dp[u]+=max(0,dp[v]);
+    }
+}
+
+void dfs2(int u,int p,vector<vector<int>>& g,vector<int>& dp,vector<int>& ans){
+    for(auto v:g[u]){
+        if(v==p){
+            continue;
+        }
+        int old_u=dp[u],old_v=dp[v];
+        dp[u]-=max(0,dp[v]);
+        dp[v]+=max(0,dp[u]);
+        // We have changed all the dp values as if the tree is rooted at vertex v
+        ans[v]=dp[v];
+        dfs2(v,u,g,dp,ans);
+        // Restoring dp values as per old root
+        dp[u]=old_u;
+        dp[v]=old_v;
+    }
+}
+
+vector<int>dp(n+1),ans(n+1);
+dfs(1,0,g,color,dp); // Calculating answer for node 1
+ans[1]=dp[1];
+dfs2(1,0,g,dp,ans); // Calculating answer for all other nodes by rerooting the node to adjacent node of previous root
+for(int i=1;i<=n;i++){
+    cout<<ans[i]<<" ";
+}
+```
 - We can also do DP on DAG (Directed Acyclic Graph). We process the nodes in topological order or reverse topological order
 - In Digit DP, we have to answer queries such as "The count of numbers that satisfy property $X$ in $[a, b]$". This can be done by introducing a function $f$ as $f(n) =$ count of numbers $\leq n$ that satisfy property $X$. So answer $= f(b) - f(a - 1)$
 - We can use maps instead of arrays for memoizing when values have a large spread
