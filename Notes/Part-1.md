@@ -1339,7 +1339,7 @@ int extended_euclidean(int a,int b,int* x,int* y){
     - $lcm(N_{1}, N_{2}) =  p_1^{max(\alpha_1,\beta_1)}p_2^{max(\alpha_2,\beta_2)}...p_k^{max(\alpha_k,\beta_k)}$
     - $gcd(N_{1}, N_{2}) \times lcm(N_{1}, N_{2}) = p_1^{\alpha_1 + \beta_1}p_2^{\alpha_2 + \beta_2}...p_k^{\alpha_k + \beta_k} = N_{1}N_{2}$
 - Suppose $p$ is a prime number and $n \in \mathbb{N}$. The highest power of $p$ which divides $n!$ is given by $\Sigma_{i=1}^{\infty}\lfloor\frac{n}{p^i}\rfloor$
-- Let $0 < a_{1} < a_{2} < ... < a_{n}$ be $n$ positive integers. Then the greatest integer $d$ such that the remainder left on dividing $a_{i}$ by $d$ is same for all $n$ integers is given by $d = gcd(a_{2} - a_{1}, a_{3} - a_{2}, ..., a_{n} - a_{n-1})$
+- Let $a_{1}, a_{2}, ..., a_{n}$ be $n$ positive integers. Then the greatest integer $d$ such that the remainder left on dividing $a_{i}$ by $d$ is same for all $n$ integers is given by $d = gcd(|a_{2} - a_{1}|, |a_{3} - a_{2}|, ..., |a_{n} - a_{n-1}|)$
 - Euler's Theorem: If $gcd(a, n) = 1$, then $a^{\varphi(n)} = 1$ $(mod$ $n)$. Fermat's little theorem is a special case of this where we have a prime $p$ instead of $n$ and thus $\varphi(p) = p - 1$
 - The sum of all numbers that are $< n$ and coprime to $n$ is given by $\frac{\varphi(n)}{2}n$. This is because if $m (< n)$ is coprime to $n$, then $n - m$ is also coprime to $n$
 - Count of numbers $a$ $(1 \leq a \leq n)$ such that $gcd(a, n) = d$ (where obviously $d | n$ holds) $=$ Count of numbers $a$ $(1 \leq a \leq n)$ such that $gcd(\frac{a}{d}, \frac{n}{d}) = 1$ and is thus $=$ $\varphi(\frac{n}{d})$ (By definition of $\varphi(\frac{n}{d}))$
