@@ -1244,6 +1244,8 @@ int gcd(int a,int b){
 ```
 - This algorithm works because if we write $a = bq + r$ such that $0 \leq r < b$, then we have $gcd(a, b) = gcd(b, r)$. Let $gcd(a, b) = g$ and $gcd(b, r) = g'$. Since $gcd(a, b) = g$, therefore $g | (a - bq)$ and hence $g | r$. Note that $g | b$ and $g | r$ and since $gcd(b, r) = g'$, therefore we have $g \leq g'$. Also note that $gcd(b, r) = g'$ implies $g' | (bq + r)$ and hence $g' | a$. Since $g' | a$ and $g' | b$ and $gcd(a, b) = g$, therefore $g' \leq g$. We have $g \leq g'$ and $g' \leq g$ and thus $g = g'$ and hence $gcd(a, b) = gcd(b, r)$
 - $LCM(a,b)$ can be determined as $\frac{(a \times b)}{gcd(a,b)}$
+- Time complexity is $O(log(min(a, b)))$
+- Suppose you have to calculate $GCD$ of an array of integers of length $n$ where maximum element is $m$. Then the time complexity of it would be $O(n + log$ $m)$
 
 **7.3. Binary Exponentiation**
 
