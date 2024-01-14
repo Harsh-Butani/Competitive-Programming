@@ -968,6 +968,10 @@ Also $W(1) = 2$. Solving the above recurrence gives the same answer $W(n) = (n+1
 **Problem**: For an array $b$ of length $m$, define $f(b) = \Sigma_{i=1}^{m-1}(-1)^{i+1}|b_{i} - b_{i+1}|^{7}$. You are given an array $a$ of length $n$. Find sum of $f(s)$ over over all non-empty subsequences $s$ of $a$\
 \
 **Solution**: Let elements $a_i$ and $a_j$ form consecutive elements in a subsequence. Suppose $i > 1$. Now, contribution of this pair to the sum $= |a_i - a_j|^7.2^{n-j}$ if an even number of elements occur in the subsequence before index $i$ else the contrbution is $-|a_i - a_j|^7.2^{n-j}$. So, contribution of this pair $= (\binom{i-1}{0} + \binom{i-1}{2} + ...)|a_i - a_j|^7.2^{n-j} - (\binom{i-1}{1} + \binom{i-1}{3} + ...)|a_i - a_j|^7.2^{n-j} = 0$ as $\binom{k}{0} - \binom{k}{1} + \binom{k}{2} - ... + (-1)^k\binom{k}{k} = (1 - 1)^k = 0$. Thus for all pairs $(i, j)$ such that $i > 1$, the contribution of this pair to the sum is $0$. Hence required answer $= \Sigma_{j=2}^{n}|a_1 - a_j|^7.2^{n-j}$
+- Another interesting problem\
+**Problem**: Show that $\Sigma_{k=1}^{\lfloor\frac{n+1}{2}\rfloor}k\binom{n+1}{2k} = (n+1)2^{n-2}$ for all $n > 0$\
+\
+**Solution**: The case $n = 1$ is easy to verify. For $n > 1$, it is easy to see from one of the previous problems that $RHS$ is actually equal to count of blocks formed by $0's$ across all binary strings of length $n$. The other way to calculate this is to find count of binary strings with exactly $k$ blocks of $0's$ in it and then sum the expression from $k = 0$ to $k = \lfloor\frac{n+1}{2}\rfloor$, as there can't be more than $\lfloor\frac{n+1}{2}\rfloor$ blocks of $0's$. Now, to calculate the count of binary strings with exactly $k$ blocks of $0's$, the count is equal to the number of integer solutions of $y_{0} + x_{1} + y_{1} + x_{2} + ... + x_{k} + y_{k} = n$ where $y_{0}, y_{k} \geq 0$ and rest of the variables are $> 0$. This count is exactly equal to $\binom{n+1}{2k}$. So total number of blocks of $0's$ across all binary strings of length $n = \Sigma_{k=0}^{\lfloor\frac{n+1}{2}\rfloor}k\binom{n+1}{2k} = \Sigma_{k=1}^{\lfloor\frac{n+1}{2}\rfloor}k\binom{n+1}{2k} = LHS$
 - There is a common combinatorial trick for counting: We change the perspective to count. For example, suppose we have to count the number of good objects of type $A$ each object of type $B$ yields. Another way to count this is as follows: We count how many objects of type $B$ yield each of the possible good objects of type $A$. So basically, the code changes as follows (Let's call this contribution technique)
 ```cpp
 /* Older version */
@@ -1263,6 +1267,7 @@ int bin_exp(int x,int n){
 }
 ```
 - Above can be modified to make the operation modulo $m$
+- Time complexity is $O(log$ $n)$
 
 **7.4. Primality test**
 
