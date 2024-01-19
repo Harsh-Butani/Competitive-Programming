@@ -971,7 +971,17 @@ Also $W(1) = 2$. Solving the above recurrence gives the same answer $W(n) = (n+1
 - Another interesting problem\
 **Problem**: Show that $\Sigma_{k=1}^{\lfloor\frac{n+1}{2}\rfloor}k\binom{n+1}{2k} = (n+1)2^{n-2}$ for all $n > 0$\
 \
-**Solution**: The case $n = 1$ is easy to verify. For $n > 1$, it is easy to see from one of the previous problems that $RHS$ is actually equal to count of blocks formed by $0's$ across all binary strings of length $n$. The other way to calculate this is to find count of binary strings with exactly $k$ blocks of $0's$ in it and then sum the expression from $k = 0$ to $k = \lfloor\frac{n+1}{2}\rfloor$, as there can't be more than $\lfloor\frac{n+1}{2}\rfloor$ blocks of $0's$. Now, to calculate the count of binary strings with exactly $k$ blocks of $0's$, the count is equal to the number of integer solutions of $y_{0} + x_{1} + y_{1} + x_{2} + ... + x_{k} + y_{k} = n$ where $y_{0}, y_{k} \geq 0$ and rest of the variables are $> 0$. This count is exactly equal to $\binom{n+1}{2k}$. So total number of blocks of $0's$ across all binary strings of length $n = \Sigma_{k=0}^{\lfloor\frac{n+1}{2}\rfloor}k\binom{n+1}{2k} = \Sigma_{k=1}^{\lfloor\frac{n+1}{2}\rfloor}k\binom{n+1}{2k} = LHS$
+**Solution 1**: The case $n = 1$ is easy to verify. For $n > 1$, it is easy to see from one of the previous problems that $RHS$ is actually equal to count of blocks formed by $0's$ across all binary strings of length $n$. The other way to calculate this is to find count of binary strings with exactly $k$ blocks of $0's$ in it and then sum the expression from $k = 0$ to $k = \lfloor\frac{n+1}{2}\rfloor$, as there can't be more than $\lfloor\frac{n+1}{2}\rfloor$ blocks of $0's$. Now, to calculate the count of binary strings with exactly $k$ blocks of $0's$, the count is equal to the number of integer solutions of $y_{0} + x_{1} + y_{1} + x_{2} + ... + x_{k} + y_{k} = n$ where $y_{0}, y_{k} \geq 0$ and rest of the variables are $> 0$. This count is exactly equal to $\binom{n+1}{2k}$. So total number of blocks of $0's$ across all binary strings of length $n = \Sigma_{k=0}^{\lfloor\frac{n+1}{2}\rfloor}k\binom{n+1}{2k} = \Sigma_{k=1}^{\lfloor\frac{n+1}{2}\rfloor}k\binom{n+1}{2k} = LHS$
+\
+**Solution 2**: $$LHS = \sum_{k=1}^{\lfloor\frac{n+1}{2}\rfloor}k\binom{n+1}{2k} = \sum_{k=1}^{\lfloor\frac{m}{2}\rfloor}k\binom{m}{2k} \textrm{where } m = n + 1$$
+We have
+$$f(x) = (1+x)^m + (1-x)^m = \sum_{k=0}^{\lfloor\frac{m}{2}\rfloor}2\binom{m}{2k}x^{2k}$$
+Differentiating with respect to $x$, we get
+$$f'(x) = m[(1+x)^{m-1} - (1-x)^{m-1}] = \sum_{k=1}^{\lfloor\frac{m}{2}\rfloor}4k\binom{m}{2k}x^{2k-1}$$
+Dividing by $4$ and putting $x = 1$, we get
+$$\frac{f'(1)}{4} = \frac{m}{4}.2^{m-1} = m.2^{m-3} = \sum_{k=1}^{\lfloor\frac{m}{2}\rfloor}k\binom{m}{2k}$$
+and thus
+$$LHS = \sum_{k=1}^{\lfloor\frac{m}{2}\rfloor}k\binom{m}{2k} = m.2^{m-3} = (n+1)2^{n-2} = RHS$$
 - There is a common combinatorial trick for counting: We change the perspective to count. For example, suppose we have to count the number of good objects of type $A$ each object of type $B$ yields. Another way to count this is as follows: We count how many objects of type $B$ yield each of the possible good objects of type $A$. So basically, the code changes as follows (Let's call this contribution technique)
 ```cpp
 /* Older version */
