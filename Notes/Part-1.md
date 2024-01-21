@@ -495,7 +495,7 @@ void dfs(int u,int p,vector<vector<int>>& g,vector<int>& dp,vector<int>& sz){
             dfs(v,u,g,dp,sz);
             dp[u]+=dp[v];
             sz[u]+=sz[v];
-            x.PB(sz[v]);
+            x.push_back(sz[v]);
         }
     }
     int W=sz[u]/2,n=(int)x.size();
@@ -1416,8 +1416,8 @@ We can do this by multi source BFS
 map<int,vector<int>>graph;
 for(int i=1;i<=n;i++){
     for(int j=0;j<(int)s[i].size();j++){
-        g[i].PB(n+S[i][j]);
-        g[n+S[i][j]].PB(i);
+        g[i].push_back(n+S[i][j]);
+        g[n+S[i][j]].push_back(i);
     }
 }
 map<int,int>distance;
@@ -1560,8 +1560,8 @@ for(int i=1;i<=n;i++){
     int x=a[i];
     while(x>1){
         int p=mind[x];
-        g[i].PB(n+p);
-        g[n+p].PB(i);
+        g[i].push_back(n+p);
+        g[n+p].push_back(i);
         while(!(x%p)){
             x/=p;
         }
