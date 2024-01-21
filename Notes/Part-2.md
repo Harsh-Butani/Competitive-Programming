@@ -100,7 +100,7 @@ for(int m=0;m<(1<<n);m++){
 ```
 - The time complexity of above is $O(3^n)$. The proof is as follows: We will show that the inner loop will execute a total of $O(3^n)$ iterations. If mask $m$ has $k$ enabled bits, then it will have $2^k$ submasks. As we have a total of $\binom{n}{k}$ masks with $k$ enabled bits, therefore total number of submasks (across all masks) would be $\Sigma_{k=0}^{n}\binom{n}{k}2^k = (1+2)^n = 3^n$. Thus the inner loop executes $O(3^n)$ iterations
 - We can find minimum xor of two integers in an array by sorting the array and then finding xor between consecutive elements in the array and taking minimum among all the values obtained (It can be shown that two integers in an array having maximum common prefix bits always occur as adjacent elements in the sorted array). Another method to do the same is by using trie
-- Bits often come in handy in coming up with constructive algorithms. A problem illustrating this: Come up with an array containing as few elements as possible such that count of strictly increasing subsequences in it is exactly equal to $x$
+- Thinking in terms of bits often comes in handy in coming up with constructive algorithms. A problem illustrating this: Come up with an array containing as few elements as possible such that count of strictly increasing subsequences in it is exactly equal to $x$
 ```cpp
 /*
 First lets add 0, 1, 2, ..., i. Note that when we append i at the end of the sequence,
@@ -128,7 +128,8 @@ for(int i=31;i>=0;i--){
         ans.push_back(i);
     }
 }
-int sz=ans.size()<<'\n';
+int sz=ans.size();
+cout<<sz<<'\n';
 for(int i=0;i<sz;i++){
     cout<<ans[i]<<" ";
 }
