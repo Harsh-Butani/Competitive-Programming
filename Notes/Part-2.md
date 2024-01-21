@@ -100,6 +100,37 @@ for(int m=0;m<(1<<n);m++){
 ```
 - The time complexity of above is $O(3^n)$. The proof is as follows: We will show that the inner loop will execute a total of $O(3^n)$ iterations. If mask $m$ has $k$ enabled bits, then it will have $2^k$ submasks. As we have a total of $\binom{n}{k}$ masks with $k$ enabled bits, therefore total number of submasks (across all masks) would be $\Sigma_{k=0}^{n}\binom{n}{k}2^k = (1+2)^n = 3^n$. Thus the inner loop executes $O(3^n)$ iterations
 - We can find minimum xor of two integers in an array by sorting the array and then finding xor between consecutive elements in the array and taking minimum among all the values obtained (It can be shown that two integers in an array having maximum common prefix bits always occur as adjacent elements in the sorted array). Another method to do the same is by using trie
+- Bits often come in handy in coming up with constructive algorithms. A problem illustrating this: Come up with an array containing as few elements as possible such that count of strictly increasing subsequences in it is exactly equal to $x$
+```cpp
+/*
+First lets add 0, 1, 2, ..., i. Note that when we append i at the end of the sequence, 2^i subsequences get added to the count.
+So we continue this sequence as long as the above count is <= x. Once that sequence is ended. Now we have to add more numbers
+to account for the remaining subsequences. This can be done by looking at the binary representation of the remaining count.
+Starting from MSB, we can append the number MSB and that would add (1 << MSB) more subsequences to the count since there are
+exactly MSB numbers to the left of current element which are smaller than it (0, 1, 2, ..., MSB - 1)
+*/
+int sum=0;
+vector<int>ans;
+for(int i=0; i<32;i++){
+    if((sum|(1<<i))<=x){
+        sum|=(1<<i);
+        ans.push_back(i);
+    }
+    else{
+        x-=sum;
+        break;
+    }
+}
+for(int i=31;i>=0;i--){
+    if(x&(1<<i)){
+        ans.push_back(i);
+    }
+}
+int sz=ans.size()<<'\n';
+for(int i=0;i<sz;i++){
+    cout<<ans[i]<<" ";
+}
+```
 
 **10. Probability and Expectation**
 
