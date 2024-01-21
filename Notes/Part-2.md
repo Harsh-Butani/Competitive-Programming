@@ -103,11 +103,13 @@ for(int m=0;m<(1<<n);m++){
 - Bits often come in handy in coming up with constructive algorithms. A problem illustrating this: Come up with an array containing as few elements as possible such that count of strictly increasing subsequences in it is exactly equal to $x$
 ```cpp
 /*
-First lets add 0, 1, 2, ..., i. Note that when we append i at the end of the sequence, 2^i subsequences get added to the count.
-So we continue this sequence as long as the above count is <= x. Once that sequence is ended. Now we have to add more numbers
-to account for the remaining subsequences. This can be done by looking at the binary representation of the remaining count.
-Starting from MSB, we can append the number MSB and that would add (1 << MSB) more subsequences to the count since there are
-exactly MSB numbers to the left of current element which are smaller than it (0, 1, 2, ..., MSB - 1)
+First lets add 0, 1, 2, ..., i. Note that when we append i at the end of the sequence,
+2^i subsequences get added to the count. So we continue this sequence as long as the above
+count is <= x. Once that sequence is ended, now we have to add more numbers to account for
+the remaining subsequences. This can be done by looking at the binary representation of the
+remaining count. Starting from MSB, we can append the number MSB and that would add (1 << MSB)
+more subsequences to the count since there are exactly MSB numbers to the left of current
+element which are smaller than it (0, 1, 2, ..., MSB - 1)
 */
 int sum=0;
 vector<int>ans;
