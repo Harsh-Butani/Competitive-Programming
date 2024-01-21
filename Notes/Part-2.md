@@ -113,7 +113,7 @@ element which are smaller than it (0, 1, 2, ..., MSB - 1)
 */
 int sum=0;
 vector<int>ans;
-for(int i=0; i<32;i++){
+for(int i=0;i<32;i++){
     if((sum|(1<<i))<=x){
         sum|=(1<<i);
         ans.push_back(i);
