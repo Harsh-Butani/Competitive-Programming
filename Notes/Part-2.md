@@ -8,29 +8,22 @@ required answer by adding contribution of each bit. Suppose we are evaluating co
 ith bit. We will add the lengths of all subarrays whose xor's ith bit is set. Then the contribution
 of ith bit = (1<<i) x (Sum of lengths of subarrays whose xor's ith bit is set) 
 */
-for(int i=1;i<=n;i++){
+for(int i=2;i<=n;i++){
     a[i]^=a[i-1];
 }
 int ans=0;
 for(int i=0;i<32;i++){
-    vector<int>sum(n+1,0);
-    int ones=0;
-    for(int j=0;j<=n;j++){
+    int total=0,cnt0=1,cnt1=0,sum0=0,sum1=0;
+    for(int j=1;j<=n;j++){
         if(a[j]&(1<<i)){
-            sum[j]=(j?sum[j-1]+j:0);
-            ones++;
+            total+=cnt0*j-sum0;
+            cnt1++;
+            sum1+=j;
         }
         else{
-            sum[j]=(j?sum[j-1]:0);
-        }
-    }
-    int cnt=0,total=0;
-    for(int j=0;j<=n;j++){
-        if(a[j]&(1<<i)){
-            cnt++;
-        }
-        else{
-            total+=(cnt*j-sum[j])+(sum[n]-sum[j]-(ones-cnt)*j);
+            total+=cnt1*j-sum1;
+            cnt0++;
+            sum0+=j;
         }
     }
     ans+=(1<<i)*total;
@@ -128,10 +121,9 @@ for(int i=31;i>=0;i--){
         ans.push_back(i);
     }
 }
-int sz=ans.size();
-cout<<sz<<'\n';
-for(int i=0;i<sz;i++){
-    cout<<ans[i]<<" ";
+cout<<ans.size()<<'\n';
+for(auto e:ans){
+    cout<<e<<" ";
 }
 ```
 
