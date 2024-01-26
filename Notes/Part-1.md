@@ -918,8 +918,29 @@ void solve(){
 - **Catalan Numbers** ($C_{n} = \frac{\binom{2n}{n}}{n+1}$)
 - **Inclusion-Exclusion Principle**: The principle of inclusion-exclusion states that for finie sets $A_{1}, A_{2},...,A_{n}$, one has the identity
   $$\bigg |\bigcup_{i=1}^{n} A_{i}\bigg | = \sum_{i=1}^{n} |A_{i}| - \sum_{1 \leq i < j \leq n} |A_{i} \cap A_{j}| + \sum_{1 \leq i < j < k \leq n} |A_{i} \cap A_{j} \cap A_{k}| - ... + (-1)^{n+1}|A_{1} \cap A_{2} ... \cap A_{n}|$$
+- We can use Inclusion-Exclusion Principle to calculate the number of derangements of $n$ objects. We need to calculate number of permutations of $n$ objects such that no object appears at its original place. Let $S_{k}$ represent number of permutations of $n$ objects such that the $k^{th}$ object appears at its original place. So number of derangements would be then equal to $n! - |S_{1} \cup S_{2} \cup ... \cup S_{n}|$. Now, by principle of inclusion-exclusion, we have
+$$|S_{1} \cup ... \cup S_{n}| = \sum_{i=1}^{n} |S_{i}| - \sum_{1 \leq i < j \leq n} |S_{i} \cap S_{j}| + \sum_{1 \leq i < j < k \leq n} |S_{i} \cap S_{j} \cap S_{k}| - ... + (-1)^{n+1}|S_{1} \cap S_{2} ... \cap S_{n}|$$
+$$= \binom{n}{1}(n-1)! - \binom{n}{2}(n-2)! + ... + (-1)^{n+1}\binom{n}{n}0!$$
+$$= n![\frac{1}{1!} - \frac{1}{2!} + ... + (-1)^{n+1}\frac{1}{n!}]$$
+And thus, the number of derangements is given by
+$$n! - \bigg |\bigcup_{i=1}^{n} S_{i}\bigg | = n! - n![\frac{1}{1!} - \frac{1}{2!} + ... + (-1)^{n+1}\frac{1}{n!}] = n!\sum_{i=0}^{n}\frac{(-1)^{i}}{i!}$$
 - **Binomial Theorem**: It states that $(a+b)^n = \Sigma_{r=0}^{n}\binom{n}{r}a^{n-r}b^{r}$ where $a, b \in \mathbb{R}$ and $n \in \mathbb{N}$
 - **Generating Functions**
+- A problem illustrating the use of exponential generating functions:\
+**Problem**: How many $n$ digit even numbers ($n > 1$) can be formed using the digits $[1, 2, ..., 9]$ such that digit $9$ appears atleast once and digit $8$ appears an even number of times\
+\
+**Solution**: We shall consider two separate cases:\
+Case $1$: The number ends with $2, 4$ or $6$\
+In this case, required count $= 3 \times (n-1)! \times \textrm{Coefficient of }x^{n-1} \textrm{ in expansion of } (1 + x + \frac{x^2}{2!} + ...)^7(1 + \frac{x^2}{2!} + \frac{x^4}{4!} + ...)(x + \frac{x^2}{2!} + \frac{x^3}{3!} + ...)$\
+$= 3 \times (n-1)! \times \textrm{Coefficient of }x^{n-1} \textrm{ in expansion of } e^{7x}(\frac{e^{x} + e^{-x}}{2})(e^{x} - 1)$\
+$= 3 \times (n-1)! \times \textrm{Coefficient of }x^{n-1} \textrm{ in expansion of } \frac{e^{9x} - e^{8x} + e^{7x} - e^{6x}}{2}$\
+$= \frac{3}{2}(9^{n-1} - 8^{n-1} + 7^{n-1} - 6^{n-1})$\
+Case $2$: The number ends with $8$\
+In this case, required count $= (n-1)! \times \textrm{Coefficient of }x^{n-1} \textrm{ in expansion of } (1 + x + \frac{x^2}{2!} + ...)^7(x + \frac{x^3}{3!} + \frac{x^5}{5!} + ...)(x + \frac{x^2}{2!} + \frac{x^3}{3!} + ...)$\
+$= (n-1)! \times \textrm{Coefficient of }x^{n-1} \textrm{ in expansion of } e^{7x}(\frac{e^{x} - e^{-x}}{2})(e^{x} - 1)$\
+$= (n-1)! \times \textrm{Coefficient of }x^{n-1} \textrm{ in expansion of } \frac{e^{9x} - e^{8x} - e^{7x} + e^{6x}}{2}$\
+$= \frac{1}{2}(9^{n-1} - 8^{n-1} - 7^{n-1} + 6^{n-1})$\
+Summing the results of above two cases, our required answer $= 2(9^{n-1} - 8^{n-1}) + 7^{n-1} - 6^{n-1}$
 - **Partitions**
 - A nice problem and approach to solve it\
 **Problem**: Given non-negative integers $n$ and $m$, find number of non-decreasing sequences of length $n$ such that each element in the sequence lies between $0$ and $m$ inclusive\
