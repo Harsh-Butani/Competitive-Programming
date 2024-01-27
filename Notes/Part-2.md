@@ -432,7 +432,7 @@ for(auto e:ans){
 - A nice problem and its solution\
 **Problem**: There are $n$ clients and $n$ servers. Each client sends a request to one of the $n$ servers (with equal probability). If a server gets more than $1$ request, it satisfies only $1$ request. Find expected number of clients whose requests are satisfied.\
 \
-**Solution**: Let $X_i$ denote the random variable for number of requests satisfied by server $i$. Then by linearity of expectation, answer is $E(X_1 + X_2 + ... + X_n) = E(X_1) + E(X_2) + ... + E(X_n)$. Now, each $E(X_i) = 1 \times (1-(1-\frac{1}{n})^n) + 0 \times (1-\frac{1}{n})^n = 1-(1-\frac{1}{n})^n$. So required answer $= n(1-(1-\frac{1}{n})^n)$\
+**Solution**: Let $X_i$ denote the random variable for number of requests satisfied by server $i$. Then by linearity of expectation, answer is $E[X_1 + X_2 + ... + X_n] = E[X_1] + E[X_2] + ... + E[X_n]$. Now, each $E[X_i] = 1 \times (1-(1-\frac{1}{n})^n) + 0 \times (1-\frac{1}{n})^n = 1-(1-\frac{1}{n})^n$. So required answer $= n(1-(1-\frac{1}{n})^n)$\
 \
 Another similar problem is to find expected number of empty boxes when $n$ balls are randomly placed in $n$ boxes. Here, by linearity of expectation, answer is $n(1-\frac{1}{n})^n$
 - Another problem on expectations\
@@ -456,6 +456,34 @@ Thus, we arrive at
 $$E[X] = \frac{1}{n+1}\sum_{k=0}^{n}\frac{k!(n-k)!}{n!} \times \frac{10^n-1}{9} \times \big[\frac{(n-1)!}{k!(n-k)!}\big(d_1.k + d_2.(n-k)\big)\big] = \frac{10^n-1}{9n(n+1)}\sum_{k=0}^{n}(d_2n + (d_1 - d_2)k) = \frac{10^n-1}{9n(n+1)} \times (d_2n(n+1) + (d_1 - d_2)\frac{n(n+1)}{2})$$
 Thus, finally we get our required answer
 $$E[X] = \big(\frac{10^n-1}{9}\big)\big(\frac{d_1 + d_2}{2}\big)$$
+- Another interesting expectation problem\
+**Problem**: There are $n$ children in a class, $m$ pairs among them are friends. The $i^{th}$ pair who are friends have a friendship value of $f_{i}$. The teacher has to go for $k$ excursions, and for each of the excursions, she chooses a pair of children randomly, equiprobably and independently. If a pair of children who are friends is chosen, their friendship value increases by $1$ for all subsequent excursions (the teacher can choose the same pair of children more than once). The friendship value of pair who are not friends is considered $0$, and it does not change for subsequent excursions. Find the expected value of the sum of friendship values of all $k$ pairs chosen for the excursions (at the time of being chosen)\
+\
+**Solution**: Let the event $X_{i}$ represent the expected sum of friendship values for $i^{th}$ pair of friends. Then by linearity of expectation, required answer would be $E[X_{1}] + E[X_{2}] + ... + E[X_{m}]$. Now $E[X_{i}]$ can be calculated as follows
+$$E[X_{i}] = \sum_{x=1}^{k}\binom{k}{x}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}\bigg[f_{i}+(f_{i}+1)+...+(f_{i}+x-1)\bigg]$$
+$$E[X_{i}] = \sum_{x=1}^{k}\binom{k}{x}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}\bigg[xf_{i}+\frac{x(x-1)}{2}\bigg]$$
+$$E[X_{i}] = f_{i}\sum_{x=1}^{k}\binom{k}{x}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}x+\frac{1}{2}\sum_{x=1}^{k}\binom{k}{x}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}x(x-1)$$
+Let first summation be represented by $S_1$ and second summation by $S_2$
+$$S_1 = f_{i}\sum_{x=1}^{k}\frac{k!}{x!(k-x)!}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}x$$
+$$= f_{i}\sum_{x=1}^{k}\frac{k!}{(x-1)!(k-x)!}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}$$
+$$= kf_{i}\bigg(\frac{1}{\binom{n}{2}}\bigg)\sum_{x=1}^{k}\frac{(k-1)!}{(x-1)!(k-x)!}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x-1}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}$$
+$$= kf_{i}\bigg(\frac{1}{\binom{n}{2}}\bigg)\sum_{x=1}^{k}\binom{k-1}{x-1}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x-1}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}$$
+$$= kf_{i}\bigg(\frac{1}{\binom{n}{2}}\bigg)\sum_{y=0}^{k-1}\binom{k-1}{y}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{y}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-1-y}$$
+$$= kf_{i}\bigg(\frac{1}{\binom{n}{2}}\bigg)\bigg[\frac{1}{\binom{n}{2}} + \bigg(1 - \frac{1}{\binom{n}{2}}\bigg)\bigg]^{k-1}$$
+$$= \frac{kf_{i}}{\binom{n}{2}}$$
+Similarly $S_2$ can be calculated
+$$S_2 = \frac{1}{2}\sum_{x=1}^{k}\frac{k!}{x!(k-x)!}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}x(x-1)$$
+$$= \frac{1}{2}\sum_{x=2}^{k}\frac{k!}{(x-2)!(k-x)!}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}$$
+$$= \frac{1}{2}k(k-1)\bigg(\frac{1}{\binom{n}{2}}\bigg)^{2}\sum_{x=2}^{k}\frac{(k-2)!}{(x-2)!(k-x)!}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x-2}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}$$
+$$= \frac{1}{2}k(k-1)\bigg(\frac{1}{\binom{n}{2}}\bigg)^{2}\sum_{x=2}^{k}\binom{k-2}{x-2}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{x-2}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-x}$$
+$$= \frac{1}{2}k(k-1)\bigg(\frac{1}{\binom{n}{2}}\bigg)^{2}\sum_{y=0}^{k-2}\binom{k-2}{y}\bigg(\frac{1}{\binom{n}{2}}\bigg)^{y}\bigg(1-\frac{1}{\binom{n}{2}}\bigg)^{k-2-y}$$
+$$= \frac{1}{2}k(k-1)\bigg(\frac{1}{\binom{n}{2}}\bigg)^{2}\bigg[\frac{1}{\binom{n}{2}} + \bigg(1 - \frac{1}{\binom{n}{2}}\bigg)\bigg]^{k-2}$$
+$$= \frac{k(k-1)}{2\binom{n}{2}^{2}}$$
+Thus we have
+$$E[X_{i}] = S_1 + S_2 = \frac{kf_{i}}{\binom{n}{2}} + \frac{k(k-1)}{2\binom{n}{2}^{2}}$$
+And hence by linearity of expectation, required answer is given by
+$$\sum_{i=1}^{m}E[X_{i}] = \frac{k}{\binom{n}{2}}\sum_{i=1}^{m}f_{i} + \frac{mk(k-1)}{2\binom{n}{2}^{2}}$$
+$$= \frac{2k}{n^2(n-1)^2}\bigg[m(k-1)+n(n-1)\sum_{i=1}^{m}f_{i}\bigg]$$
 
 **11. Monotonic Stack**
 
