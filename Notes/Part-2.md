@@ -126,6 +126,64 @@ void dijkstra(int source,vector<int>& distance,vector<int>& parent,vector<vector
 }
 ```
 - Multi-Source Dijkstra can be used to find shortest distance from a set of nodes. Just assign $0$ distance to all these source nodes and push them in set/priority queue
+- A problem using Dijkstra's Algorithm: A person has caught an illness. There are $n$ symptoms ($1 \leq n \leq 10$), with the person initially having some of them. The symptoms are given in the form of a binary string of length $n$ such that a $1$ in the string represents that the person has that symptom. There are $m$ medicines ($1 \leq m \leq 1000$). For each medicine, the number of days it needs to be taken is given in `days`, the symptoms it cures is given in `cures`, and the symptoms that appears as its side effects is given in `side_effects`. The person can take only a single medicine at a time. Calculate minimum number of days for the person to get cured fully
+```cpp
+/*
+The problem can be modelled using a graph. The nodes of this graph represent the state of the
+symptom. So the node (1<<n) - 1 represents that the person has all possible symptoms and the
+node 0 represents the person has no symptoms. An edge connecting nodes u and v has a weight
+days[i] if the ith medicine can change the state of symptoms from u to v. Given the initial
+state of symptom, we need to calculate the minimum distance of node 0 from this starting node
+*/
+int initial=0;
+for(int i=0;i<n;i++){
+    if(initial_symptom[i]=='1'){
+        initial|=(1<<i);
+    }
+}
+vector<vector<pair<int,int>>>g(1<<n);
+for(int i=0;i<m;i++){
+    int cure=0,side=0;
+    for(int j=0;j<n;j++){
+        if(cures[i][j]=='0'){
+            cure|=(1<<j);
+        }
+        if(side_effects[i][j]=='1'){
+            side|=(1<<j);
+        }
+    }
+    for(int j=0;j<(1<<n);j++){
+        int k=(j&cure)|side;
+        if(j!=k){
+            g[j].push_back(make_pair(k,days[i]));
+        }
+    }
+}
+vector<int>dist(1<<n,INT_MAX);
+priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+dist[initial]=0;
+pq.push(make_pair(0,initial));
+while(!pq.empty()){
+    int u=pq.top().second;
+    int d_u=pq.top().first;
+    pq.pop();
+    if(d_u!=dist[u]){
+        continue;
+    }
+    for(auto v:g[u]){
+        if(d_u+v.second<dist[v.first]){
+            dist[v.first]=d_u+v.second;
+            pq.push(make_pair(dist[v.first],v.first));
+        }
+    }
+}
+if(dist[0]==INT_MAX){
+    cout<<"Can never be cured fully";
+}
+else{
+    cout<<dist[0];
+}
+```
 
 **8.4. Kruskal's Algorithm**
 
