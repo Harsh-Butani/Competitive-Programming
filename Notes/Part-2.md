@@ -1472,3 +1472,32 @@ for(int i=0;i<n;i++){
 }
 cout<<(int)dp.size()<<'\n';
 ```
+- A stack can be used to check whether any pair of intervals intersect or not. A problem illustrating this usecase: There are $2n$ points placed at equal intervals on a circle, numbered $1$ to $2n$ in clockwise direction. There are $n$ chords on the circle, with $i^{th}$ chord connecting points $a_{i}$ and $b_{i}$. It's given that the values $a_{1}, a_{2}, ..., a_{n}, b_{1}, b_{2}, ..., b_{n}$ are all distinct. Determine whether there is an intersection between the chords
+```cpp
+/*
+It is easy to see that two chords connecting points ai and bi and aj and bj intersect if either
+ai < aj < bi < bj or aj < ai < bj < bi (assuming ak < bk for all points). This can be checked
+using a stack
+*/
+vector<int>open(2*n+1,0),close(2*n+1,0);
+for(int i=1;i<=n;i++){
+    open[min(a[i],b[i]]=i;
+    close[max(a[i],b[i])]=i;
+}
+stack<int>stk;
+for(int i=1;i<=2*n;i++){
+    if(open[i]){
+        stk.push(i);
+    }
+    else if(!stk.empty()){
+        if(stk.top()==close[i]){
+            stk.pop();
+        }
+        else{
+            cout<<"Chords "<<stk.top()<<" and "<<close[i]<<" intersect";
+            return;
+        }
+    }
+}
+cout<<"Chords don't intersect";
+```
