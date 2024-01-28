@@ -1003,6 +1003,16 @@ Dividing by $4$ and putting $x = 1$, we get
 $$\frac{f'(1)}{4} = \frac{m}{4}.2^{m-1} = m.2^{m-3} = \sum_{k=1}^{\lfloor\frac{m}{2}\rfloor}k\binom{m}{2k}$$
 and thus
 $$LHS = \sum_{k=1}^{\lfloor\frac{m}{2}\rfloor}k\binom{m}{2k} = m.2^{m-3} = (n+1)2^{n-2} = RHS$$
+- A cute problem\
+**Problem**: Find the number of sequences consisting of $n$ '(' and $m$ ')' such that longest balanced subsequence is of length $2k$ ($1 \leq k \leq n, m$)\
+\
+**Solution**: Let function $f(n,m,k)$ return number of sequences such that length of longest regular bracket sequence is $\leq 2k$. Then answer to the above problem is $f(n,m,k) - f(n,m,k-1)$. Now we can derive recurrence relation for $f(n,m,k)$ as follows (assuming $k < m, n$):\
+Case $1$: Sequence starts with '(': In this case we add $f(n-1,m,k-1)$\
+Case $2$: Sequence starts with ')': In this case, we add $f(n,m-1,k)$\
+Thus our required recurrence relation is $f(n,m,k) = f(n-1,m,k-1) + f(n,m-1,k)$\
+Also the base case: $f(n,m,0) = 1$ and $f(n,m,min(n,m)) = \binom{n+m}{n} = \binom{n+m}{m} = \binom{n+m}{min(n,m)}$\
+Careful observation would reveal that $f(n,m,k)$ is infact $= \binom{n+m}{k}$\
+Thus our required answer $= \binom{n+m}{k} - \binom{n+m}{k-1}$
 - There is a common combinatorial trick for counting: We change the perspective to count. For example, suppose we have to count the number of good objects of type $A$ each object of type $B$ yields. Another way to count this is as follows: We count how many objects of type $B$ yield each of the possible good objects of type $A$. So basically, the code changes as follows (Let's call this contribution technique)
 ```cpp
 /* Older version */
