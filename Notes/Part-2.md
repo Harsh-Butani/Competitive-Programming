@@ -1487,7 +1487,7 @@ for(int i=1;i<=n;i++){
 stack<int>stk;
 for(int i=1;i<=2*n;i++){
     if(open[i]){
-        stk.push(i);
+        stk.push(open[i]);
     }
     else if(!stk.empty()){
         if(stk.top()==close[i]){
