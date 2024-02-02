@@ -189,7 +189,7 @@ else{
 
 ```cpp
 // edges[i][0] -> weight of ith edge
-// edges[i][1] -> 1st node of ith edges
+// edges[i][1] -> 1st node of ith edge
 // edges[i][2] -> 2nd node of ith edge
 // get() and unite() are standard DSU functions
 int kruskal(vector<vector<int>>& edges){
