@@ -59,3 +59,96 @@ while(lo<=hi){
 }
 cout<<ans;
 ```
+
+## Problem 2 (DP + Segment Tree)
+
+Given an array of numbers $a_1, a_2, ... a_n$ ($1 \leq n \leq 5 \times 10^5, 1 \leq a_i \leq 5 \times 10^5$). Find maximum length of subsequence of $a$ such that absolute difference between any two adjacent terms is at most $d$ ($0 \leq d \leq 5 \times 10^5$)
+
+## Solution to Problem 2
+```cpp
+/*
+Define dp[i] as maximum length subsequence satisfying given criteria and ending at index i.
+Then dp[1] = 1 and dp[i] = 1 + max(dp[j] where j<i and |a[i]-a[j]| <= d). To find such a j
+quickly, we can use a segment tree
+*/
+
+struct segtree{
+    int sz;
+    vector<int>values;
+
+    int NEUTRAL_ELEMENT=0;
+
+    int merge(int& a,int& b){
+        return max(a,b);
+    }
+
+    int single(int v){
+        
+    }
+    
+    void init(int n){
+        sz=1; 
+        while(sz<n) sz<<=1; 
+        values.resize(2*sz);
+    }
+    
+    void build(vector<int>& a,int x,int lx,int rx){
+        if(rx==lx+1){
+            if(lx<(int)a.size()) values[x]=single(a[lx]); 
+            return;
+        } 
+        int m=lx+(rx-lx)/2; 
+        build(a,2*x+1,lx,m); 
+        build(a,2*x+2,m,rx); 
+        values[x]=merge(values[2*x+1],values[2*x+2]);
+    }
+
+    void build(vector<int>& a){
+        build(a,0,0,sz);
+    }
+    
+    void set(int i,int v,int x,int lx,int rx){
+        if(rx==lx+1){
+            values[x]=single(v); 
+            return;
+        } 
+        int m=lx+(rx-lx)/2; 
+        if(i<m) set(i,v,2*x+1,lx,m); 
+        else set(i,v,2*x+2,m,rx); 
+        values[x]=merge(values[2*x+1],values[2*x+2]);
+    }
+
+    void set(int i,int v){
+        set(i,v,0,0,sz);
+    }
+    
+    int calc(int l,int r,int x,int lx,int rx){
+        if(lx>=r || rx<=l) return NEUTRAL_ELEMENT; 
+        if(lx>=l && rx<=r) return values[x]; 
+        int m=lx+(rx-lx)/2; 
+        int x1=calc(l,r,2*x+1,lx,m); 
+        int x2=calc(l,r,2*x+2,m,rx); 
+        return merge(x1,x2);
+    }
+
+    int calc(int l,int r){
+        return calc(l,r,0,0,sz);
+    }
+};
+
+vector<int>dp(n+1),mx(500001,0);
+dp[1]=1;
+int ans=1;
+segtree st;
+st.init(500000);
+st.build(mx);
+st.set(a[1],1);
+for(int i=2;i<=n;i++){
+    int l=max(0,a[i]-d);
+    int r=min(500000,a[i]+d)+1;
+    dp[i]=1+st.calc(l,r);
+    st.set(a[i],dp[i]);
+    ans=max(ans,dp[i]);
+}
+cout<<ans<<'\n';
+```
