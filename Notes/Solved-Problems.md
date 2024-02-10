@@ -1,7 +1,6 @@
 ## Problem 1 (Binary Search + DP + Two pointers)
 
-Given an array of numbers $a_1, a_2, ... a_n$ ($1 \leq n \leq 10^5, 1 \leq a_i \leq 10^9$). Your task is to block some elements of the array in order to minimize its cost. Suppose you block the elements with
-indices $1 \leq b_1 < b_2 ... < b_m \leq n$. The cost of the array is calculated as maximum of
+Given an array of numbers $a_1, a_2, ... a_n$ ($1 \leq n \leq 10^5, 1 \leq a_i \leq 10^9$). Your task is to block some elements of the array in order to minimize its cost. Suppose you block the elements with indices $1 \leq b_1 < b_2 ... < b_m \leq n$. The cost of the array is calculated as maximum of
 - the sum of blocked elements, i.e, $a_{b_1} + a_{b_2} + ... + a_{b_m}$
 - the maximum sum of segments into which the array is divided when blocked elements are removed\
 \
@@ -151,4 +150,46 @@ for(int i=2;i<=n;i++){
     ans=max(ans,dp[i]);
 }
 cout<<ans<<'\n';
+```
+
+## Problem 3 (Dijkstra's Algorithm)
+
+You are playing a game consisting of $n$ stages, numbered $1, 2, ..., n$. Initially, only stage $1$ can be played. For each stage $i$ ($1 \leq i \leq n - 1$) that can be played, you can perform one of the following two actions at stage $i$:
+- Spend $a_i$ seconds to clear stage $i$. This allows you to play stage $i+1$
+- Spend $b_i$ seconds to clear stage $i$. This allows you to play stage $x_i$\
+\
+Calculate minimum time to play stage $n$
+
+## Solution to Problem 3
+```cpp
+/*
+We build a directed graph consisting of n nodes. A directed edge from node i to j
+with weight w means that you can play stage j after clearing stage i in w seconds.
+We just need to find minimum distance of node n from node 1
+*/
+
+vector<vector<pair<int,int>>>g(n+1);
+for(int i=1;i<n;i++){
+    g[i].push_back(make_pair(i+1,a[i]));
+    g[i].push_back(make_pair(x[i],b[i]));
+}
+priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+vector<int>dist(n+1,INT_MAX);
+dist[1]=0;
+pq.push(make_pair(0,1));
+while(!pq.empty()){
+    int u=pq.top().S;
+    int d_u=pq.top().F;
+    pq.pop();
+    if(d_u!=dist[u]){
+        continue;
+    }
+    for(auto v:g[u]){
+        if(d_u+v.S<dist[v.F]){
+            dist[v.F]=d_u+v.S;
+            pq.push(make_pair(dist[v.F],v.F));
+        }
+    }
+}
+cout<<dist[n];
 ```
