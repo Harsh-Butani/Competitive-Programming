@@ -178,18 +178,72 @@ vector<int>dist(n+1,INT_MAX);
 dist[1]=0;
 pq.push(make_pair(0,1));
 while(!pq.empty()){
-    int u=pq.top().S;
-    int d_u=pq.top().F;
+    int u=pq.top().second;
+    int d_u=pq.top().first;
     pq.pop();
     if(d_u!=dist[u]){
         continue;
     }
     for(auto v:g[u]){
-        if(d_u+v.S<dist[v.F]){
-            dist[v.F]=d_u+v.S;
-            pq.push(make_pair(dist[v.F],v.F));
+        if(d_u+v.S<dist[v.first]){
+            dist[v.first]=d_u+v.second;
+            pq.push(make_pair(dist[v.first],v.first));
         }
     }
 }
 cout<<dist[n];
+```
+
+## Problem 4 (Dijkstra's Algorithm)
+
+There are $n$ railway stations: station $1$, station $2$, ..., station $n$. $m$ trains operate between the stations, with description represented as tuple of $6$ positive integers ($l_i, d_i, k_i, c_i, u_i, v_i$). This corresponds to the information that the train departs from station $u_i$ at times ($l_i, l_i + d_i, ..., l_i + (k_i - 1)d_i$) and arrives at station $v_i$ after $c_i$ time from departure. For each of the stations $1$ to $n-1$, tell the latest time when a person can reach that station so that he can catch trains to reach station $n$ or determine that it is unreachable
+
+## Solution to Problem 4
+```cpp
+/*
+We shall make a weighted directed graph where an edge of weight c directed from
+node u to node v means that the train departs station v for station u and reaches
+in time c. We shall then run Dijkstra's Algorithm on this graph to determine the
+answers
+*/
+
+vector<vector<vector<int>>>g(n+1);
+for(int i=0;i<m;i++){
+    g[v[i]].push_back({u[i],l[i],d[i],k[i],c[i]});
+}
+priority_queue<pair<int,int>>pq;
+vector<int>dist(n,-1);
+for(auto x:g[n]){
+    int v=x[0],l=x[1],d=x[2],k=x[3],c=x[4];
+    dist[v]=l+(k-1)*d;
+    pq.push(make_pair(dist[v],v));
+}
+while(!pq.empty()){
+    int u=pq.top().second,d_u=pq.top().first;
+    pq.pop();
+    if(d_u!=dist[u]){
+        continue;
+    }
+    for(auto x:g[u]){
+        int v=x[0],l=x[1],d=x[2],k=x[3],c=x[4];
+        int t=d_u-c;
+        if(t<l){
+            continue;
+        }
+        int p=min(k,1+(t-l)/d);
+        int d_v=l+(p-1)*d;
+        if(t>=d_v && d_v>=dist[v]){
+            dist[v]=d_v;
+            pq.push(make_pair(d_v,v));
+        }
+    }
+}
+for(int i=1;i<n;i++){
+    if(dist[i]<0){
+        cout<<"Unreachable ";
+    }
+    else{
+        cout<<dist[i]<<" ";
+    }
+}
 ```
