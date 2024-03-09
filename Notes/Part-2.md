@@ -1281,6 +1281,7 @@ using namespace __gnu_pbds;
 - Bitsets can be used to reduce running time of many algorithms by a constant factor (equal to word size which is usually $32$ or $64$)
 - Many counting problems, like counting pairs of elements/counting subarrays satisfying some property can be solved using divide and conquer approach (If common techniques like fixing the $L$ pointer or $2$ pointer method doesn't work)
 - Suppose we have $k$ types of objects with $f_i$ number of objects for type $i$. Let total number of objects be $n$ (that is $f_1 + f_2 + ... + f_k = n$). Now, we can pair two objects only if they are of different types. Then maximum number of pairs that can be formed can be found as follows: Let type $mx$ object have maximum count (that is $f_{mx}$ is maximum among all $f_i$). Now, if $f_{mx} \leq \lfloor\frac{n}{2}\rfloor$, then we can make $\lfloor\frac{n}{2}\rfloor$ pairs. Else, we can make $n - f_{mx}$ pairs and $2f_{mx} - n$ objects of type $mx$ would remain
+- Maps + Linked List is a good combination for solving problems involving removal and insertion of elements at specific places. Example of such a problem is LRU Cache
 - Quickselect is an algorithm to find $k^{th}$ smallest element in an array. It is based on Lomuto Partition technique of Quicksort algorithm
 ```cpp
 void partition(vector<int>& a,int l,int r){
