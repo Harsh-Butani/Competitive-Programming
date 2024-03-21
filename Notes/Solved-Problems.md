@@ -149,7 +149,7 @@ for(int i=2;i<=n;i++){
     st.set(a[i],dp[i]);
     ans=max(ans,dp[i]);
 }
-cout<<ans<<'\n';
+cout<<ans;
 ```
 
 ## Problem 3 (Dijkstra's Algorithm)
@@ -246,4 +246,40 @@ for(int i=1;i<n;i++){
         cout<<dist[i]<<" ";
     }
 }
+```
+
+## Problem 5 (DP)
+
+There are $n$ distinct integers. Determine how many permutations of these integers have exactly $k$ inversions
+
+## Solution to Problem 5
+```cpp
+/*
+Let dp[i][j] -> Number of permutations using the smallest i integers that have exactly j inversions.
+It is easy to see that dp[i][j] = dp[i-1][j] + dp[i-1][j-1] + ... + dp[i-1][max(0,j-i+1)] for i > 1
+and dp[1][j] = 0 for j > 0 and dp[1][0] = 1.
+Let's define dp2[i][j] = dp[i][0] + dp[i][1] + ... + dp[i][j]. Practically, it represents number of
+permutations using the smallest i integers that have atmost j inversions.
+It's easy to see that dp2[i][j] = dp2[i][j-1] + dp[i][j].
+Also dp[i][j] = dp2[i-1][j] - (j >= i ? dp2[i-1][j-i] : 0).
+Thus we have dp2[i][j] = dp2[i][j-1] + dp2[i-1][j] - (j >= i ? dp2[i-1][j-i] : 0).
+Note that the recurrence relation only involves the current and the previous row. Thus we can optimize
+the memory used as well
+*/
+
+vector<int>dpx(k+1,0),dpy(k+1,0);
+dpx[0]=1;
+for(int i=2;i<=n;i++){
+    for(int j=0;j<=k;j++){
+        if(i&1){
+            dpx[j]=dpy[j]-(j>=i?dpy[j-i]:0);
+            dpx[j]+=(j?dpx[j-1]:0);
+        }
+        else{
+            dpy[j]=dpx[j]-(j>=i?dpx[j-i]:0);
+            dpy[j]+=(j?dpy[j-1]:0);
+        }
+    }
+}
+cout<<(n&1?dpx[k]:dpy[k]);
 ```
