@@ -283,3 +283,36 @@ for(int i=2;i<=n;i++){
 }
 cout<<(n&1?dpx[k]:dpy[k]);
 ```
+
+## Problem 6 (Bitmask DP)
+
+Determine the length of longest Hamiltonian path in a graph consisting of $n$ nodes whose adjacency matrix is given
+
+## Solution to Problem 6
+```cpp
+/*
+Let dp[i][mask] -> True iff we have a Hamiltonian path that ends at vertex i and contains
+all set bits of the mask. Then we have
+dp[i][1<<i] = true for all 0 < i < n
+For vertex j not part of mask and adj[i][j] = true (i is part of mask), we have dp[j][mask|(1<<j)] = true
+*/
+vector<vector<bool>>dp(n,vector<bool>(1<<n,false));
+for(int i=0;i<n;i++){
+    dp[i][1<<i]=true;
+}
+int ans=1;
+for(int mask=0;mask<(1<<n);mask++){
+    for(int i=0;i<n;i++){
+        if(!dp[i][mask]){
+            continue;
+        }
+        for(int j=0;j<n;j++){
+            if(adj[i][j] && !(mask&(1<<j))){
+                dp[j][mask|(1<<j)]=true;
+                ans=max(ans,__builtin_popcount(mask)+1);
+            }
+        }
+    }
+}
+cout<<ans;
+```
