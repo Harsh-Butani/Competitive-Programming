@@ -1502,3 +1502,13 @@ for(int i=1;i<=2*n;i++){
 }
 cout<<"Chords don't intersect";
 ```
+- Many problems based on the $mex$ of a permutation of numbers from $0$ to $n-1$ can be solved by traversing the array backwards. For example suppose an array $a$ consisting of numbers from $0$ to $n-1$ is provided. Then the mex array $mex$ defined as $mex_i = mex[a_0, a_1, ..., a_i]$ can be determined as follows
+```cpp
+vector<int>mex(n);
+mex[n-1]=n;
+int mn=a[n-1];
+for(int i=n-2;i>=0;i--){
+    mex[i]=mn;
+    mn=min(mn,a[i]);
+}
+```
