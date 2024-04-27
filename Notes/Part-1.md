@@ -453,6 +453,7 @@ void solve(){
 
 **5. Dynamic Programming (DP)**
 
+- There are 2 classes of DP problems: Forward and Backward DP. In forward DP, we update DP values of states which are reachable from the current state. In backward DP, we update the DP value of current state by checking the transitions from its previous states
 - In Dynamic Programming, we build the DP array as per the recurrence relation we have. As an example, consider the problem in which you are given $q$ queries of type $+ x$ or $- x$. A query of type $+ x$ adds $x$ to the multiset (which is initially empty) and a query of type $- x$ removes a single instance of $x$ from the multiset (It is guaranteed that $x$ exists in the multiset when a query of type $- x$ appears). You are also given an integer $k$. After each query, you need to output the number of ways to obtain $k$ as sum of some numbers in the multiset
 ```cpp
 vector<int>dp(k+1,0); // dp[i] -> Number of ways to obtain i as sum of some numbers in the multiset
