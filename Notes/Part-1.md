@@ -692,6 +692,49 @@ for(int i=1;i<=n;i++){
     cout<<ans[i]<<" ";
 }
 ```
+- Yet another rerooting problem: You are given a tree consisting of $n$ vertices. For each vertex, calculate the sum of distances of other vertices from the current vertex
+```cpp
+void dfs(int u,int p,vector<vector<int>>& g,vector<int>& sz,vector<int>& dp){
+    for(auto v:g[u]){
+        if(v==p){
+            continue;
+        }
+        dfs(v,u,g,sz,dp);
+        sz[u]+=sz[v];
+        dp[u]+=dp[v]+sz[v];
+    }
+}
+
+void dfs2(int u,int p,vector<vector<int>>& g,vector<int>& sz,vector<int>& dp,vector<int>& ans){
+    for(auto v:g[u]){
+        if(v==p){
+            continue;
+        }
+        int old_szu=sz[u];
+        int old_szv=sz[v];
+        int old_dpu=dp[u];
+        int old_dpv=dp[v];
+        sz[u]=old_szu-old_szv; // sz[u]-=sz[v]
+        sz[v]=old_szu;
+        dp[u]=old_dpu-old_dpv-old_szv; // dp[u]-=(old_dpv+old_szv)
+        dp[v]=old_dpu+old_szu-2*old_szv; // dp[v]+=(dp[u]+sz[u])
+        ans[v]=dp[v];
+        dfs2(v,u,g,sz,dp,ans);
+        sz[u]=old_szu;
+        sz[v]=old_szv;
+        dp[u]=old_dpu;
+        dp[v]=old_dpv;
+    }
+}
+
+vector<int>sz(n+1,1),dp(n+1,0),ans(n+1,0);
+dfs(1,0,g,sz,dp); // Calculating answer for node 1
+ans[1]=dp[1];
+dfs2(1,0,g,sz,dp,ans); // Calculating answer for all other nodes by rerooting the node to adjacent node of previous root
+for(int i=1;i<=n;i++){
+    cout<<ans[i]<<" ";
+}
+```
 - We can also do DP on DAG (Directed Acyclic Graph). We process the nodes in topological order or reverse topological order
 - In Digit DP, we have to answer queries such as "The count of numbers that satisfy property $X$ in $[a, b]$". This can be done by introducing a function $f$ as $f(n) =$ count of numbers $\leq n$ that satisfy property $X$. So answer $= f(b) - f(a - 1)$
 - We can use maps instead of arrays for memoizing when values have a large spread
