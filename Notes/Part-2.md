@@ -3,10 +3,11 @@
 **8.1. Depth First Search (DFS)**
 
 ```cpp
-void dfs(int u,vector<vector<int>>& graph,vector<int>& color){
+void dfs(int u,vector<vector<int>>& graph,vector<int>& color,vector<int>& parent){
     color[u]=1;
     for(auto v:graph[u]){
         if(!color[v]){
+            parent[v]=u;
             dfs(v,graph,color);
         }
     }
@@ -21,6 +22,7 @@ void dfs(int u,vector<vector<int>>& graph,vector<int>& color){
 ```cpp
 queue<int>q;
 vector<bool>visited(n,false);
+vector<int>parent(n,-1);
 q.push(0);
 visited[0]=true;
 while(!q.empty()){
@@ -28,6 +30,7 @@ while(!q.empty()){
     q.pop();
     for(auto v:graph[u]){
         if(!visited[v]){
+            parent[v]=u;
             q.push(v);
             visited[v]=true;
         }
